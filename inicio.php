@@ -57,14 +57,13 @@ require "php/inicializandoDatos.php";
                         <span class="prep-brand-mark">P</span>
                         <span><strong>PREP</strong><small>Panel electoral</small></span>
                     </a>
-                    <div class="pull-right">
-                        <a href="" class="menu-collapse">
-                            <i class="fa fa-bars"></i>
-                        </a>
-                    </div>
                 </div><!-- header-left -->
                 
                 <div class="header-right">
+                    <button type="button" class="prep-menu-toggle menu-collapse" aria-label="Ocultar menú de navegación" aria-controls="prep-navigation" aria-expanded="true" title="Ocultar o mostrar menú">
+                        <span class="sr-only">Ocultar o mostrar menú</span>
+                        <i class="fa fa-bars" aria-hidden="true"></i>
+                    </button>
                     
                     <div class="pull-right">
 
@@ -97,10 +96,11 @@ require "php/inicializandoDatos.php";
         <section>
 		
             <div class="mainwrapper">
-                <div class="leftpanel">
+                <div class="leftpanel" id="prep-navigation">
                     
 				<?php include("menu.php"); ?>
                 </div><!-- leftpanel -->
+                <button type="button" class="prep-menu-overlay" aria-label="Cerrar menú"></button>
                 
                 <div class="mainpanel">
                     

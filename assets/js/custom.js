@@ -79,7 +79,28 @@ jQuery(document).ready(function() {
             $('body').removeClass('show-left');
          }
       }
+      updateMenuToggle();
       return false;
+   });
+
+   jQuery('.prep-menu-overlay').click(function() {
+      jQuery('body').removeClass('show-left');
+      updateMenuToggle();
+   });
+
+   jQuery(document).on('keydown', function(event) {
+      if (event.key === 'Escape' && jQuery('body').hasClass('show-left')) {
+         jQuery('body').removeClass('show-left');
+         updateMenuToggle();
+         jQuery('.prep-menu-toggle').focus();
+      }
+   });
+
+   jQuery('.leftpanel a').click(function() {
+      if (jQuery('body').hasClass('hidden-left') && !jQuery(this).parent().hasClass('parent')) {
+         jQuery('body').removeClass('show-left');
+         updateMenuToggle();
+      }
    });
    
    // Add class nav-hover to mene. Useful for viewing sub-menu
@@ -102,6 +123,7 @@ jQuery(document).ready(function() {
          $('.headerwrapper, .mainwrapper').removeClass('collapsed');
       } else {
          $('body').removeClass('hidden-left');
+         $('body').removeClass('show-left');
       }
       
       // Seach form move to left
@@ -114,6 +136,20 @@ jQuery(document).ready(function() {
             $('.form-search').insertBefore($('.btn-group-notification'));
          }
       }
+      updateMenuToggle();
+   }
+
+   function updateMenuToggle() {
+      var mobile = jQuery('body').hasClass('hidden-left');
+      var visible = mobile
+         ? jQuery('body').hasClass('show-left')
+         : !jQuery('.mainwrapper').hasClass('collapsed');
+      var label = visible ? 'Ocultar menú de navegación' : 'Mostrar menú de navegación';
+
+      jQuery('.prep-menu-toggle')
+         .attr('aria-expanded', visible ? 'true' : 'false')
+         .attr('aria-label', label)
+         .attr('title', label);
    }
    
    collapsedMenu(); // for loading/refreshing the page
@@ -124,6 +160,7 @@ jQuery(document).ready(function() {
       } else {
          $('.headerwrapper, .mainwrapper').removeClass('collapsed');
       }
+      updateMenuToggle();
    }
 
 });
