@@ -16,7 +16,7 @@ require "php/inicializandoDatos.php";
         <link href="assets/css/c3.css" rel="stylesheet" />
         <link href="assets/css/sweetalert2.min.css" rel="stylesheet" />
         <!-- Tema actual: debe cargarse al final para sustituir la apariencia heredada. -->
-        <link href="assets/css/prep-modern.css?v=20260904-3" rel="stylesheet" />
+        <link href="assets/css/prep-modern.css?v=20260904-4" rel="stylesheet" />
 
         <?php $mapsKey = $_ENV['GOOGLE_MAPS_API_KEY'] ?? ''; ?>
         <?php if ($mapsKey !== ''): ?>
