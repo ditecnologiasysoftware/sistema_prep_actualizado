@@ -9,8 +9,8 @@
 			<i class="fa fa-database"></i>
 		</div>
 		<div class="media-body">
-			<div class="row">
-				<div class=" col-md-9">
+			<div class="row prep-page-heading-row">
+				<div class="col-sm-8">
 					<ul class="breadcrumb">
 						<li><a href=""><i class="glyphicon glyphicon-home"></i></a></li>
 						<li>Incidencias</li>
@@ -18,33 +18,28 @@
 					<h4>Incidencias</h4>
 				</div>
 
-				<div class=" col-md-3"><input type="button" class="btn btn-success mr5" value="+ Registrar Reporte" onclick="reporte_registro()"/></div>
+				<div class="col-sm-4 text-right prep-page-actions"><input type="button" class="btn btn-success mr5" value="+ Registrar Reporte" onclick="reporte_registro()"/></div>
 			</div>
 
 		</div>
 	</div>
 </div>
-<div class="contentpanel">
-
-	<div style="widows:100%">
-
-		<div class="form-group">
+<div class="contentpanel prep-reports-module">
+	<div class="row">
+		<div class="col-md-12">
 			<div class="panel-group" id="accordion2">
 				<div class="panel panel-primary">
 					<div class="panel-heading">
 						<h4 class="panel-title">
 							<a data-toggle="collapse" data-parent="#accordion2" href="#collapseOne2">
-								<div style="color:#FFFFFF">Buscar</div>
+								<div style="color:#FFFFFF">Formulario de búsqueda</div>
 							</a>
 						</h4>
 					</div>
 					<div id="collapseOne2" class="panel-collapse collapse <?php if (!empty($_POST['bus'])) echo "in"; ?>">
 						<div class="panel-body">
-							<table width="100%" border="0">
-								<tr>
-									<td width="100%">
-										<div class="form-group">
-											<form id="form_busqueda">
+							<form id="form_busqueda" class="prep-search-form">
+								<div class="row">
 												<?php
 												if ($id_estado == 0) {
 												?>
@@ -156,22 +151,19 @@
 														</div>
 													</div>
 												</div>
-												<div style="clear: both;"></div>
+								</div>
+								<div class="prep-form-actions">
 												<input type="hidden" name="pagina" id="pagina" value="1" />
 												<input type="button" class="btn btn-primary mr5" value="Buscar" onclick="reporte_listado()"/>
 												<input type="button" class="btn btn-danger mr5"  value="Cancelar" onclick="location.href='reportes'" >
-											</form>
-										</div>
-									</td>
-								</tr>
-							</table>
+								</div>
+							</form>
 						</div>
 					</div>
 				</div><!-- panel -->
 			</div><!-- panel-group -->
 			<!--fin formulariooooooo busquedaaaaaaaa---------------------------------------------------------------- -->
 		</div>
-
 	</div>
 
 	<div id="contenido"></div>	

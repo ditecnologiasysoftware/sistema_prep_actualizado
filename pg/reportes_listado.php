@@ -76,8 +76,13 @@ $totalCirculares = $entity->scalar($cadena2);
 $resul_lista = $entity->objects($cadena);
 
 ?>
-<div id="div_buscar">
-	
+<div id="div_buscar" class="panel panel-default prep-list-panel">
+	<div class="panel-heading">
+		<h4 class="panel-title">Listado de incidencias</h4>
+		<p><?php echo $totalCirculares; ?> registros encontrados</p>
+	</div>
+	<div class="panel-body">
+	<div class="table-responsive">
 	<table id="basicTable" class="table table-striped table-bordered responsive">
 		<thead class="">
 			<tr>
@@ -153,7 +158,6 @@ $resul_lista = $entity->objects($cadena);
 							// Y mandamos a paginar desde la pagina actual y le pasamos tambien el total
 							// de registros de la consulta mysql.
 							$datos = $pag->paginar($pagina, $totalCirculares);
-							echo  $totalCirculares . ' registros encontrados<br>';
 							if ($datos) {
 
 								echo 'Pagina: ' . $pagina . ' de ' . $pag->getCantidadPaginas() . '<br />';
@@ -175,4 +179,6 @@ $resul_lista = $entity->objects($cadena);
 			</tr>
 		</tfoot>
 	</table>
+	</div>
+	</div>
 </div>

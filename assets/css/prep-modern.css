@@ -547,3 +547,101 @@ body.prep-signin{min-height:100vh;margin:0;background:#071f36;overflow-x:hidden}
         margin: 12px;
     }
 }
+
+/* Registro completo de resultados y reportes: mismo patrón visual que Resultados Electorales. */
+.prep-admin .prep-results-entry .panel,
+.prep-admin .prep-reports-module .panel,
+.prep-admin .prep-list-panel {
+    margin-bottom: 20px;
+}
+
+.prep-admin .prep-results-filters,
+.prep-admin .prep-search-form > .row {
+    margin-right: -9px;
+    margin-left: -9px;
+}
+
+.prep-admin .prep-results-filters > [class*="col-"],
+.prep-admin .prep-search-form > .row > [class*="col-"] {
+    padding-right: 9px;
+    padding-left: 9px;
+}
+
+.prep-admin .prep-results-form label,
+.prep-admin .prep-search-form label {
+    display: block;
+    margin-bottom: 7px;
+    color: #344d63;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.prep-admin .prep-results-form select,
+.prep-admin .prep-results-form input.form-control,
+.prep-admin .prep-search-form select,
+.prep-admin .prep-search-form input.form-control,
+.prep-admin .prep-search-form .select2-container {
+    width: 100% !important;
+}
+
+.prep-admin .prep-results-table {
+    clear: both;
+    margin-top: 8px;
+    border: 1px solid #e0e8ef;
+    border-radius: 11px;
+    background: #fff;
+}
+
+.prep-admin .prep-results-table .table,
+.prep-admin .prep-list-panel .table {
+    margin-bottom: 0;
+}
+
+.prep-admin .prep-results-table input[type="number"] {
+    width: 130px !important;
+    margin-left: auto;
+    text-align: right;
+}
+
+.prep-admin .prep-results-table input[type="file"] {
+    width: 100%;
+    min-width: 180px;
+}
+
+.prep-admin .prep-form-actions {
+    clear: both;
+    padding-top: 5px;
+}
+
+.prep-admin .prep-list-panel {
+    margin-top: 15px;
+}
+
+.prep-admin .prep-list-panel textarea {
+    min-width: 210px;
+    resize: vertical;
+}
+
+.prep-admin .prep-list-panel .panel-heading p {
+    margin: 4px 0 0;
+}
+
+.prep-admin .prep-page-actions {
+    padding-top: 7px;
+}
+
+@media (max-width: 767px) {
+    .prep-admin .prep-page-heading-row > [class*="col-"] {
+        width: 100%;
+    }
+
+    .prep-admin .prep-page-actions {
+        padding-top: 12px;
+        text-align: left;
+    }
+
+    .prep-admin .prep-results-table .table,
+    .prep-admin .prep-list-panel .table {
+        min-width: 760px;
+    }
+}

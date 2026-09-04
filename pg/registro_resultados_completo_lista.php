@@ -5,6 +5,7 @@
  ?>
 
 
+                                        <div class="table-responsive prep-results-table">
                                         <table id="basicTable" class="table table-striped table-bordered responsive">
                                               <thead class="">
                                                   <tr>
@@ -76,4 +77,5 @@
 
                                                 echo '</div>';  
                                                 }
-                                         ?>                                   
+                                         ?>
+                                        </div>

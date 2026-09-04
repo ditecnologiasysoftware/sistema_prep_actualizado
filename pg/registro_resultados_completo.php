@@ -28,12 +28,19 @@
                     </div><!-- pageheader -->
                     
                     <!--FIN ARRIBA-------------------------------------------------------------------------------- -->
-                    <div class="contentpanel">
+                    <div class="contentpanel prep-results-entry">
                       <!-- CONTENIDO ----------------------------------------------------------------------- -->
 					   <div class="row">
                             <div class="col-md-12">
+                              <div class="panel panel-default">
+                                <div class="panel-heading">
+                                  <h4 class="panel-title">Captura del acta de escrutinio</h4>
+                                  <p>Seleccione la casilla y registre los votos obtenidos.</p>
+                                </div>
+                                <div class="panel-body">
 
-                                <form class="form-horizontal" id="enviar_formulario" method="post" enctype="multipart/form-data" action="php/subir.php">
+                                <form class="form-horizontal prep-results-form" id="enviar_formulario" method="post" enctype="multipart/form-data" action="php/subir.php">
+                                  <div class="row prep-results-filters">
 
                                     <?php if ($id_proceso_electoral == "0") { ?> 
                                     <div class="form-group col-sm-3">
@@ -107,7 +114,9 @@
 
                                             <input type="hidden" name="opcion" id="opcion" value="140"/>
 
-                                    <div id="listapartidos">
+                                  </div>
+
+                                    <div id="listapartidos" class="table-responsive prep-results-table">
 
                                         <table id="basicTable" class="table table-striped table-bordered responsive">
                                               <thead class="">
@@ -185,6 +194,8 @@
                                                
                                 </form>
                                 <div id="cargando"></div>
+                                </div>
+                              </div>
 
                             </div>
                           
