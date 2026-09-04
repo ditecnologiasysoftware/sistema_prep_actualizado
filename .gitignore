@@ -1,0 +1,7 @@
+.env
+.DS_Store
+Thumbs.db
+/.idea/
+/.vscode/
+/archivos/actas/*
+!/archivos/actas/.gitkeep

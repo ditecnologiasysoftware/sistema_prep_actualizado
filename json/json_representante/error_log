@@ -1,0 +1,8 @@
+[26-Sep-2020 19:11:58 UTC] PHP Notice:  Object of class mysqli_result could not be converted to int in /home/multime7/public_html/sistemas/electoral/php/clase_mysql.php on line 175
+[26-Sep-2020 19:11:58 UTC] PHP Notice:  Object of class mysqli_result could not be converted to int in /home/multime7/public_html/sistemas/electoral/php/clase_mysql.php on line 138
+[26-Sep-2020 19:11:58 UTC] PHP Notice:  Object of class mysqli_result could not be converted to int in /home/multime7/public_html/sistemas/electoral/php/clase_mysql.php on line 175
+[26-Sep-2020 19:11:58 UTC] PHP Notice:  Object of class mysqli_result could not be converted to int in /home/multime7/public_html/sistemas/electoral/php/clase_mysql.php on line 175
+[26-Sep-2020 19:13:42 UTC] PHP Notice:  Object of class mysqli_result could not be converted to int in /home/multime7/public_html/sistemas/electoral/php/clase_mysql.php on line 175
+[26-Sep-2020 19:13:42 UTC] PHP Notice:  Object of class mysqli_result could not be converted to int in /home/multime7/public_html/sistemas/electoral/php/clase_mysql.php on line 138
+[26-Sep-2020 19:13:42 UTC] PHP Notice:  Object of class mysqli_result could not be converted to int in /home/multime7/public_html/sistemas/electoral/php/clase_mysql.php on line 175
+[26-Sep-2020 19:13:42 UTC] PHP Notice:  Object of class mysqli_result could not be converted to int in /home/multime7/public_html/sistemas/electoral/php/clase_mysql.php on line 175

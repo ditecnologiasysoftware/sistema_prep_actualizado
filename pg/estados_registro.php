@@ -1,0 +1,48 @@
+<?php 
+require "../php/inicializandoDatosExterno.php"; 
+if($_POST['id'] > 0){
+    $id = $funciones->limpia($_POST['id']); 
+    $row = $entity->row("SELECT * FROM tblc_estado WHERE id_estado = ".$id." ");
+}
+?>
+    <form class="form-horizontal" id="enviar_formulario" method="post" enctype="multipart/form-data" action="php/subir.php">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+
+                <h4 class="panel-title">Formulario de registro</h4>
+                <p></p>
+            </div>
+            <div class="panel-body">
+
+                <div class="form-group">
+                    <label class="col-sm-3">Nombre :</label>
+                    <div class="col-sm-8">
+                        <input type="text" name="nombre" id="nombre" class="form-control" value="<?php if (!empty($_POST['id'])) echo $row['nombre']; ?>" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3">Latitud :</label>
+                    <div class="col-sm-8">
+                        <input type="text" name="latitud" id="latitud" class="form-control" value="<?php if (!empty($_POST['id'])) echo $row['latitud']; ?>" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3">Longitud :</label>
+                    <div class="col-sm-8">
+                        <input type="text" name="longitud" id="longitud" class="form-control" value="<?php if (!empty($_POST['id'])) echo $row['longitud']; ?>" />
+                    </div>
+                </div>
+                <!-- form-group -->
+
+            </div><!-- panel-body -->
+            <div class="panel-footer">
+                <input type="submit" class="btn btn-primary mr5" id="btn_guardar" value="Guardar" />
+                <button class="btn btn-danger mr5" onclick="estado_registro()">Cancelar</button>
+            </div><!-- panel-footer -->
+        </div><!-- panel-default -->
+        <input type="hidden" name="opcion" id="opcion" value="<?php if (!isset($_POST['id'])) echo "110";
+                                                                else echo "111"; ?>" />
+        <input type="hidden" name="id" id="id" value="<?php if (isset($_POST['id'])) echo $id; ?>" />
+
+    </form>
+    <div id="cargando"></div>
