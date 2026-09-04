@@ -73,6 +73,7 @@ require "php/inicializandoDatos.php";
                         <div class="btn-group btn-group-option">
                             <button type="button" class="btn btn-default dropdown-toggle" >
                               <i class="fa fa-user-circle"></i> <?php echo htmlspecialchars($nombre, ENT_QUOTES, 'UTF-8'); ?>
+                            </button>
                         </div><!-- btn-group -->
 
                         <div class="btn-group btn-group-option">
