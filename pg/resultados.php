@@ -14,7 +14,7 @@
     </div><!-- media -->
 </div><!-- pageheader -->
 
-<div class="content-panel row">
+<div class="content-panel row resultados-layout">
         
         <div class="col-md-4">
 

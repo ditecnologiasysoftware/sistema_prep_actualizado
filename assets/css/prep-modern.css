@@ -17,3 +17,23 @@ body.prep-signin{min-height:100vh;margin:0;background:#071f36;overflow-x:hidden}
 @media(max-width:900px){.prep-login-shell{padding:28px}.prep-login-card{grid-template-columns:minmax(0,.85fr) minmax(360px,1.15fr)}.prep-login-brand{padding:42px 36px}.prep-login-brand h1{font-size:34px}.prep-login-form-panel{padding:46px 40px}}
 @media(max-width:700px){body.prep-signin{background:#fff}.prep-login-shell{display:block;min-height:100vh;padding:0}.prep-login-card{display:block;width:100%;min-height:100vh;border:0;border-radius:0;box-shadow:none}.prep-login-brand{min-height:190px;padding:30px 26px;background:linear-gradient(145deg,#123b64,#071f36)}.prep-login-brand h1{margin:21px 0 8px;font-size:29px}.prep-login-brand p,.prep-login-features,.prep-login-brand-footer{display:none}.prep-login-brand:before{right:-95px;bottom:-150px}.prep-login-form-panel{padding:34px 26px 30px}.prep-signin .logo img{max-height:78px}.prep-login-heading{margin-bottom:26px}.prep-login-heading h2{font-size:28px}}
 @media(max-width:380px){.prep-login-brand{min-height:165px;padding:24px 20px}.prep-login-brand h1{font-size:25px}.prep-login-form-panel{padding:28px 20px}.prep-recaptcha{transform:scale(.88);transform-origin:left top;margin-bottom:-7px}}
+/* Registro de resultados: separacion visual entre formulario y acta. */
+.resultados-layout {
+    margin-right: -10px;
+    margin-left: -10px;
+}
+
+.resultados-layout > [class*="col-"] {
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+.resultados-layout > [class*="col-"] > .panel {
+    margin-bottom: 20px;
+}
+
+@media (max-width: 991px) {
+    .resultados-layout > [class*="col-"] + [class*="col-"] {
+        margin-top: 4px;
+    }
+}
