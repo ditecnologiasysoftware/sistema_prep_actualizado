@@ -71,7 +71,7 @@
 					"tipo"    => "success",
 					"titulo"  => "Listo!",
 					"mensaje" => "Se ha registrado un usuario correctamente.",
-					"funcion" => ["usarios_registro"]
+					"funcion" => ["usuarios_registro"]
 				]);
 							
 			break;
@@ -106,7 +106,7 @@
 					"tipo"    => "success",
 					"titulo"  => "Listo!",
 					"mensaje" => "Se ha modificado un usuario correctamente.",
-					"funcion" => ["usarios_registro"]
+					"funcion" => ["usuarios_registro"]
 				]);			
 				
 				break;

@@ -52,7 +52,7 @@
                                                 ?>
                                             </select>
                                         </div>
-                                        <input type="button" class="btn btn-primary mr5" value="Buscar" onclick="candidato_listado()" />
+                                        <input type="button" class="btn btn-primary mr5" value="Buscar" onclick="candidato_lista()" />
                                         <input type="button" class="btn btn-secundary mr5" onclick="window.location.href='candidato'" value="Cancelar">
                                     </form>
                                 </div>
@@ -64,6 +64,8 @@
         </div><!-- panel -->
     </div><!-- panel-group -->
 
-    <div id="contenido" class="col-md-5"></div>
-    <div id="listado" class="col-md-7"></div>
+    <div class="row">
+        <div id="contenido" class="col-md-5"></div>
+        <div id="listado" class="col-md-7"></div>
+    </div>
 </div>

@@ -29,116 +29,101 @@ $("input[name=checktodos]").change(function(){
 
 
 function satisfactorio(msj,pagina){
-
-	alert(msj);
-
-	location.href=pagina;	
-
-	}
+	PrepAlert.notify(msj, 'Listo', 'success').then(function () {
+		if (pagina) location.href = pagina;
+	});
+}
 
 function error(msj){
-
-	alert(msj);
-
-	}
+	return PrepAlert.error(msj);
+}
 
 function eliminar(campo,id,opcion){
-	
-	var msg = confirm("¿Desea eliminar este Registro?");
-    if(msg) {
-	$.ajax({
+	PrepAlert.confirm({
+		title: 'Eliminar registro',
+		text: '¿Deseas eliminar este registro?',
+		icon: 'warning',
+		confirmButtonText: 'Sí, eliminar',
+		cancelButtonText: 'Cancelar'
+	}).then(function (result) {
+		if (!result.isConfirmed) return;
+		$.ajax({
 
 			url:'php/eliminar.php',
 			type:'post',
 			data:"submit=&opcion="+opcion+"&id="+id+"&campo="+campo,
 
 			success:function(datos){
-			   alert(datos);
-			   if(datos != "ERROR al Eliminar registro"){
-				   //campo.parentNode.parentNode.parentNode.removeChild(campo.parentNode.parentNode);
-				    location.reload(); 
-				   }
-				void(0);
-			}
-
+				var fallo = String(datos).toUpperCase().indexOf('ERROR') >= 0;
+				PrepAlert.notify(datos, fallo ? 'Error' : 'Listo', fallo ? 'error' : 'success').then(function () {
+					if (!fallo) location.reload();
+				});
+			},
+			error: PrepAlert.ajaxError
 		});
-
-	}
-	
+	});
+	return false;
 }
 
 function eliminar2(campo,id,id2,opcion){
-
-	var msg = confirm("¿Desea eliminar este Registro?")
-
-    if ( msg ) {
-
-	$.ajax({
+	PrepAlert.confirm({
+		title: 'Eliminar registro', text: '¿Deseas eliminar este registro?', icon: 'warning',
+		confirmButtonText: 'Sí, eliminar', cancelButtonText: 'Cancelar'
+	}).then(function (result) {
+		if (!result.isConfirmed) return;
+		$.ajax({
 
 			url:'php/eliminar.php',
 			type:'post',
 			data:"submit=&opcion="+opcion+"&id="+id+"&id2="+id2,
 			success:function(datos){
-
-			   alert(datos);
-			   if(datos != "ERROR al Eliminar registro"){
-				   location.reload();
-				   }
-
-			   	/*$(campo).parent().parent().slideToggle($$.config.fxSpeed)*/
-
-			}
-
+				var fallo = String(datos).toUpperCase().indexOf('ERROR') >= 0;
+				PrepAlert.notify(datos, fallo ? 'Error' : 'Listo', fallo ? 'error' : 'success').then(function () {
+					if (!fallo) location.reload();
+				});
+			},
+			error: PrepAlert.ajaxError
 		});
-
-	}
+	});
 
 	return false;
 
 }
 
 function cambiarstatus_app(id,estatus){
-	
-		var msg = confirm("¿Deseas cambiar el estatus de este registro?");
-
-		if(msg){
+		PrepAlert.confirm({ title: 'Cambiar estatus', text: '¿Deseas cambiar el estatus de este registro?', icon: 'question', confirmButtonText: 'Sí, continuar', cancelButtonText: 'Cancelar' }).then(function (result) {
+			if (!result.isConfirmed) return;
 			$.ajax({
 				url:'php/subir.php',
 				type:'post',
 				data:"submit=&opcion=38&id="+id+"&estatus="+estatus,
 				success:function(datos){
-					alert(datos);
-					}
+					PrepAlert.notify(datos, 'Aviso', 'success');
+				},
+				error: PrepAlert.ajaxError
 				});			
-			}
+		});
 
 	return false;
 }
 
 function cambiar_estatus(campo,id,opcion){
-
-	var msg = confirm("¿Desea actualizar el estatus de la solicitud? ")
-
-    if ( msg ) {
-
-	$.ajax({
+	PrepAlert.confirm({ title: 'Actualizar estatus', text: '¿Deseas actualizar el estatus de la solicitud?', icon: 'question', confirmButtonText: 'Sí, actualizar', cancelButtonText: 'Cancelar' }).then(function (result) {
+		if (!result.isConfirmed) return;
+		$.ajax({
 
 			url:'php/subir.php',
 			type:'post',
 			data:"submit=&opcion="+opcion+"&id="+id+"&estatus="+campo.value,
 			success:function(datos){
-
-			   alert(datos);
-			   if(datos != "ERROR al actualizar registro"){
-				   location.reload();
-				   }
-			   	/*$(campo).parent().parent().slideToggle($$.config.fxSpeed)*/
-
-			}
-
+				var fallo = String(datos).toUpperCase().indexOf('ERROR') >= 0;
+				PrepAlert.notify(datos, fallo ? 'Error' : 'Listo', fallo ? 'error' : 'success').then(function () {
+					if (!fallo) location.reload();
+				});
+			},
+			error: PrepAlert.ajaxError
 		});
-
-	}
+	});
 
 	return false;
 
@@ -239,7 +224,7 @@ function lista_candidatos(pagina = 1){
     var params = $('#form_busqueda').serialize();
     $.ajax({
         beforeSend: function(){
-            $("#listado").html("<center><img src='images/loaders/loader10.gif' /><br>Cargando ...</center>");
+            $("#listado").html("<center><img src='assets/images/loaders/loader10.gif' alt='Cargando' /><br>Cargando ...</center>");
         },
         type:    "post",
         url:     url,
@@ -258,7 +243,7 @@ function lista_bingo(pagina=1){
     var params = $('#form_busqueda').serialize();
     $.ajax({
         beforeSend: function(){
-            $("#listado").html("<center><img src='images/loaders/loader10.gif' /><br>Cargando ...</center>");
+            $("#listado").html("<center><img src='assets/images/loaders/loader10.gif' alt='Cargando' /><br>Cargando ...</center>");
         },
         type:    "post",
         url:     url,
@@ -275,7 +260,7 @@ function lista_candidatos_completo(campo){
 
     $.ajax({
         beforeSend: function(){
-            $("#listapartidos").html("<center><img src='images/loaders/loader10.gif' /><br>Cargando ...</center>");
+            $("#listapartidos").html("<center><img src='assets/images/loaders/loader10.gif' alt='Cargando' /><br>Cargando ...</center>");
         },
         type:    "post",
         url:     url,
@@ -287,76 +272,49 @@ function lista_candidatos_completo(campo){
 }
 
 function enviar_formulario(id = '') {
-    var botton_cargando = $('<button class="btn btn-primary mb-1" type="button" disabled><span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>Enviando...</button>');
-    var btn_guardar = $("#btn_guardar" + id);
-    var btn_original = $("#btn_guardar" + id);
-	
-    $('#enviar_formulario' + id).submit(function (e) {
-        e.preventDefault();
-        formData = new FormData($('#enviar_formulario' + id)[0]);
+    var selectorFormulario = '#enviar_formulario' + id;
 
-        Swal.fire({
+    $(selectorFormulario).off('submit.prep').on('submit.prep', function (e) {
+        e.preventDefault();
+        var formulario = this;
+        var $formulario = $(formulario);
+        var $botonGuardar = $('#btn_guardar' + id);
+        var formData = new FormData(formulario);
+
+        PrepAlert.confirm({
             title: 'Aviso',
             text: '¿Estás seguro de que deseas realizar esta acción?',
             icon: 'info',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Si, continuar',
-            cancelButtonText: "No, cancelar",
+            confirmButtonText: 'Sí, continuar',
+            cancelButtonText: 'No, cancelar'
         }).then((result) => {
             if (result.isConfirmed) {
-
                 $.ajax({
                     type: 'POST',
-                    url: $("#enviar_formulario" + id).attr('action'),
+                    url: $formulario.attr('action'),
                     contentType: false,
                     processData: false,
                     data: formData,
                     beforeSend: function () {
-                        // btn_guardar.replaceWith(botton_cargando);
-                        // mostrarOverlay();
+                        $botonGuardar.prop('disabled', true).attr('aria-busy', 'true');
                     },
                     success: function (datos) {
-                        datos = JSON.parse(datos);
-
-                        notificacion(datos.mensaje, datos.titulo, datos.tipo);
-                        if (datos.funcion) {
-                            for (i = 0; i < datos.funcion.length; i++) {
-                                let param = [];
-                                if (datos.params && datos.params[i]) {
-                                    param = datos.params[i];
-                                }
-                                window[datos.funcion[i]](...param);
-                            }
+                        var respuesta;
+                        try {
+                            respuesta = PrepAlert.parseResponse(datos);
+                        } catch (error) {
+                            PrepAlert.error('El servidor devolvió una respuesta inválida. Revisa la operación e inténtalo nuevamente.');
+                            return;
                         }
-
-                        // Reemplazar el botón de cargando por el botón de guardar
-                        // ocultarOverlay();
-                        // botton_cargando.replaceWith(btn_original);
+                        PrepAlert.fromResponse(respuesta).then(function () {
+                            PrepAlert.runCallbacks(respuesta);
+                        });
                     },
                     error: function (jqXHR, exception) {
-                        // ocultarOverlay();
-                        var msg = '';
-                        if (jqXHR.status === 0) {
-                            msg = 'Not connect.\n Verify Network.';
-                        } else if (jqXHR.status == 404) {
-                            msg = 'Requested page not found. [404]';
-                        } else if (jqXHR.status == 500) {
-                            msg = 'Internal Server Error [500].';
-                        } else if (exception === 'parsererror') {
-                            msg = 'Requested JSON parse failed.';
-                        } else if (exception === 'timeout') {
-                            msg = 'Time out error.';
-                        } else if (exception === 'abort') {
-                            msg = 'Ajax request aborted.';
-                        } else {
-                            msg = 'Uncaught Error.\n' + jqXHR.responseText;
-                        }
-
-                        // botton_cargando.replaceWith(btn_original);
-
-                        notificacion(msg, 'Error', 'error');
+                        PrepAlert.ajaxError(jqXHR, exception);
+                    },
+                    complete: function () {
+                        $botonGuardar.prop('disabled', false).removeAttr('aria-busy');
                     }
                 });
             }
@@ -365,9 +323,5 @@ function enviar_formulario(id = '') {
 }
 
 function notificacion(msg, titulo, tipo){
-    Swal.fire({
-      title: titulo,
-      text: msg,
-      icon: tipo
-    });
+    return PrepAlert.notify(msg, titulo, tipo);
 }

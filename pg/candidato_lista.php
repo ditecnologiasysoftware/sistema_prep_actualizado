@@ -116,7 +116,7 @@ $resul_lista = $entity->objects($cadena);
                                         echo 'Pagina: ' . $pagina . ' de ' . $pag->getCantidadPaginas() . '<br />';
                                         foreach ($datos as $enlace) {
                                             if ($enlace['active'] == false) {
-                                    ?><li><a href="javascript:candidato_listado(<?php echo $enlace['numero'] ?>)"><?php echo $enlace['vista']; ?></a></li><?php
+                                    ?><li><a href="javascript:candidato_lista(<?php echo $enlace['numero'] ?>)"><?php echo $enlace['vista']; ?></a></li><?php
                                     } else {
                                         ?><li class="active"><span><?php echo $enlace['vista']; ?></span></li><?php
                                             }

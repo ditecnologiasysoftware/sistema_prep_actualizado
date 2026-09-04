@@ -17,11 +17,6 @@ $lang = "es";
         <link href="assets/css/style.default.css" rel="stylesheet">
         <link href="assets/css/prep-modern.css" rel="stylesheet">
 
-        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!--[if lt IE 9]>
-        <script src="assets/js/html5shiv.js"></script>
-        <script src="assets/js/respond.min.js"></script>
-        <![endif]-->
     </head>
 
     <body class="signin prep-signin">
@@ -82,7 +77,6 @@ $lang = "es";
         <script src="assets/js/bootstrap.min.js"></script>
         <script src="assets/js/modernizr.min.js"></script>
         <script src="assets/js/pace.min.js"></script>
-        <script src="assets/js/retina.min.js"></script>
         <script src="assets/js/jquery.cookies.js"></script>
 
         <script src="assets/js/custom.js"></script>

@@ -1,6 +1,6 @@
 var params = '';
-var cargando = "<center><img src='images/cargando.gif' width='70px' /></center>";
-var cargando_2 = "<center><img src='images/cargando.gif' width='70px' /></center>";
+var cargando = "<center><img src='assets/images/cargando.gif' width='70px' alt='Cargando' /></center>";
+var cargando_2 = "<center><img src='assets/images/cargando.gif' width='70px' alt='Cargando' /></center>";
 var url = '';
 
 function permisos_registro(id = '') {
@@ -815,7 +815,7 @@ function ordenar_acta_lista(campo){
 
     $.ajax({
         beforeSend: function(){
-            $("#listapartidos").html("<center><img src='images/loaders/loader10.gif' /><br>Cargando ...</center>");
+            $("#listapartidos").html("<center><img src='assets/images/loaders/loader10.gif' alt='Cargando' /><br>Cargando ...</center>");
         },
         type:    "post",
         url:     url,

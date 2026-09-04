@@ -78,14 +78,9 @@
         <title>Sistema administrador</title>
 
         <link href="../assets/css/style.default.css" rel="stylesheet">
-        <link href="../assets/css/morris.css" rel="stylesheet">
         <!-- <link href="../fancybox/jquery.fancybox.css" rel="stylesheet" /> -->
 
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!--[if lt IE 9]>
-        <script src="assets/js/html5shiv.js"></script>
-        <script src="assets/js/respond.min.js"></script>
-        <![endif]-->
         <script src="../assets/js/jquery-1.11.1.min.js"></script>
         <?php if (!empty($_ENV['GOOGLE_MAPS_API_KEY'])): ?>
             <script src="https://maps.googleapis.com/maps/api/js?key=<?php echo rawurlencode($_ENV['GOOGLE_MAPS_API_KEY']); ?>" defer></script>

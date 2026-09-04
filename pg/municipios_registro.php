@@ -49,7 +49,7 @@ if ($_POST['id'] > 0) {
             </div><!-- panel-body -->
             <div class="panel-footer">
                 <input type="submit" class="btn btn-primary mr5" id="btn_guardar" value="Guardar" />
-                <button class="btn btn-danger mr5" onclick="municipio_registro()">Cancelar</button>
+                <button class="btn btn-danger mr5" onclick="municipios_registro()">Cancelar</button>
             </div><!-- panel-footer -->
         </div><!-- panel-default -->
         <input type="hidden" name="opcion" id="opcion" value="<?php if (!isset($_GET['id'])) echo "112";

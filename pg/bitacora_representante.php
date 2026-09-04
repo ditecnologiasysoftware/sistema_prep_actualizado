@@ -60,14 +60,9 @@
         <title>Sistema administrador</title>
 
           <link href="../assets/css/style.default.css" rel="stylesheet">
-        <link href="../assets/css/morris.css" rel="stylesheet">
         <link href="../assets/css/select2.css" rel="stylesheet" />
 
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!--[if lt IE 9]>
-        <script src="assets/js/html5shiv.js"></script>
-        <script src="assets/js/respond.min.js"></script>
-        <![endif]-->
 
        
         <script src="../assets/js/jquery-1.11.1.min.js"></script>
@@ -75,19 +70,13 @@
         <script src="../assets/js/bootstrap.min.js"></script>
         <script src="../assets/js/modernizr.min.js"></script>
         <script src="../assets/js/pace.min.js"></script>
-        <script src="../assets/js/retina.min.js"></script>
         <script src="../assets/js/jquery.cookies.js"></script>
         <script src="../assets/js/jquery-ui-1.10.3.min.js"></script>
 
      <!--  COMENTE POR QUE FALLA EL FANCYBOX  <script src="assets/js/flot/jquery.flot.min.js"></script>
         <script src="assets/js/flot/jquery.flot.resize.min.js"></script>
         <script src="assets/js/flot/jquery.flot.spline.min.js"></script> -->
-        <script src="../assets/js/jquery.sparkline.min.js"></script>
-        <script src="../assets/js/morris.min.js"></script>
-        <script src="../assets/js/raphael-2.1.0.min.js"></script>
-        <script src="../assets/js/bootstrap-wizard.min.js"></script>
         <script src="../assets/js/select2.min.js"></script>
-        <script src="../assets/js/jquery.validate.min.js"></script>
         <script src="../assets/js/funciones.js"></script>
 
         <!--<script src="common/editor.js"></script>-->
