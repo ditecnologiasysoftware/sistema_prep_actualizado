@@ -44,6 +44,10 @@
 
                         <style type="text/css">
                             .graficas{ width: 100%; height: 360px;}
+                            .grafica-partidos {
+                                width: 100%;
+                                min-height: 680px;
+                            }
                             /* Etiquetas en nube centrada multicolor */
                             .cloud-label-widget-content {text-align: center;}
                             .label-size-1 {color: #9e9e9e; font-size: 12px; margin: 3px;}
@@ -133,7 +137,7 @@
                                               <p></p>
                                           </div>
                                           <div class="panel-body">                                        
-                                               <div id="grafica_candidato<?= $resultado_fila->id_proceso_electoral ?>" class="graficas text-center" style="width: 100%; height: 600px;"></div>                                
+                                               <div id="grafica_candidato<?= $resultado_fila->id_proceso_electoral ?>" class="graficas grafica-partidos text-center"></div>
                                           </div><!-- panel-body -->                                    
                                       </div><!-- panel-default -->
                                   </div>
@@ -202,27 +206,44 @@
                                           echo $cadena;
                                       ?>]);
 
+                                    var contenedorPartidos = document.getElementById('grafica_candidato<?= $resultado_fila->id_proceso_electoral ?>');
                                     var options = {
                                       //title: 'Motivation Level Throughout the Day',
-                                      width: 1100,
-                                      height: 550,
-                                      bar: { groupWidth: '100%' },
+                                      width: Math.max(contenedorPartidos.clientWidth, 320),
+                                      height: 680,
+                                      chartArea: {
+                                        left: 80,
+                                        top: 30,
+                                        width: '90%',
+                                        height: '58%'
+                                      },
+                                      bar: { groupWidth: '70%' },
                                       legend: { position: "none" },
-                                      axes: {
-                                            x: {
-                                              0: { side: 'top', label: 'White to move'} // Top x-axis.
-                                            }
-                                          },
                                       hAxis: {
-                                        title: 'Partidos'
+                                        title: 'Partidos',
+                                        slantedText: true,
+                                        slantedTextAngle: 55,
+                                        showTextEvery: 1,
+                                        maxAlternation: 1,
+                                        textStyle: { fontSize: 10 }
                                       },
                                       vAxis: {
-                                        title: 'Votos'
+                                        title: 'Votos',
+                                        minValue: 0
                                       }
                                     };
 
                                     var chart3 = new google.visualization.ColumnChart(document.getElementById('grafica_candidato<?= $resultado_fila->id_proceso_electoral ?>'));
                                     chart3.draw(data, options);
+
+                                    var temporizadorGraficaPartidos;
+                                    window.addEventListener('resize', function () {
+                                      clearTimeout(temporizadorGraficaPartidos);
+                                      temporizadorGraficaPartidos = setTimeout(function () {
+                                        options.width = Math.max(contenedorPartidos.clientWidth, 320);
+                                        chart3.draw(data, options);
+                                      }, 150);
+                                    });
 
                                       //FIN GRAFICA TOTALES POR CANDIDATO   
                                         
