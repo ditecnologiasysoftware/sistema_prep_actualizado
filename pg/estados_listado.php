@@ -59,7 +59,7 @@ $resul_lista = $entity->objects($cadena);
                                         <td align="center"><a class="btn btn-success" onclick="estados_registro(<?= $resultado_fila->id_estado ?>)"><span class="fa fa-pen"></span></a></td>
                                     <?php } ?>
                                     <?php if ($eliminar == 1) { ?>
-                                        <td align="center"><a class="btn btn-danger" href="javascript:eliminar('',<?= $resultado_fila->id_estado ?>,106)"><span class="fa fa-trash"></span></a></td>
+                                        <td align="center"><a class="btn btn-danger" href="javascript:void(0);" onclick="eliminar(this,<?= $resultado_fila->id_estado ?>,106)"><span class="fa fa-trash"></span></a></td>
                                     <?php } ?>
                                 </tr>
                             <?php
