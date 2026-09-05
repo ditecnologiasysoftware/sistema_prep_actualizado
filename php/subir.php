@@ -321,8 +321,18 @@
 			break;
 
 			case 9: // SUBIR ETIQUETAS
-				$datos['id_categoria']=$_POST['id_categoria'];
-				$datos['etiqueta']=$_POST['etiqueta'];
+				$datos['id_categoria']=(int) ($_POST['id_categoria'] ?? 0);
+				$datos['etiqueta']=$funciones->limpia(trim($_POST['etiqueta'] ?? ''));
+
+				if ($datos['id_categoria'] <= 0 || $datos['etiqueta'] === '' || strlen($datos['etiqueta']) > 100) {
+					echo json_encode([
+						"estatus" => 0,
+						"tipo"    => "warning",
+						"titulo"  => "Datos incompletos",
+						"mensaje" => "Selecciona una categoría e ingresa una etiqueta de hasta 100 caracteres.",
+					]);
+					exit(0);
+				}
 				
 				$consulta = 'INSERT INTO tblc_etiqueta(id_categoria, etiqueta)VALUES("'.$datos['id_categoria'].'", "'.$datos['etiqueta'].'")';
 				if($conexion->consulta($consulta) == 0){
@@ -346,12 +356,23 @@
 					"tipo"    => "success",
 					"titulo"  => "Listo!",
 					"mensaje" => "Se registro la etiqueta correctamente.",
+					"funcion" => ["etiquetas_registro", "etiquetas_lista"],
 				]);	
 			break;
 			case 10: // MODIFICAR ETIQUETAS
-				$datos['id']=$_POST['id'];
-				$datos['id_categoria']=$_POST['id_categoria'];
-				$datos['etiqueta']=$_POST['etiqueta'];
+				$datos['id']=(int) ($_POST['id'] ?? 0);
+				$datos['id_categoria']=(int) ($_POST['id_categoria'] ?? 0);
+				$datos['etiqueta']=$funciones->limpia(trim($_POST['etiqueta'] ?? ''));
+
+				if ($datos['id'] <= 0 || $datos['id_categoria'] <= 0 || $datos['etiqueta'] === '' || strlen($datos['etiqueta']) > 100) {
+					echo json_encode([
+						"estatus" => 0,
+						"tipo"    => "warning",
+						"titulo"  => "Datos incompletos",
+						"mensaje" => "Selecciona una categoría e ingresa una etiqueta de hasta 100 caracteres.",
+					]);
+					exit(0);
+				}
 				
 				$consulta = 'UPDATE tblc_etiqueta SET id_categoria="'.$datos['id_categoria'].'", etiqueta="'.$datos['etiqueta'].'" WHERE id_etiqueta='.$datos['id'];
 				if($conexion->consulta($consulta) == 0){
@@ -371,7 +392,8 @@
 					"estatus" => 2,
 					"tipo"    => "success",
 					"titulo"  => "Listo!",
-					"mensaje" => "Las etiquetas se actualizaron correctamente correctamente.",
+					"mensaje" => "La etiqueta se actualizó correctamente.",
+					"funcion" => ["etiquetas_registro", "etiquetas_lista"],
 				]);	
 			break;
 			

@@ -3,6 +3,31 @@ var cargando = "<center><img src='assets/images/cargando.gif' width='70px' alt='
 var cargando_2 = "<center><img src='assets/images/cargando.gif' width='70px' alt='Cargando' /></center>";
 var url = '';
 
+// Los listados esperan recibir `pag` (y Representantes usa `pagina`), pero
+// varios formularios de búsqueda no incluían esos campos. Los agregamos de
+// forma centralizada, incluso cuando el contenido se carga por AJAX.
+function asegurarCamposPaginacion() {
+    $('#form_busqueda').each(function () {
+        var $formulario = $(this);
+        if (!$formulario.find('[name="pag"]').length) {
+            $('<input>', { type: 'hidden', id: 'pag', name: 'pag', value: 1 }).appendTo($formulario);
+        }
+        if (!$formulario.find('[name="pagina"]').length) {
+            $('<input>', { type: 'hidden', id: 'pagina', name: 'pagina', value: 1 }).appendTo($formulario);
+        }
+    });
+}
+
+$(function () {
+    asegurarCamposPaginacion();
+    if (window.MutationObserver && document.body) {
+        new MutationObserver(asegurarCamposPaginacion).observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+    }
+});
+
 function permisos_registro(id = '') {
     url = 'pg/permisos_registro.php';
     params = { 'id': id };

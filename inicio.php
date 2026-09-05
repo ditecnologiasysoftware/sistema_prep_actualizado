@@ -34,8 +34,8 @@ require "php/inicializandoDatos.php";
         <script src="assets/js/prep-alerts.js"></script>
 
         <script src="assets/js/select2.min.js"></script>
-        <script src="assets/js/funciones.js"></script>
-        <script src="assets/js/ajax_funciones.js"></script>
+        <script src="assets/js/funciones.js?v=20260905-2"></script>
+        <script src="assets/js/ajax_funciones.js?v=20260905-2"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" crossorigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet">
         <script src="assets/js/c3.js"></script>

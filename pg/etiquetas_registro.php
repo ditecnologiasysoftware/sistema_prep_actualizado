@@ -20,7 +20,7 @@ if ($_POST['id'] > 0) {
                 <div class="form-group">
                     <label class="col-sm-3">Categoría :</label>
                     <div class="col-sm-8">
-                        <select name="id_categoria" class="form-control">
+                        <select name="id_categoria" class="form-control" required>
                             <?php
                                 if (!empty($_POST['id'])) echo $funciones->llenarcombomodifica("SELECT id_categoria as id, nombre as valor from tblc_categoria", $row['id_categoria']);
                                 else echo $funciones->llenarcombo("SELECT id_categoria as id, nombre as valor from tblc_categoria");
@@ -32,17 +32,17 @@ if ($_POST['id'] > 0) {
                 <div class="form-group">
                     <label class="col-sm-3">Etiqueta :</label>
                     <div class="col-sm-8">
-                        <input type="text" name="etiqueta" id="etiqueta" class="form-control" value="<?php if (isset($_POST['id'])) echo $row['etiqueta']; ?>" />
+                        <input type="text" name="etiqueta" id="etiqueta" class="form-control" maxlength="100" required value="<?php if (isset($_POST['id'])) echo htmlspecialchars($row['etiqueta'], ENT_QUOTES, 'UTF-8'); ?>" />
                     </div>
                 </div>
 
             </div><!-- panel-body -->
             <div class="panel-footer">
-                <button class="btn btn-primary mr5"><?php if (!empty($_POST['id'])) echo "Editar";
+                <button type="submit" class="btn btn-primary mr5" id="btn_guardar"><?php if (!empty($_POST['id'])) echo "Editar";
                                                     else echo "Guardar"; ?></button>
                 <?php
                 $redi = "window.location.href='etiquetas'";
-                if (isset($_POST['id'])) echo '<button class="btn btn-danger mr5" onclick="' . $redi . '">Cancelar</button>';
+                if (isset($_POST['id'])) echo '<button type="button" class="btn btn-danger mr5" onclick="' . $redi . '">Cancelar</button>';
 
                 ?>
             </div><!-- panel-footer -->

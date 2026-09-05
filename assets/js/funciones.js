@@ -308,6 +308,9 @@ function enviar_formulario(id = '') {
                         }
                         PrepAlert.fromResponse(respuesta).then(function () {
                             PrepAlert.runCallbacks(respuesta);
+                            if (Number(respuesta.estatus) === 2 || respuesta.tipo === 'success') {
+                                actualizarListadoDespuesDeGuardar(formData.get('opcion'), respuesta);
+                            }
                         });
                     },
                     error: function (jqXHR, exception) {
@@ -320,6 +323,36 @@ function enviar_formulario(id = '') {
             }
         });
     });
+}
+
+function actualizarListadoDespuesDeGuardar(opcion, respuesta) {
+    var listadosPorOpcion = {
+        '1': 'usuarios_lista', '2': 'usuarios_lista',
+        '4': 'categorias_lista', '5': 'categorias_lista',
+        '6': 'permisos_lista', '7': 'permisos_lista',
+        '9': 'etiquetas_lista', '10': 'etiquetas_lista',
+        '110': 'estados_lista', '111': 'estados_lista',
+        '112': 'municipios_lista', '113': 'municipios_lista',
+        '114': 'proceso_electoral_lista', '115': 'proceso_electoral_lista',
+        '116': 'partido_politico_lista', '117': 'partido_politico_lista',
+        '118': 'tipo_eleccion_lista', '119': 'tipo_eleccion_lista',
+        '120': 'distrito_lista', '121': 'distrito_lista',
+        '122': 'seccion_lista', '123': 'seccion_lista',
+        '124': 'casilla_electoral_lista', '125': 'casilla_electoral_lista',
+        '126': 'representante_lista', '127': 'representante_lista',
+        '128': 'candidato_lista', '129': 'candidato_lista',
+        '132': 'reporte_listado', '133': 'reporte_listado',
+        '134': 'estatus_casilla_lista', '135': 'estatus_casilla_lista',
+        '136': 'nominal_lista', '137': 'nominal_lista',
+        '138': 'captura_masiva_lista', '139': 'captura_masiva_lista'
+    };
+    var nombreFuncion = listadosPorOpcion[String(opcion || '')];
+    var callbacks = (respuesta && (respuesta.funcion || respuesta.funciones)) || [];
+    if (typeof callbacks === 'string') callbacks = [callbacks];
+    if (Array.isArray(callbacks) && callbacks.indexOf(nombreFuncion) >= 0) return;
+    if (nombreFuncion && typeof window[nombreFuncion] === 'function') {
+        window[nombreFuncion](1);
+    }
 }
 
 function notificacion(msg, titulo, tipo){
