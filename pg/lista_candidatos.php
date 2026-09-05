@@ -31,7 +31,7 @@ require "../php/inicializandoDatosExterno.php";
                 ?>
                         <tr>
                             <td>
-                                <img height="35px" src="archivos/partido_politico/<?php echo $resultado_fila->icono ?>" />&nbsp;&nbsp;&nbsp;<font color="<?= $resultado_fila->colo ?>"><b><?php echo $resultado_fila->partido ?></b></font>
+                                <img src="archivos/partido_politico/<?php echo $resultado_fila->icono ?>" alt="" style="width: 50px; height: 50px; object-fit: contain; vertical-align: middle;" />&nbsp;&nbsp;&nbsp;<font color="<?= $resultado_fila->colo ?>"><b><?php echo $resultado_fila->partido ?></b></font>
                                 <br><?php echo $resultado_fila->nombre ?>
                             </td>
                             <!--<td>
