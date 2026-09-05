@@ -567,6 +567,15 @@ body.prep-signin{min-height:100vh;margin:0;background:#071f36;overflow-x:hidden}
     padding-left: 9px;
 }
 
+/* En este formulario form-group y la columna Bootstrap son el mismo nodo.
+   El margen negativo de .form-horizontal .form-group anulaba los gutters y
+   hacía que selects e inputs quedaran pegados o se montaran entre sí. */
+.prep-admin .prep-results-filters > .form-group[class*="col-"] {
+    margin-right: 0;
+    margin-bottom: 18px;
+    margin-left: 0;
+}
+
 .prep-admin .prep-results-form label,
 .prep-admin .prep-search-form label {
     display: block;
@@ -643,5 +652,10 @@ body.prep-signin{min-height:100vh;margin:0;background:#071f36;overflow-x:hidden}
     .prep-admin .prep-results-table .table,
     .prep-admin .prep-list-panel .table {
         min-width: 760px;
+    }
+
+    .prep-admin .prep-results-filters > .form-group[class*="col-"] {
+        width: 100%;
+        margin-bottom: 16px;
     }
 }
