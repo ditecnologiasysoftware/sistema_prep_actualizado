@@ -1,9 +1,21 @@
 <?php
 require "../php/inicializandoDatosExterno.php";
 
-if ($_POST['id'] > 0) {
-    $id = $funciones->limpia($_POST['id']);
-    $row = $entity->row("SELECT (SELECT id_estado FROM tblc_municipio WHERE id_municipio = dis.id_municipio) as id_estado, dis.* FROM tblc_casilla as dis WHERE dis.id_casilla = " . $id . " ");
+if (isset($_POST['id']) && is_numeric($_POST['id']) && (int) $_POST['id'] > 0) {
+    $id = (int) $_POST['id'];
+    $row = $entity->row(
+        "SELECT (SELECT id_estado FROM tblc_municipio WHERE id_municipio = dis.id_municipio) as id_estado, dis.* FROM tblc_casilla as dis WHERE dis.id_casilla = ?",
+        [$id]
+    );
+
+    // Los registros antiguos solo guardan el numero de seccion. Recuperar su ID
+    // permite mostrarla seleccionada y migrarla al guardar la edicion.
+    if (empty($row['id_seccion']) && !empty($row['seccion']) && !empty($row['id_municipio'])) {
+        $row['id_seccion'] = $entity->scalar(
+            "SELECT id_seccion FROM tblc_seccion WHERE fecha_eliminado IS NULL AND id_municipio = ? AND nombre = ? LIMIT 1",
+            [(int) $row['id_municipio'], $row['seccion']]
+        );
+    }
 }
 ?>
     <form id="enviar_formulario" class="form-horizontal" method="post" enctype="multipart/form-data" action="php/subir.php">
@@ -100,9 +112,7 @@ if ($_POST['id'] > 0) {
                 <div id="google_canvas" style="width:100%; height:165px;"></div>
                 <input type="hidden" name="num_contigua" value="<?php if (!empty($_POST['id'])) echo $row['num_contigua'];
                                                                 else echo 0; ?>" />
-                <input type="hidden" name="numero" id="numero" class="form-control" value="<?php if (!empty($_POST['id'])) echo $row['numero']; ?>" />
-                
-                <input type="hidden" name="numero" id="numero" value="0" />
+                <input type="hidden" name="numero" id="numero" class="form-control" value="<?php if (!empty($_POST['id'])) echo $row['numero']; else echo 0; ?>" />
                 <input type="text" name="txtLatitud" id="txtLatitud" value="<?php if (!empty($_POST['id'])) echo $row['latitud']; ?>" />
                 <input type="text" name="txtLongitud" id="txtLongitud" value="<?php if (!empty($_POST['id'])) echo $row['longitud']; ?>" />
             </div><!-- panel-body -->
@@ -120,12 +130,21 @@ if ($_POST['id'] > 0) {
 
 
 <script type="text/javascript">
+    function googleMapsDisponible() {
+        return typeof google !== 'undefined' && google.maps &&
+            google.maps.Map && google.maps.Marker && google.maps.LatLng;
+    }
+
     window.setTimeout(function() {
-        <?php if (isset($_GET['id'])) {  ?>
-            drawmapcoords(<?php echo $row['latitud'] . ',' . $row['longitud']; ?>);
+        if (!googleMapsDisponible()) {
+            $('#google_canvas').hide();
+            return;
+        }
+        <?php if (!empty($_POST['id']) && is_numeric($row['latitud']) && is_numeric($row['longitud'])) { ?>
+            drawmapcoords(<?php echo (float) $row['latitud'] . ',' . (float) $row['longitud']; ?>);
         <?php } else { ?>
             drawmapcoords(21.8852562, -102.2915677);
-        <?php }  ?>
+        <?php } ?>
     }, 700);
     /*************MAPA MARCADOR JS****************/
 
@@ -135,15 +154,17 @@ if ($_POST['id'] > 0) {
     }
     //google.maps.event.addDomListener(window,'load',drawMap);
     var marcador;
-    var opcionesMapa = {
-        draggableCursor: "crosshair",
-        zoom: 11,
-        zoomControl: true,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-    }
+    var opcionesMapa = null;
     var mapa;
 
     function marcador_map(coordenadas) {
+        if (!googleMapsDisponible()) return;
+        opcionesMapa = {
+            draggableCursor: "crosshair",
+            zoom: 11,
+            zoomControl: true,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
         mapa = new google.maps.Map(document.getElementById('google_canvas'), opcionesMapa);
         marcador = new google.maps.Marker({
             map: mapa,
