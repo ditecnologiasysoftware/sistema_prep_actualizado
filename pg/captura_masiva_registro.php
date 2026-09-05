@@ -21,8 +21,8 @@ if (!empty($_POST['id'])) {
                 <div class="col-sm-9">
                     <select name="id_proceso_electoral" id="id_proceso_electoral" class="form-control" required>
                         <?php
-                        if (!empty($_POST['id'])) echo $funciones->llenarcombomodifica($entity->statement('captura_masiva_registro.26.2') . $query_pe . $entity->statement('fragment.captura_masiva_registro.24.1'), $row['id_proceso_electoral']);
-                        else echo $funciones->llenarcombo($entity->statement('captura_masiva_registro.27.3') . $query_pe . $entity->statement('fragment.captura_masiva_registro.25.2'));
+                        if (!empty($_POST['id'])) echo $funciones->llenarcombomodifica($querys->comboprocesoelectoral(), $row['id_proceso_electoral']);
+                        else echo $funciones->llenarcombo($querys->comboprocesoelectoral());
                         ?>
                     </select>
                 </div>

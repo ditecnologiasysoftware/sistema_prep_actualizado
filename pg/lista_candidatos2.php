@@ -1,11 +1,5 @@
 <?php
-  require ("../php/clase_variables.php");
-  require ("../php/clase_mysql.php");
-  require ("../php/clase_funciones.php");
-  
-  $funciones = new Funciones();
-  //LLAMAMOS A LA CLASE CONEXION
-  $entity = Entity::createInstance();
+  require "../php/inicializandoDatosExterno.php";
  ?>
 <br><br><br>
      <form  id="form_menu" class="form-horizontal" method="post" enctype="multipart/form-data" action="php/subir.php" target="mandar_formulario">
@@ -19,7 +13,7 @@
                     <tbody>                                                                                                        
                     <?php    
                      $sentencia = "";
-                    $idproceso = $funciones->limpia($_POST['p']); 
+                    $idproceso = $entity->scopedProcessId($funciones->limpia($_POST['p']));
                     $casilla = $funciones->limpia($_POST['c']);
 
                     $acta = $entity->row($entity->statement('lista_candidatos2.25.1').$idproceso.$entity->statement('fragment.lista_candidatos2.25.1').$casilla);
@@ -81,7 +75,7 @@
                   </div>   
              
         <input type="hidden" name="opcion" id="opcion" value="131"/>
-        <input type="hidden" name="idprocesoElect" id="idprocesoElect" value="<?php if(isset($_POST['p'])) echo $_POST['p']; ?>"/>
+        <input type="hidden" name="idprocesoElect" id="idprocesoElect" value="<?= (int) $idproceso ?>"/>
         <input type="hidden" name="idcasillaElect" id="idcasillaElect" value="<?php if(isset($_POST['c'])) echo $_POST['c']; ?>"/>
 
       </form>

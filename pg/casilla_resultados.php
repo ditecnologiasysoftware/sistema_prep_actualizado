@@ -2,7 +2,7 @@
     require "../php/inicializandoDatosExterno.php";
 
 		$idcandidatoP = $funciones->limpia($_POST['cand']);
-		$idprocesoE = $funciones->limpia($_POST['c']);
+		$idprocesoE = $entity->scopedProcessId($funciones->limpia($_POST['c']));
 
         $candidato = ' Resultado de casillas  para el candidato - <b>'.$entity->scalar($entity->statement('casilla_resultados.7.1').$idcandidatoP).'</b>';  
 ?>

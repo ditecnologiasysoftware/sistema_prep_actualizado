@@ -7,6 +7,7 @@ $inicio = ($pagina - 1) * $limite;
 
 $peticion_enlace = "";
 $sentencia = "";
+$sentencia .= $entity->electoralScope('id_proceso_electoral');
 $query = "";
 
 if (!empty($_POST['n'])) {

@@ -9,6 +9,7 @@ $inicio = ($pagina - 1) * $limite;
 $peticion_enlace = "";
 $sentencia = "";
 $query = "";
+$query .= $entity->electoralScope('c.id_proceso_electoral');
 if ($id_municipio != 0) {
     $query_pe .= $entity->statement('fragment.candidato_lista.13.1') . $id_municipio . "";
 } elseif ($id_estado != 0) {
@@ -27,7 +28,7 @@ if (!empty($_POST['n'])) {
 }
 
 if (!empty($_POST['pe'])) {
-    $sentencia .= $entity->statement('fragment.candidato_lista.30.6') . $_POST['pe'] . "'";
+	$sentencia .= $entity->statement('fragment.candidato_lista.30.6') . $entity->scopedProcessId($_POST['pe']) . "'";
     $peticion_enlace .= "&pe=" . $_POST['pe'];
 }
 

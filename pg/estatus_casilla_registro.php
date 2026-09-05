@@ -21,9 +21,9 @@ if (!empty($_POST['id'])) {
                         <select name="id_proceso_electoral" id="id_proceso_electoral" class="form-control">
                             <?php
                             if (!empty($_POST['id']))
-                                echo $funciones->llenarcombomodifica($entity->statement('estatus_casilla_registro.24.2') . $query_pe . $entity->statement('fragment.estatus_casilla_registro.24.1'), $row['id_proceso_electoral']);
+                                echo $funciones->llenarcombomodifica($querys->comboprocesoelectoral(), $row['id_proceso_electoral']);
                             else
-                                echo $funciones->llenarcombomodifica($entity->statement('estatus_casilla_registro.26.3') . $query_pe . $entity->statement('fragment.estatus_casilla_registro.26.2'), $row['id_proceso_electoral']);
+                                echo $funciones->llenarcombo($querys->comboprocesoelectoral());
                             ?>
                         </select>
                     </div>

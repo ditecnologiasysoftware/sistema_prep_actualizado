@@ -1,7 +1,7 @@
 <?php 
     require "../php/inicializandoDatosExterno.php";
 
- $id_proceso_electoral = $funciones->limpia($_POST['id']);
+ $id_proceso_electoral = $entity->scopedProcessId($funciones->limpia($_POST['id']));
  ?>
             <?php    
               $sentencia = "";

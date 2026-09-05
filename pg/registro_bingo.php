@@ -39,7 +39,7 @@
                 												<label class="col-sm-12"><b>Proceso Electoral :</b></label>
                 												<select name="p" id="p" class="form-control">
                                              <?php 
-                                               echo $funciones->llenarcombomodifica($entity->statement('registro_bingo.42.1').$query_pe.$entity->statement('fragment.registro_bingo.42.5'), $_GET['p'] );
+                                               echo $funciones->llenarcombomodifica($querys->comboprocesoelectoral(), $_GET['p'] ?? $id_proceso_electoral);
                                              ?>
                                         </select><br><br>
 

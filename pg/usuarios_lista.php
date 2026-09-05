@@ -8,6 +8,8 @@ $inicio = ($pagina - 1) * $limite;
 
 $peticion_enlace = "";
 $sentencia = "";
+$sentencia .= $entity->electoralScope('id_proceso_electoral');
+$sentencia .= $entity->territoryScope('id_estado', 'id_municipio');
 
 if (isset($_POST['nombre_busqueda'])) {
 	$sentencia .= $entity->statement('fragment.usuarios_lista.13.1') . $_POST['nombre_busqueda'] . "%'";
@@ -75,6 +77,7 @@ $resul_lista = $entity->objects($cadena);
 								<tr>
 									<th>Usuarios</th>
 									<th>Correo</th>
+									<th>Proceso electoral</th>
 									<th>Activo</th>
 									<th>Privilegios</th>
 									<th>Bitácora</th>
@@ -94,6 +97,7 @@ $resul_lista = $entity->objects($cadena);
 									<tr>
 										<td><?php echo $resultado_fila->nombre ?></td>
 										<td><?php echo $resultado_fila->correo ?></td>
+										<td><?php echo htmlspecialchars($entity->electoralProcessName((int) $resultado_fila->id_proceso_electoral), ENT_QUOTES, 'UTF-8') ?></td>
 										<td><?php echo $funciones->activo($resultado_fila->estatus) ?></td>
 										<td align="center"><?php echo '<a class="btn btn-info" onclick="privilegios(' . $resultado_fila->id_usuario . ')"><span class="fa fa-user"></span></a>' ?></td>
 										<td align="center"><?php echo '<a class="btn btn-warning" href="bitacora&id=' . base64_encode($resultado_fila->id_usuario) . '"><span class="fa fa-file"></span></a>'; ?></td>
@@ -110,7 +114,7 @@ $resul_lista = $entity->objects($cadena);
 							</tbody>
 							<tfoot>
 								<tr>
-									<td colspan="7">
+									<td colspan="8">
 										<div>
 											<ul class="pagination pagination-sm">
 												<?php

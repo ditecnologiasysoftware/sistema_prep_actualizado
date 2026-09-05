@@ -48,7 +48,7 @@
                                             <select name="idprocesoElect" id="idprocesoElect" style="width:95%;" required onchange="lista_candidatos_completo(this)">
                                                 <option value=""> - Seleccionar Proceso Electoral - </option>
                                                 <?php
-                                                echo $funciones->llenarcombo($entity->statement('registro_resultados_completo.51.1') . $query_pe . $entity->statement('fragment.registro_resultados_completo.51.5'));
+                                                echo $funciones->llenarcombo($querys->comboprocesoelectoral());
                                                 ?>
                                             </select>
                                     </div> 

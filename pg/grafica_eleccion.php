@@ -71,7 +71,7 @@
 
                                                     <select name="q" id="q" class="form-control">
                                                         <?php 
-                                                            echo $funciones->llenarcombomodifica($entity->statement('grafica_eleccion.74.1').$query_pe.$entity->statement('fragment.grafica_eleccion.74.7'), $_GET['q'] );
+                                                            echo $funciones->llenarcombomodifica($querys->comboprocesoelectoral(), $_GET['q'] ?? $id_proceso_electoral);
                                                         ?>
                                                     </select>
 
@@ -137,8 +137,8 @@
       }
 
     $query = "";
-    if(isset($_GET['q'])){
-         $query .= $entity->statement('fragment.grafica_eleccion.141.10').$funciones->limpia($_GET['q']);                                    
+    if(isset($_GET['q']) || (int) $id_proceso_electoral > 0){
+         $query .= $entity->statement('fragment.grafica_eleccion.141.10').$entity->scopedProcessId($funciones->limpia($_GET['q'] ?? 0));
       }else{
         $query .= $entity->statement('fragment.grafica_eleccion.143.11');
       }

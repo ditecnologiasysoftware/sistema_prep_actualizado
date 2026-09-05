@@ -6,7 +6,7 @@
    if(isset($_GET['e'])){ $estadoget = $_GET['e']; }
    if(isset($_GET['m'])){ $municipioget = $_GET['m']; }
    if(isset($_GET['t'])){ $tipoEleccion = $_GET['t']; }
-   if(isset($_GET['c'])){ $procesoElectoral = $_GET['c']; }
+   if(isset($_GET['c'])){ $procesoElectoral = $entity->scopedProcessId($_GET['c']); }
 
     if ($id_estado == 0 && $id_municipio == 0) { 
       $cerca = '4';
@@ -82,7 +82,7 @@
                                                                                                 <option value="0">-- Todo Proceso de Elección --</option>
 
                                                                                                 <?php 
-                                                                                                    echo $funciones->llenarcombomodifica($entity->statement('mapa_seccion_2.85.5'), $_GET['c'] );
+                                                                                                    echo $funciones->llenarcombomodifica($querys->comboprocesoelectoral(), $_GET['c'] ?? $id_proceso_electoral);
                                                                                                 ?>
                                                                                             </select>
                                                                                             </div>
@@ -175,4 +175,4 @@ mapaSecciones(<?php echo "'".$parametro."'"; ?>);
        });
         return false;
     }
-</script>   
+</script>

@@ -14,7 +14,7 @@
         }
 
 		$idcandidatoP = $funciones->limpia($_POST['cand']);
-        $idprocesoE = $funciones->limpia($_POST['c']);
+        $idprocesoE = $entity->scopedProcessId($funciones->limpia($_POST['c']));
 
 		$cadena = $entity->statement('casilla_resultados_lista.19.1').$idprocesoE.$sentencia.$entity->statement('fragment.casilla_resultados_lista.19.2').$inicio.",".$limite;
 		$cadena2 = $entity->statement('casilla_resultados_lista.20.2').$idprocesoE.$sentencia.$entity->statement('fragment.casilla_resultados_lista.20.3');	

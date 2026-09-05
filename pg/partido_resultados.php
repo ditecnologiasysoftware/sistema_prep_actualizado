@@ -2,7 +2,7 @@
     require "../php/inicializandoDatosExterno.php";
 
     $cand = $funciones->limpia($_POST['cand']);
-    $idprocesoE = $funciones->limpia($_POST['c']);
+    $idprocesoE = $entity->scopedProcessId($funciones->limpia($_POST['c']));
 	    
     $cadena = $entity->statement('partido_resultados.7.1').$idprocesoE.$entity->statement('fragment.partido_resultados.7.1');
 	//echo $cadena;

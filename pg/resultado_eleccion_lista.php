@@ -27,6 +27,7 @@ if (!empty($_POST['q'])) {
 }
 
 $query = "";
+$query .= $entity->electoralScope('c.id_proceso_electoral');
 
 if ($id_municipio != 0) {
     $query .= $entity->statement('fragment.resultado_eleccion_lista.32.8') . $id_municipio . "";

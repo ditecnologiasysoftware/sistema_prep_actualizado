@@ -33,7 +33,7 @@
                      $peticion_enlace .= "&seccion=".$_GET['q'];
                 }               
             }
-			$idprocesoE = $funciones->limpia(base64_decode($_GET['c']));
+			$idprocesoE = $entity->scopedProcessId($funciones->limpia(base64_decode($_GET['c'])));
             $peticion_enlace .= "&c=".$_GET['c'];
 
 

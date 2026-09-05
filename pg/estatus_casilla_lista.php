@@ -9,6 +9,7 @@ $inicio = ($pagina - 1) * $limite;
 $peticion_enlace = "";
 $sentencia = "";
 $query = "";
+$query .= $entity->electoralScope('ec.id_proceso_electoral');
 if ($id_estado != 0) {
     $query .= $entity->statement('fragment.estatus_casilla_lista.13.1') . $id_estado . "";
 }

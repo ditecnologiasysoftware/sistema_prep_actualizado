@@ -5,6 +5,8 @@ if (!empty($_POST['id'])) {
 	$id = $funciones->limpia($_POST['id']);
 	$row = $entity->row($entity->statement('usuarios_registro.6.1') . $id);
 }
+$procesosElectorales = $entity->electoralProcesses((int) $id_proceso_electoral);
+$procesoSeleccionado = !empty($_POST['id']) ? (int) $row['id_proceso_electoral'] : (int) $id_proceso_electoral;
 
 ?>
 
@@ -107,6 +109,24 @@ if (!empty($_POST['id'])) {
 							<?php } else { ?>
 								<input type="hidden" name="id_municipio" id="id_municipio" value="<?= $id_municipio; ?>" />
 							<?php } ?>
+
+							<div class="col-md-6">
+								<div class="form-group" style="margin: 5px;">
+									<label>Proceso electoral:</label>
+									<div>
+										<select class="select2 form-control" name="id_proceso_electoral" id="id_proceso_electoral" required style="width:100%">
+											<?php if ((int) $id_proceso_electoral === 0) { ?>
+												<option value="0" <?= $procesoSeleccionado === 0 ? 'selected' : '' ?>>Todos los procesos (Administrador)</option>
+											<?php } ?>
+											<?php foreach ($procesosElectorales as $proceso) { ?>
+												<option value="<?= (int) $proceso->id ?>" <?= $procesoSeleccionado === (int) $proceso->id ? 'selected' : '' ?>>
+													<?= htmlspecialchars($proceso->valor, ENT_QUOTES, 'UTF-8') ?>
+												</option>
+											<?php } ?>
+										</select>
+									</div>
+								</div>
+							</div>
 
 							<div class=" col-md-6">
 								<div class="form-group" style="margin: 5px;">

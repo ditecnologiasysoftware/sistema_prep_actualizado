@@ -45,13 +45,13 @@
     }
 
      if(isset($_GET['c'])){
-      $idpelectoral = $funciones->limpia($_GET['c']);
+      $idpelectoral = $entity->scopedProcessId($funciones->limpia($_GET['c']));
         if ($_GET['t'] != '0') {
           $idteleccion = $funciones->limpia($_GET['t']);
           $eleccion .= $entity->statement('fragment.mapa_eleccion.51.6').$idteleccion."";
         }              
       }else{
-      $idpelectoral = $entity->scalar($entity->statement('mapa_eleccion.54.5'));
+      $idpelectoral = $entity->scopedProcessId($entity->scalar($entity->statement('mapa_eleccion.54.5')));
       }    
             $cadenaa = "";
             $img = "";
@@ -195,7 +195,7 @@
 
                                                                               <select name="c" id="c" class="form-control">
                                                                                   <?php 
-                                                                                      echo $funciones->llenarcombomodifica($entity->statement('mapa_eleccion.198.13'), $_GET['c'] );
+                                                                                      echo $funciones->llenarcombomodifica($querys->comboprocesoelectoral(), $_GET['c'] ?? $id_proceso_electoral);
                                                                                   ?>
                                                                               </select>
                                                                               </div>
@@ -314,4 +314,4 @@
                   })(marker, i));
                 }
 
-        </script>   
+        </script>

@@ -7,6 +7,8 @@ require "../php/inicializandoDatosExterno.php";
  $inicio = ($pagina - 1) * $limite;
 
  $sentencia = "";
+ $sentencia .= $entity->electoralScope('id_proceso_electoral');
+ $sentencia .= $entity->territoryScope('id_estado', 'id_municipio');
  if (isset($_POST['n']) && $_POST['n'] != "") {
      $fecha = date("Y-m-d", strtotime($_POST['n']));
      $sentencia .= $entity->statement('fragment.proceso_electoral_lista.12.1') . $fecha . "%'";

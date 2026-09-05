@@ -59,8 +59,17 @@
         }
 
         function comboprocesoelectoral($id=0){
+            $idSesion = (int) ($_SESSION['id_proceso_electoral'] ?? 0);
+            $estadoSesion = (int) ($_SESSION['id_estado'] ?? 0);
+            $municipioSesion = (int) ($_SESSION['id_municipio'] ?? 0);
+            $idPermitido = $idSesion > 0 ? $idSesion : (int) $id;
 
-            $sentencia = ($id != '0') ? " AND id_proceso_electoral = '".$id."'" : '';
+            $sentencia = ($idPermitido > 0) ? " AND id_proceso_electoral = '".$idPermitido."'" : '';
+            if ($idPermitido === 0 && $municipioSesion > 0) {
+                $sentencia .= " AND id_municipio = '".$municipioSesion."'";
+            } elseif ($idPermitido === 0 && $estadoSesion > 0) {
+                $sentencia .= " AND id_estado = '".$estadoSesion."'";
+            }
 
             $strQuery = 'SELECT id_proceso_electoral as id, CONCAT(descripcion," - ", fecha) as valor FROM tblc_proceso_electoral WHERE fecha_eliminado IS NULL AND estatus = 1'.$sentencia.' ORDER BY fecha DESC';
 

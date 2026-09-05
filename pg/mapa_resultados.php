@@ -65,7 +65,7 @@
         <?php 
             if(isset($_GET['c'])){
                   $idcandidatoP = $funciones->limpia(base64_decode($_GET['cand']));
-                  $idpelectoral = $funciones->limpia(base64_decode($_GET['c']));
+                  $idpelectoral = $entity->scopedProcessId($funciones->limpia(base64_decode($_GET['c'])));
                   $tipoelec = $funciones->limpia(base64_decode($_GET['tipoelec']));
                   $tipmap = $funciones->limpia($_GET['tipmap']);
                   $latLon = $funciones->limpia($_GET['latLon']);

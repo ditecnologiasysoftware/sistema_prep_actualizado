@@ -24,6 +24,146 @@ class Entity extends DB_mysql
             : EntityPgStatements::get($key);
     }
 
+    /** Procesos que el usuario en sesión puede seleccionar. Cero significa administrador. */
+    public function electoralProcesses(?int $scopeId = null): array
+    {
+        $scopeId = $scopeId ?? (int) ($_SESSION['id_proceso_electoral'] ?? 0);
+        $sql = 'SELECT id_proceso_electoral AS id, CONCAT(descripcion, " - ", fecha) AS valor '
+            . 'FROM tblc_proceso_electoral WHERE fecha_eliminado IS NULL AND estatus = 1';
+        $params = [];
+        if ($scopeId > 0) {
+            $sql .= ' AND id_proceso_electoral = ?';
+            $params[] = $scopeId;
+        }
+        $sql .= ' ORDER BY fecha DESC';
+        return $this->objects($sql, $params);
+    }
+
+    public function electoralProcessName(int $id): string
+    {
+        if ($id === 0) return 'Todos los procesos';
+        $row = $this->row(
+            'SELECT CONCAT(descripcion, " - ", fecha) AS nombre FROM tblc_proceso_electoral '
+            . 'WHERE id_proceso_electoral = ? AND fecha_eliminado IS NULL',
+            [$id]
+        );
+        return (string) ($row['nombre'] ?? 'Proceso no disponible');
+    }
+
+    /** Impide ampliar mediante POST el proceso permitido por la sesión. */
+    public function scopedProcessId(mixed $requested = 0): int
+    {
+        $sessionId = (int) ($_SESSION['id_proceso_electoral'] ?? 0);
+        return $sessionId > 0 ? $sessionId : max(0, (int) $requested);
+    }
+
+    public function electoralScope(string $column, string $prefix = 'AND'): string
+    {
+        $processId = (int) ($_SESSION['id_proceso_electoral'] ?? 0);
+        if ($processId === 0) return '';
+        $prefix = strtoupper(trim($prefix)) === 'WHERE' ? 'WHERE' : 'AND';
+        return ' ' . $prefix . ' ' . $this->quoteQualifiedIdentifier($column) . ' = ' . $processId;
+    }
+
+    public function territoryScope(string $stateColumn, string $municipalityColumn): string
+    {
+        $stateId = (int) ($_SESSION['id_estado'] ?? 0);
+        $municipalityId = (int) ($_SESSION['id_municipio'] ?? 0);
+        if ($municipalityId > 0) {
+            return ' AND ' . $this->quoteQualifiedIdentifier($municipalityColumn) . ' = ' . $municipalityId;
+        }
+        if ($stateId > 0) {
+            return ' AND ' . $this->quoteQualifiedIdentifier($stateColumn) . ' = ' . $stateId;
+        }
+        return '';
+    }
+
+    public function userCanAccessAny(int $userId, array $modules): bool
+    {
+        $modules = array_values(array_filter(array_map('strval', $modules)));
+        if ($modules === []) return false;
+        $placeholders = implode(', ', array_fill(0, count($modules), '?'));
+        $params = array_merge([$userId], $modules);
+        return (int) $this->scalar(
+            'SELECT COUNT(*) FROM tbl_usuario_permiso AS up '
+            . 'INNER JOIN tblc_permiso AS p ON p.id_permiso = up.id_permiso '
+            . 'WHERE up.id_usuario = ? AND p.fecha_eliminado IS NULL AND p.archivo IN (' . $placeholders . ')',
+            $params
+        ) > 0;
+    }
+
+    /** Datos consolidados para la portada, limitados por proceso y territorio. */
+    public function electoralDashboard(int $processId, int $stateId, int $municipalityId): array
+    {
+        if ($processId > 0) {
+            $process = $this->row(
+                'SELECT id_estado, id_municipio FROM tblc_proceso_electoral WHERE id_proceso_electoral = ?',
+                [$processId]
+            );
+            if ($municipalityId === 0 && (int) ($process['id_municipio'] ?? 0) > 0) {
+                $municipalityId = (int) $process['id_municipio'];
+            }
+            if ($stateId === 0 && (int) ($process['id_estado'] ?? 0) > 0) {
+                $stateId = (int) $process['id_estado'];
+            }
+        }
+
+        $territoryWhere = $municipalityId > 0
+            ? ' AND ca.id_municipio = ?'
+            : ($stateId > 0 ? ' AND mu.id_estado = ?' : '');
+        $territoryParams = [];
+        if ($municipalityId > 0) $territoryParams[] = $municipalityId;
+        elseif ($stateId > 0) $territoryParams[] = $stateId;
+
+        $casillaJoin = ' FROM tblc_casilla AS ca INNER JOIN tblc_municipio AS mu ON mu.id_municipio = ca.id_municipio '
+            . 'WHERE ca.fecha_eliminado IS NULL' . $territoryWhere;
+
+        $casillas = (int) $this->scalar('SELECT COUNT(DISTINCT ca.id_casilla)' . $casillaJoin, $territoryParams);
+        $actaParams = $processId > 0 ? [$processId] : [];
+        $actaParams = array_merge($actaParams, $territoryParams);
+        $actas = (int) $this->scalar(
+            'SELECT COUNT(DISTINCT a.id_casilla) FROM tbl_acta AS a '
+            . 'INNER JOIN tblc_casilla AS ca ON ca.id_casilla = a.id_casilla '
+            . 'INNER JOIN tblc_municipio AS mu ON mu.id_municipio = ca.id_municipio WHERE 1 = 1'
+            . ($processId > 0 ? ' AND a.id_proceso_electoral = ?' : '') . $territoryWhere,
+            $actaParams
+        );
+
+        $candidateWhere = ' WHERE c.fecha_eliminado IS NULL';
+        $candidateParams = [];
+        if ($processId > 0) {
+            $candidateWhere .= ' AND c.id_proceso_electoral = ?';
+            $candidateParams[] = $processId;
+        }
+        $candidatos = (int) $this->scalar('SELECT COUNT(*) FROM tblc_candidato AS c' . $candidateWhere, $candidateParams);
+
+        $resultWhere = ' WHERE 1 = 1';
+        $resultParams = [];
+        if ($processId > 0) { $resultWhere .= ' AND c.id_proceso_electoral = ?'; $resultParams[] = $processId; }
+        if ($municipalityId > 0) { $resultWhere .= ' AND ca.id_municipio = ?'; $resultParams[] = $municipalityId; }
+        elseif ($stateId > 0) { $resultWhere .= ' AND mu.id_estado = ?'; $resultParams[] = $stateId; }
+        $resultJoin = ' FROM tbl_resultado AS r INNER JOIN tblc_candidato AS c ON c.id_candidato = r.id_candidato '
+            . 'INNER JOIN tblc_casilla AS ca ON ca.id_casilla = r.id_casilla '
+            . 'INNER JOIN tblc_municipio AS mu ON mu.id_municipio = ca.id_municipio' . $resultWhere;
+        $votos = (int) $this->scalar('SELECT COALESCE(SUM(r.resultado), 0)' . $resultJoin, $resultParams);
+        $lideres = $this->objects(
+            'SELECT c.nombre, COALESCE(SUM(r.resultado), 0) AS votos' . $resultJoin
+            . ' GROUP BY c.id_candidato, c.nombre ORDER BY votos DESC LIMIT 5',
+            $resultParams
+        );
+
+        return [
+            'proceso' => $this->electoralProcessName($processId),
+            'casillas' => $casillas,
+            'actas' => $actas,
+            'pendientes' => max(0, $casillas - $actas),
+            'avance' => $casillas > 0 ? round(($actas * 100) / $casillas, 1) : 0,
+            'candidatos' => $candidatos,
+            'votos' => $votos,
+            'lideres' => $lideres,
+        ];
+    }
+
     /**
      * Conserva el comportamiento anterior y permite reutilizar una conexión
      * MySQLi existente cuando el proyecto esté listo para compartirla.

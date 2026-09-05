@@ -23,7 +23,7 @@
     }
 
 
-    $idcandidatoP = $funciones->limpia($_POST['id']);
+    $idcandidatoP = $entity->scopedProcessId($funciones->limpia($_POST['id']));
 
     ?>
 
@@ -269,4 +269,3 @@
 
 </div>
 
-                 

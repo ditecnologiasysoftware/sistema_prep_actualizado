@@ -41,9 +41,9 @@
                                                     <div class="form-group">
                                                         <div class="col-sm-4">
                                                             <select name="q" id="q" class="form-control">
-                                                                <option value="0"> -  Todos los procesos electorales - </option>
+                                                                <?php if ((int) $id_proceso_electoral === 0) { ?><option value="0"> - Todos los procesos electorales - </option><?php } ?>
                                                                 <?php
-                                                                echo $funciones->llenarcombomodifica($entity->statement('resultado_eleccion.46.1') . $query_pe . $entity->statement('fragment.resultado_eleccion.46.1'), $_POST['q']);
+                                                                echo $funciones->llenarcombomodifica($querys->comboprocesoelectoral(), $_POST['q'] ?? $id_proceso_electoral);
                                                                 ?>
                                                             </select>
                                                         </div>

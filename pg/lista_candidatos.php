@@ -1,7 +1,7 @@
 <?php
 require "../php/inicializandoDatosExterno.php";
 
- $idproceso = $funciones->limpia($_POST['id_proceso_electoral']);
+ $idproceso = $entity->scopedProcessId($funciones->limpia($_POST['id_proceso_electoral']));
  $casilla = $funciones->limpia($_POST['casilla']);
 
  $acta = $entity->row($entity->statement('lista_candidatos.7.1') . $idproceso . $entity->statement('fragment.lista_candidatos.7.1') . $casilla);

@@ -6,6 +6,12 @@
 	$autentificado = $_SESSION['autentificado'];
 	$nombre = $_SESSION['nombre'];
 	$id_sesion_sistema = $_SESSION['id_sesion_sistema'];
+	$id_proceso_electoral_sesion = (int) ($_SESSION['id_proceso_electoral'] ?? 0);
+	if ($id_proceso_electoral_sesion > 0) {
+		foreach (['id_proceso_electoral', 'idprocesoElect', 'proceso_electoral'] as $campoProceso) {
+			if (array_key_exists($campoProceso, $_POST)) $_POST[$campoProceso] = $id_proceso_electoral_sesion;
+		}
+	}
 	
 	require ("clase_variables.php");
 	require ("clase_mysql.php");
@@ -41,6 +47,9 @@
 				$datos['estatus'] = intval($_POST['estatus']);
 				$datos['id_estado'] = intval($_POST['id_estado']);
 				$datos['id_municipio'] = intval($_POST['id_municipio']);
+				$datos['id_proceso_electoral'] = (int) ($_SESSION['id_proceso_electoral'] ?? 0) > 0
+					? (int) $_SESSION['id_proceso_electoral']
+					: max(0, intval($_POST['id_proceso_electoral'] ?? 0));
 
 				if(isset($_POST['eliminar'])) $datos['eliminar'] = $_POST['eliminar']; else $datos['eliminar'] = 2;
 				if(isset($_POST['editar'])) $datos['editar'] = $_POST['editar']; else $datos['editar'] = 2;
@@ -51,8 +60,8 @@
 					exit(0);
 				}
 
-				$consulta = "INSERT INTO tblc_usuario (nombre, usuario, pass, correo, estatus, eliminar, editar, fecha_registro, id_estado, id_municipio) 
-				VALUES ('".$datos['nombre']."', '".$datos['usuario']."', '".$datos['pass']."', '".$datos['correo']."', '".$datos['estatus']."', '".$datos['eliminar']."', '".$datos['editar']."', now(), '".$datos['id_estado']."', '".$datos['id_municipio']."') ";
+				$consulta = "INSERT INTO tblc_usuario (nombre, usuario, pass, correo, estatus, eliminar, editar, fecha_registro, id_estado, id_municipio, id_proceso_electoral)
+				VALUES ('".$datos['nombre']."', '".$datos['usuario']."', '".$datos['pass']."', '".$datos['correo']."', '".$datos['estatus']."', '".$datos['eliminar']."', '".$datos['editar']."', now(), '".$datos['id_estado']."', '".$datos['id_municipio']."', '".$datos['id_proceso_electoral']."') ";
 				if($conexion->consulta($consulta) == 0){
 					echo '<script>parent.error("ERROR al guardar el registro, intente de nuevo más tarde");</script>';
 					exit(0);
@@ -83,6 +92,10 @@
 				$datos['estatus'] = intval($_POST['estatus']);
 				$datos['id_estado'] = intval($_POST['id_estado']);
 				$datos['id_municipio'] = intval($_POST['id_municipio']);
+				$datos['id_proceso_electoral'] = (int) ($_SESSION['id_proceso_electoral'] ?? 0) > 0
+					? (int) $_SESSION['id_proceso_electoral']
+					: max(0, intval($_POST['id_proceso_electoral'] ?? 0));
+				$datos['pass'] = '';
 
 				if(isset($_POST['eliminar'])) $datos['eliminar'] = $_POST['eliminar']; else $datos['eliminar'] = 2;
 				if(isset($_POST['editar'])) $datos['editar'] = $_POST['editar']; else $datos['editar'] = 2;
@@ -91,10 +104,13 @@
 					$datos['pass'] = ", pass = '".$funciones->create_password($_POST['pass'])."'";
 				}
 				
-				$consulta = "UPDATE tblc_usuario SET id_estado = '".$datos['id_estado']."', id_municipio = '".$datos['id_municipio']."', nombre = '".$datos['nombre']."', usuario = '".$datos['usuario']."', correo = '".$datos['correo']."', estatus = '".$datos['estatus']."', eliminar = '".$datos['eliminar']."', editar = '".$datos['editar']."'".$datos['pass']." WHERE id_usuario = '".$datos['id']."'";
+				$consulta = "UPDATE tblc_usuario SET id_estado = '".$datos['id_estado']."', id_municipio = '".$datos['id_municipio']."', id_proceso_electoral = '".$datos['id_proceso_electoral']."', nombre = '".$datos['nombre']."', usuario = '".$datos['usuario']."', correo = '".$datos['correo']."', estatus = '".$datos['estatus']."', eliminar = '".$datos['eliminar']."', editar = '".$datos['editar']."'".$datos['pass']." WHERE id_usuario = '".$datos['id']."'";
 				if($conexion->consulta($consulta) == 0){
 					echo '<script>parent.error("ERROR al actualizar el registro, intente de nuevo más tarde");</script>';
 					exit(0);
+				}
+				if ((int) $datos['id'] === (int) $id_usuario) {
+					$_SESSION['id_proceso_electoral'] = $datos['id_proceso_electoral'];
 				}
 
 				$msj = 'Se actualizaron los datos del usuario '.$datos['nombre'].' con id: '.$datos['id'];
