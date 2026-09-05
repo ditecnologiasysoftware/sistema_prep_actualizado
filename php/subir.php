@@ -456,11 +456,22 @@
 			
 			case 112: // subir municipio
 				$datos['id_estado']=$_POST['id_estado'];
+				$datos['clave']=$funciones->limpia($_POST['clave']);
 				$datos['nombre']=$_POST['nombre'];
 				$datos['latitud']=$_POST['latitud'];
-				$datos['longitud']=$_POST['longitud'];	
+				$datos['longitud']=$_POST['longitud'];
 
-				$consulta = 'INSERT INTO tblc_municipio(id_estado,nombre,latitud,longitud)VALUES("'.$datos['id_estado'].'", "'.$datos['nombre'].'", "'.$datos['latitud'].'", "'.$datos['longitud'].'")';
+				if ($datos['clave'] === '' || strlen($datos['clave']) > 5) {
+					echo json_encode([
+						"estatus" => 0,
+						"tipo"    => "warning",
+						"titulo"  => "Datos incompletos",
+						"mensaje" => "La clave del municipio es obligatoria y debe tener un máximo de 5 caracteres.",
+					]);
+					exit(0);
+				}
+
+				$consulta = 'INSERT INTO tblc_municipio(id_estado,clave,nombre,latitud,longitud) VALUES("'.$datos['id_estado'].'", "'.$datos['clave'].'", "'.$datos['nombre'].'", "'.$datos['latitud'].'", "'.$datos['longitud'].'")';
 				if($conexion->consulta($consulta) == 0){
 					echo json_encode([
 						"estatus" => 0,
@@ -486,11 +497,22 @@
 			case 113: // modificar municipio
 				$datos['id']=$_POST['id'];
 				$datos['id_estado']=$_POST['id_estado'];
+				$datos['clave']=$funciones->limpia($_POST['clave']);
 				$datos['nombre']=$_POST['nombre'];
 				$datos['latitud']=$_POST['latitud'];
-				$datos['longitud']=$_POST['longitud'];	
+				$datos['longitud']=$_POST['longitud'];
 
-				$consulta = 'UPDATE tblc_municipio SET id_estado="'.$datos['id_estado'].'", nombre="'.$datos['nombre'].'", latitud="'.$datos['latitud'].'", longitud="'.$datos['longitud'].'" WHERE id_municipio='.$datos['id'];
+				if ($datos['clave'] === '' || strlen($datos['clave']) > 5) {
+					echo json_encode([
+						"estatus" => 0,
+						"tipo"    => "warning",
+						"titulo"  => "Datos incompletos",
+						"mensaje" => "La clave del municipio es obligatoria y debe tener un máximo de 5 caracteres.",
+					]);
+					exit(0);
+				}
+
+				$consulta = 'UPDATE tblc_municipio SET id_estado="'.$datos['id_estado'].'", clave="'.$datos['clave'].'", nombre="'.$datos['nombre'].'", latitud="'.$datos['latitud'].'", longitud="'.$datos['longitud'].'" WHERE id_municipio='.$datos['id'];
 				if($conexion->consulta($consulta) == 0){
 					echo json_encode([
 						"estatus" => 0,
