@@ -252,6 +252,7 @@
 					"tipo"    => "success",
 					"titulo"  => "Listo!",
 					"mensaje" => "Se agrego el menu correctamente.",
+					"funcion" => ["permisos_registro", "permisos_lista"],
 				]);	
 
 			break;
@@ -286,6 +287,7 @@
 					"tipo"    => "success",
 					"titulo"  => "Listo!",
 					"mensaje" => "Se actualizo el menu correctamente.",
+					"funcion" => ["permisos_registro", "permisos_lista"],
 				]);	
 			break;
 
