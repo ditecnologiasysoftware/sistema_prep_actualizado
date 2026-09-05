@@ -45,6 +45,7 @@
                         <style type="text/css">
                             .graficas{ width: 100%; height: 360px;}
                             .grafica-partidos {
+                                display: block;
                                 width: 100%;
                                 min-height: 680px;
                             }
@@ -209,12 +210,10 @@
                                     var contenedorPartidos = document.getElementById('grafica_candidato<?= $resultado_fila->id_proceso_electoral ?>');
                                     var options = {
                                       //title: 'Motivation Level Throughout the Day',
-                                      width: Math.max(contenedorPartidos.clientWidth, 320),
                                       height: 680,
                                       chartArea: {
-                                        left: 80,
+                                        left: 70,
                                         top: 30,
-                                        width: '90%',
                                         height: '58%'
                                       },
                                       bar: { groupWidth: '70%' },
@@ -234,16 +233,35 @@
                                     };
 
                                     var chart3 = new google.visualization.ColumnChart(document.getElementById('grafica_candidato<?= $resultado_fila->id_proceso_electoral ?>'));
-                                    chart3.draw(data, options);
-
                                     var temporizadorGraficaPartidos;
+
+                                    function dibujarGraficaPartidos() {
+                                      var panelGrafica = contenedorPartidos.parentElement;
+                                      var anchoDisponible = Math.floor(panelGrafica.getBoundingClientRect().width);
+
+                                      if (anchoDisponible < 1) {
+                                        clearTimeout(temporizadorGraficaPartidos);
+                                        temporizadorGraficaPartidos = setTimeout(dibujarGraficaPartidos, 100);
+                                        return;
+                                      }
+
+                                      options.width = anchoDisponible;
+                                      options.chartArea.width = Math.max(anchoDisponible - 100, 220);
+                                      chart3.draw(data, options);
+                                    }
+
+                                    requestAnimationFrame(function () {
+                                      setTimeout(dibujarGraficaPartidos, 100);
+                                    });
+
                                     window.addEventListener('resize', function () {
                                       clearTimeout(temporizadorGraficaPartidos);
-                                      temporizadorGraficaPartidos = setTimeout(function () {
-                                        options.width = Math.max(contenedorPartidos.clientWidth, 320);
-                                        chart3.draw(data, options);
-                                      }, 150);
+                                      temporizadorGraficaPartidos = setTimeout(dibujarGraficaPartidos, 150);
                                     });
+
+                                    if (window.jQuery) {
+                                      jQuery(contenedorPartidos).closest('.modal').one('shown.bs.modal', dibujarGraficaPartidos);
+                                    }
 
                                       //FIN GRAFICA TOTALES POR CANDIDATO   
                                         
