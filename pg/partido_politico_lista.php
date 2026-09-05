@@ -29,7 +29,7 @@ $resul_lista = $entity->objects($cadena);
                     foreach ($resul_lista as $resultado_fila) {
                     ?>
                         <tr>
-                            <td style="border-left: <?php echo $resultado_fila->colo ?> 19px solid;"><img height="40px" src="archivos/partido_politico/<?php echo $resultado_fila->icono ?>" /> <strong><?php echo ' ' . $resultado_fila->nombre ?></strong></td>
+                            <td style="border-left: <?php echo $resultado_fila->colo ?> 19px solid;"><img src="archivos/partido_politico/<?php echo $resultado_fila->icono ?>" alt="" style="width: 50px; height: 50px; object-fit: contain; vertical-align: middle;" /> <strong><?php echo ' ' . $resultado_fila->nombre ?></strong></td>
                             <?php if ($editar == 1) { ?>
                                 <td align="center"><a class="btn btn-success" onclick="partido_politico_registro(<?= $resultado_fila->id_partido_politico ?>)"><span class="fa fa-pen"></span></a></td>
                             <?php } ?>
