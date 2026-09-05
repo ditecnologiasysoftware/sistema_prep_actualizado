@@ -15,6 +15,12 @@ if($_POST['id'] > 0){
             <div class="panel-body">
 
                 <div class="form-group">
+                    <label class="col-sm-3">Clave :</label>
+                    <div class="col-sm-8">
+                        <input type="text" name="clave" id="clave" class="form-control" maxlength="5" required value="<?php if (!empty($_POST['id'])) echo htmlspecialchars($row['clave'], ENT_QUOTES, 'UTF-8'); ?>" />
+                    </div>
+                </div>
+                <div class="form-group">
                     <label class="col-sm-3">Nombre :</label>
                     <div class="col-sm-8">
                         <input type="text" name="nombre" id="nombre" class="form-control" value="<?php if (!empty($_POST['id'])) echo $row['nombre']; ?>" />

@@ -32,6 +32,7 @@ $resul_lista = $entity->objects($cadena);
                     <table id="basicTable" class="table table-striped table-bordered responsive">
                         <thead class="">
                             <tr>
+                                <th>Clave</th>
                                 <th>Nombre</th>
                                 <?php if ($editar == 1) { ?>
                                     <th>Editar</th>
@@ -52,6 +53,7 @@ $resul_lista = $entity->objects($cadena);
                             ?>
 
                                 <tr>
+                                    <td><?php echo htmlspecialchars($resultado_fila->clave, ENT_QUOTES, 'UTF-8'); ?></td>
                                     <td><?php echo $resultado_fila->nombre; ?></td>
                                     <?php if ($editar == 1) { ?>
                                         <td align="center"><a class="btn btn-success" onclick="estados_registro(<?= $resultado_fila->id_estado ?>)"><span class="fa fa-pen"></span></a></td>

@@ -376,11 +376,22 @@
 			break;
 			
 			case 110: // SUBIR ESTADO
+				$datos['clave']=$funciones->limpia($_POST['clave']);
 				$datos['nombre']=$_POST['nombre'];
 				$datos['latitud']=$_POST['latitud'];
-				$datos['longitud']=$_POST['longitud'];			
+				$datos['longitud']=$_POST['longitud'];
 
-				$consulta = 'INSERT INTO tblc_estado(nombre, latitud, longitud)VALUES("'.$datos['nombre'].'","'.$datos['latitud'].'","'.$datos['longitud'].'")';
+				if ($datos['clave'] === '' || strlen($datos['clave']) > 5) {
+					echo json_encode([
+						"estatus" => 0,
+						"tipo"    => "warning",
+						"titulo"  => "Datos incompletos",
+						"mensaje" => "La clave del estado es obligatoria y debe tener un máximo de 5 caracteres.",
+					]);
+					exit(0);
+				}
+
+				$consulta = 'INSERT INTO tblc_estado(clave, nombre, latitud, longitud) VALUES("'.$datos['clave'].'","'.$datos['nombre'].'","'.$datos['latitud'].'","'.$datos['longitud'].'")';
 				if($conexion->consulta($consulta) == 0){
 					echo json_encode([
 					"estatus" => 0,
@@ -406,11 +417,22 @@
 			
 			case 111: //MODIFICAR ESTADO
 				$datos['id']=$_POST['id'];
+				$datos['clave']=$funciones->limpia($_POST['clave']);
 				$datos['nombre']=$_POST['nombre'];
 				$datos['latitud']=$_POST['latitud'];
-				$datos['longitud']=$_POST['longitud'];	
+				$datos['longitud']=$_POST['longitud'];
+
+				if ($datos['clave'] === '' || strlen($datos['clave']) > 5) {
+					echo json_encode([
+						"estatus" => 0,
+						"tipo"    => "warning",
+						"titulo"  => "Datos incompletos",
+						"mensaje" => "La clave del estado es obligatoria y debe tener un máximo de 5 caracteres.",
+					]);
+					exit(0);
+				}
 				
-				$consulta = 'UPDATE tblc_estado SET nombre="'.$datos['nombre'].'", latitud="'.$datos['latitud'].'", longitud="'.$datos['longitud'].'" WHERE id_estado='.$datos['id'];
+				$consulta = 'UPDATE tblc_estado SET clave="'.$datos['clave'].'", nombre="'.$datos['nombre'].'", latitud="'.$datos['latitud'].'", longitud="'.$datos['longitud'].'" WHERE id_estado='.$datos['id'];
 				if($conexion->consulta($consulta) == 0){
 					echo json_encode([
 						"estatus" => 0,
