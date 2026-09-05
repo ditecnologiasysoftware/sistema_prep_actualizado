@@ -427,7 +427,9 @@
 				$id = $conexion->ultimoid();
 
 				$msj = 'Se registro un estado '.$datos['nombre'].' con id: '.$id;
-				$log_actividad = 'INSERT INTO tbl_log(id_sesion,fecha,descripcion,script) VALUES("'.$id_sesion_sistema.'", now(),"'.$msj.'","'.$consulta.'")';
+				$msj_log = $conexion->escapar_variable($msj);
+				$consulta_log = $conexion->escapar_variable($consulta);
+				$log_actividad = 'INSERT INTO tbl_log(id_sesion,fecha,descripcion,script) VALUES("'.(int) $id_sesion_sistema.'", now(),"'.$msj_log.'","'.$consulta_log.'")';
 				$conexion->consulta($log_actividad);
 				echo json_encode([
 					"estatus" => 2,
@@ -466,7 +468,9 @@
 				}
 
 				$msj = 'Se actualizaron datos del estado '.$datos['nombre'].' con id: '.$datos['id'];
-				$log_actividad = 'INSERT INTO tbl_log(id_sesion,fecha,descripcion,script) VALUES("'.$id_sesion_sistema.'", now(),"'.$msj.'","'.$consulta.'")';
+				$msj_log = $conexion->escapar_variable($msj);
+				$consulta_log = $conexion->escapar_variable($consulta);
+				$log_actividad = 'INSERT INTO tbl_log(id_sesion,fecha,descripcion,script) VALUES("'.(int) $id_sesion_sistema.'", now(),"'.$msj_log.'","'.$consulta_log.'")';
 				$conexion->consulta($log_actividad);
 				echo json_encode([
 					"estatus" => 2,
