@@ -22,7 +22,7 @@ if ($_POST['id'] > 0) {
                     <select class="select2-container form-control" name="menu2" id="menu2" data-placeholder="Elige un Menu" style="width:100%">
                         <option value="0" selected>Ninguno</option>
                         <?php
-                            $funciones->llenarcombomodificaiconoMostrarMenu('SELECT id_permiso AS id, nombre AS valor, icono AS nombre_icono FROM tblc_permiso WHERE id_padre = 0 Order By nombre ASC', $row['id_padre']);
+                            $funciones->llenarcombomodificaiconoMostrarMenu('SELECT id_permiso AS id, nombre AS valor, icono AS nombre_icono FROM tblc_permiso WHERE id_padre = 0 AND fecha_eliminado IS NULL ORDER BY nombre ASC', $row['id_padre']);
                         ?>
                     </select>
                 </div>

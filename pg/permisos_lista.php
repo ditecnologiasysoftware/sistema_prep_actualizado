@@ -5,8 +5,8 @@ $limite = 3;
 $cantenlaces = 7;
 $inicio = ($pagina - 1) * $limite;
 
-$row = "SELECT * FROM tblc_permiso WHERE id_padre = 0 ORDER BY ordenamiento ASC LIMIT " . $inicio . "," . $limite;
-$conteo = "SELECT COUNT(id_permiso) FROM tblc_permiso WHERE id_padre = 0";
+$row = "SELECT * FROM tblc_permiso WHERE id_padre = 0 AND fecha_eliminado IS NULL ORDER BY ordenamiento ASC LIMIT " . $inicio . "," . $limite;
+$conteo = "SELECT COUNT(id_permiso) FROM tblc_permiso WHERE id_padre = 0 AND fecha_eliminado IS NULL";
 $totalCirculares = $entity->scalar($conteo);
 $resul_lista = $entity->objects($row);
 ?>
@@ -42,7 +42,7 @@ $resul_lista = $entity->objects($row);
                             <?php } ?>
                         </tr>
                         <?php
-                        $cadena2 = "SELECT * FROM tblc_permiso WHERE id_padre = " . $resultado_fila->id_permiso . " ORDER BY ordenamiento ASC";
+                        $cadena2 = "SELECT * FROM tblc_permiso WHERE id_padre = " . $resultado_fila->id_permiso . " AND fecha_eliminado IS NULL ORDER BY ordenamiento ASC";
                         $resul_lista2 = $entity->objects($cadena2);
                         foreach ($resul_lista2 as $resultado_fila2) {
                         ?>
