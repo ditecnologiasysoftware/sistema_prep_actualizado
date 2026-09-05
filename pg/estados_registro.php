@@ -1,7 +1,8 @@
 <?php 
 require "../php/inicializandoDatosExterno.php"; 
-if($_POST['id'] > 0){
-    $id = $funciones->limpia($_POST['id']); 
+$id = (int) ($_POST['id'] ?? 0);
+$es_edicion = $id > 0;
+if($es_edicion){
     $row = $entity->row("SELECT * FROM tblc_estado WHERE id_estado = ".$id." ");
 }
 ?>
@@ -46,9 +47,8 @@ if($_POST['id'] > 0){
                 <button class="btn btn-danger mr5" onclick="estados_registro()">Cancelar</button>
             </div><!-- panel-footer -->
         </div><!-- panel-default -->
-        <input type="hidden" name="opcion" id="opcion" value="<?php if (!isset($_POST['id'])) echo "110";
-                                                                else echo "111"; ?>" />
-        <input type="hidden" name="id" id="id" value="<?php if (isset($_POST['id'])) echo $id; ?>" />
+        <input type="hidden" name="opcion" id="opcion" value="<?php echo $es_edicion ? '111' : '110'; ?>" />
+        <input type="hidden" name="id" id="id" value="<?php if ($es_edicion) echo $id; ?>" />
 
     </form>
     <div id="cargando"></div>

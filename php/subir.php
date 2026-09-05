@@ -440,13 +440,13 @@
 				break;
 			
 			case 111: //MODIFICAR ESTADO
-				$datos['id']=$_POST['id'];
+				$datos['id']=(int) ($_POST['id'] ?? 0);
 				$datos['clave']=$funciones->limpia($_POST['clave']);
 				$datos['nombre']=$_POST['nombre'];
 				$datos['latitud']=$_POST['latitud'];
 				$datos['longitud']=$_POST['longitud'];
 
-				if ($datos['clave'] === '' || strlen($datos['clave']) > 5) {
+				if ($datos['id'] <= 0 || $datos['clave'] === '' || strlen($datos['clave']) > 5) {
 					echo json_encode([
 						"estatus" => 0,
 						"tipo"    => "warning",
