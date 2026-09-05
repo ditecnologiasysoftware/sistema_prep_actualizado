@@ -56,7 +56,7 @@ $resul_lista = $entity->objects($cadena);
                                 <td align="center"><a class="btn btn-success" onclick="municipios_registro(<?= $resultado_fila->id_municipio ?>)"><span class="fa fa-pen"></span></a></td>
                             <?php } ?>
                             <?php if ($eliminar == 1) { ?>
-                                <td align="center"><a class="btn btn-danger" href="javascript:eliminar3(this,<?= $resultado_fila->id_municipio ?>,107)"><span class="fa fa-trash"></span></a></td>
+                                <td align="center"><a class="btn btn-danger" href="javascript:eliminar('',<?= $resultado_fila->id_municipio ?>,107)"><span class="fa fa-trash"></span></a></td>
                             <?php } ?>
                         </tr>
                     <?php

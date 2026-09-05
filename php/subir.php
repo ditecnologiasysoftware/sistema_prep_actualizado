@@ -481,13 +481,13 @@
 			break;
 			
 			case 112: // subir municipio
-				$datos['id_estado']=$_POST['id_estado'];
+				$datos['id_estado']=(int) ($_POST['id_estado'] ?? 0);
 				$datos['clave']=$funciones->limpia($_POST['clave']);
-				$datos['nombre']=$_POST['nombre'];
-				$datos['latitud']=$_POST['latitud'];
-				$datos['longitud']=$_POST['longitud'];
+				$datos['nombre']=$conexion->escapar_variable(trim($_POST['nombre'] ?? ''));
+				$datos['latitud']=$conexion->escapar_variable(trim($_POST['latitud'] ?? ''));
+				$datos['longitud']=$conexion->escapar_variable(trim($_POST['longitud'] ?? ''));
 
-				if ($datos['clave'] === '' || strlen($datos['clave']) > 5) {
+				if ($datos['id_estado'] <= 0 || $datos['clave'] === '' || strlen($datos['clave']) > 5 || $datos['nombre'] === '') {
 					echo json_encode([
 						"estatus" => 0,
 						"tipo"    => "warning",
@@ -511,7 +511,9 @@
 				$id = $conexion->ultimoid();
 
 				$msj = 'Se registro un estado '.$datos['nombre'].' con id: '.$id;
-				$log_actividad = 'INSERT INTO tbl_log(id_sesion,fecha,descripcion,script) VALUES("'.$id_sesion_sistema.'", now(),"'.$msj.'","'.$consulta.'")';
+				$msj_log = $conexion->escapar_variable($msj);
+				$consulta_log = $conexion->escapar_variable($consulta);
+				$log_actividad = 'INSERT INTO tbl_log(id_sesion,fecha,descripcion,script) VALUES("'.(int) $id_sesion_sistema.'", now(),"'.$msj_log.'","'.$consulta_log.'")';
 				$conexion->consulta($log_actividad);
 				echo json_encode([
 					"estatus" => 2,
@@ -521,14 +523,14 @@
 				]);	
 			break;
 			case 113: // modificar municipio
-				$datos['id']=$_POST['id'];
-				$datos['id_estado']=$_POST['id_estado'];
+				$datos['id']=(int) ($_POST['id'] ?? 0);
+				$datos['id_estado']=(int) ($_POST['id_estado'] ?? 0);
 				$datos['clave']=$funciones->limpia($_POST['clave']);
-				$datos['nombre']=$_POST['nombre'];
-				$datos['latitud']=$_POST['latitud'];
-				$datos['longitud']=$_POST['longitud'];
+				$datos['nombre']=$conexion->escapar_variable(trim($_POST['nombre'] ?? ''));
+				$datos['latitud']=$conexion->escapar_variable(trim($_POST['latitud'] ?? ''));
+				$datos['longitud']=$conexion->escapar_variable(trim($_POST['longitud'] ?? ''));
 
-				if ($datos['clave'] === '' || strlen($datos['clave']) > 5) {
+				if ($datos['id'] <= 0 || $datos['id_estado'] <= 0 || $datos['clave'] === '' || strlen($datos['clave']) > 5 || $datos['nombre'] === '') {
 					echo json_encode([
 						"estatus" => 0,
 						"tipo"    => "warning",
@@ -550,7 +552,9 @@
 				}
 
 				$msj = 'Se actualizaron datos del muncipio '.$datos['nombre'].' con id: '.$datos['id'];
-				$log_actividad = 'INSERT INTO tbl_log(id_sesion,fecha,descripcion,script) VALUES("'.$id_sesion_sistema.'", now(),"'.$msj.'","'.$consulta.'")';
+				$msj_log = $conexion->escapar_variable($msj);
+				$consulta_log = $conexion->escapar_variable($consulta);
+				$log_actividad = 'INSERT INTO tbl_log(id_sesion,fecha,descripcion,script) VALUES("'.(int) $id_sesion_sistema.'", now(),"'.$msj_log.'","'.$consulta_log.'")';
 				$conexion->consulta($log_actividad);
 				echo json_encode([
 					"estatus" => 2,

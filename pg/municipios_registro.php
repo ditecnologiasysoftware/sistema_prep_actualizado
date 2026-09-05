@@ -1,7 +1,8 @@
 <?php
 require "../php/inicializandoDatosExterno.php";
-if ($_POST['id'] > 0) {
-    $id = $funciones->limpia($_POST['id']);
+$id = (int) ($_POST['id'] ?? 0);
+$es_edicion = $id > 0;
+if ($es_edicion) {
     $row = $entity->row("SELECT * FROM tblc_municipio WHERE id_municipio = " . $id . " ");
 }
 ?>
@@ -18,7 +19,9 @@ if ($_POST['id'] > 0) {
                     <label class="col-sm-3">Estado :</label>
                     <div class="col-sm-8">
                         <select name="id_estado" class="form-control">
-                            <?php echo $funciones->llenarcombomodifica("select id_estado as id, nombre as valor from tblc_estado", $row['id_estado']); ?>
+                            <?php echo $es_edicion
+                                ? $funciones->llenarcombomodifica("select id_estado as id, nombre as valor from tblc_estado", $row['id_estado'])
+                                : $funciones->llenarcombo("select id_estado as id, nombre as valor from tblc_estado"); ?>
                         </select>
                     </div>
                 </div>
@@ -59,9 +62,8 @@ if ($_POST['id'] > 0) {
                 <button class="btn btn-danger mr5" onclick="municipios_registro()">Cancelar</button>
             </div><!-- panel-footer -->
         </div><!-- panel-default -->
-        <input type="hidden" name="opcion" id="opcion" value="<?php if (!isset($_POST['id'])) echo "112";
-                                                                else echo "113"; ?>" />
-        <input type="hidden" name="id" id="id" value="<?php if (isset($_POST['id'])) echo $id; ?>" />
+        <input type="hidden" name="opcion" id="opcion" value="<?php echo $es_edicion ? '113' : '112'; ?>" />
+        <input type="hidden" name="id" id="id" value="<?php if ($es_edicion) echo $id; ?>" />
 
     </form>
     <div id="cargando"></div>
