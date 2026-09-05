@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 	$idcasilla = $funciones->limpia($_POST['idcasilla']);
 	$idtie = $funciones->limpia($_POST['idtie']);
 	if ($idtie != '0') {
-		$query .= " and idt_eleccion_c =".$idtie."";
+		$query .= $entity->statement('fragment.tbl_resultados_eleccion.27.1').$idtie."";
 	}
 
 	$result='<center><br><table style="width: 100%;">
@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 		          </tr>
 		        </thead>
 		        <tbody>';
-		                $resultado = "SELECT * FROM vw_resultado_elecciones WHERE id_casilla = ".$idcasilla.$query." ORDER BY idt_eleccion_c, resultado DESC" ;
+		                $resultado = $entity->statement('tbl_resultados_eleccion.38.1').$idcasilla.$query.$entity->statement('fragment.tbl_resultados_eleccion.38.2') ;
 		                $resultadoss = $entity->objects($resultado);
 		                foreach($resultadoss as $resultadoo){                  
 		                    $result.='<tr>

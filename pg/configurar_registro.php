@@ -5,7 +5,7 @@ $pagina = isset($_POST['pag']) ? $funciones->limpia($_POST['pag']) : 1;
 $limite = 10;
 $cantenlaces = 7;
 $inicio = ($pagina - 1) * $limite;
-$row = $entity->row("SELECT * FROM tbl_configuracion WHERE id_configuracion = 1");
+$row = $entity->row($entity->statement('configurar_registro.8.1'));
 $num = $entity->numregistros();
 ?>
 <!--FIN ARRIBA-------------------------------------------------------------------------------- -->

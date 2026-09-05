@@ -55,7 +55,7 @@
 													<select name="id_banco" id="id_banco" class="form-control" required onchange="combodependiente('id_banco', 'id_cuenta_bancaria', 'combo_dependiente/cuentas.php')">
                                                 		<option value="0">Todos los bancos</option>
                                                 		<?php 
-                                                		echo $funciones->llenarcombo("select id_banco as id, nombre as valor from tblc_banco ORDER BY nombre");
+                                                		echo $funciones->llenarcombo($entity->statement('reporte_cheques.58.1'));
                                                 		?>
                                                     </select>
 												</div>
@@ -101,7 +101,7 @@
 												<div class="col-sm-7">
 													<select name="captura" id="captura" class="form-control" required>
                                                 		<option value="0">Todos los usuarios</option>
-                                                		<?php echo $funciones->llenarcombo("select id_usuario as id, nombre as valor from tblc_usuario");?>
+                                                		<?php echo $funciones->llenarcombo($entity->statement('reporte_cheques.104.2'));?>
                                                     </select>
 												</div>
 											</div>	

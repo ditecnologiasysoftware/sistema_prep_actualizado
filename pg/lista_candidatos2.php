@@ -22,20 +22,16 @@
                     $idproceso = $funciones->limpia($_POST['p']); 
                     $casilla = $funciones->limpia($_POST['c']);
 
-                    $acta = $entity->row("SELECT * FROM tbl_acta WHERE id_proceso_electoral = ".$idproceso." AND id_casilla = ".$casilla);
+                    $acta = $entity->row($entity->statement('lista_candidatos2.25.1').$idproceso.$entity->statement('fragment.lista_candidatos2.25.1').$casilla);
 
-                  	$consulta =  "SELECT c.*, p.id_partido_politico, p.nombre as partido, p.icono, p.colo 
-                    FROM tblc_candidato_partido AS cp 
-                    INNER JOIN tblc_candidato AS c ON c.id_candidato = cp.id_candidato 
-                    INNER JOIN tblc_partido_politico AS p ON p.id_partido_politico = cp.id_partido_politico 
-                    WHERE c.id_proceso_electoral = ".$idproceso." ORDER BY c.ordenamiento ASC";
+                  	$consulta =  $entity->statement('lista_candidatos2.27.2').$idproceso.$entity->statement('fragment.lista_candidatos2.27.2');
                     //echo $consulta;
                     $resul_lista = $entity->objects($consulta);
 
                     if ($entity->numregistros() != 0) {
 
                     foreach($resul_lista as $resultado_fila){
-                      $resultados = $entity->scalar("SELECT resultado FROM tbl_resultado WHERE id_casilla = ".$casilla." AND id_candidato = ".$resultado_fila->id_candidato);
+                      $resultados = $entity->scalar($entity->statement('lista_candidatos2.38.3').$casilla.$entity->statement('fragment.lista_candidatos2.34.3').$resultado_fila->id_candidato);
                      ?>
                             <tr>
                                 <td style="font-size: 11px;"><img height="25px" src="electoral/archivos/partido_politico/<?php echo $resultado_fila->icono ?>"/>&nbsp;&nbsp;&nbsp;<font color="<?= $resultado_fila->colo ?>"><b><?php echo $resultado_fila->partido ?></b></font></td>

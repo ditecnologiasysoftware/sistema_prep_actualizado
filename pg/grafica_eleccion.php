@@ -10,14 +10,14 @@
     $query_c2 = "";
 
     if ($id_municipio != 0) {
-       $query_pe .= " and id_municipio = ".$id_municipio."";
-       $query_c1 .= " and c.id_municipio = ".$id_municipio."";
-        $query_c2 .= " and municipio_c = ".$id_municipio."";
+       $query_pe .= $entity->statement('fragment.grafica_eleccion.13.1').$id_municipio."";
+       $query_c1 .= $entity->statement('fragment.grafica_eleccion.14.2').$id_municipio."";
+        $query_c2 .= $entity->statement('fragment.grafica_eleccion.15.3').$id_municipio."";
     }
     elseif ($id_estado != 0) {
-       $query_pe .= " and id_estado = ".$id_estado."";
-        $query_c1 .= " and m.id_estado = ".$id_estado."";
-        $query_c2 .= " and estado_c = ".$id_estado."";
+       $query_pe .= $entity->statement('fragment.grafica_eleccion.18.4').$id_estado."";
+        $query_c1 .= $entity->statement('fragment.grafica_eleccion.19.5').$id_estado."";
+        $query_c2 .= $entity->statement('fragment.grafica_eleccion.20.6').$id_estado."";
     }
 
 
@@ -71,7 +71,7 @@
 
                                                     <select name="q" id="q" class="form-control">
                                                         <?php 
-                                                            echo $funciones->llenarcombomodifica("SELECT id_proceso_electoral as id, CONCAT(descripcion,' - ', fecha) as valor FROM tblc_proceso_electoral WHERE estatus = 1".$query_pe." ORDER BY fecha DESC", $_GET['q'] );
+                                                            echo $funciones->llenarcombomodifica($entity->statement('grafica_eleccion.74.1').$query_pe.$entity->statement('fragment.grafica_eleccion.74.7'), $_GET['q'] );
                                                         ?>
                                                     </select>
 
@@ -83,8 +83,8 @@
                                                       <select name="estado_busqueda" id="estado_busqueda" onchange="combodependiente('estado_busqueda', 'municipio_busqueda', 'combo_dependiente/municipios.php')" class="form-control" required>
                                                         <option value="0">Todos los Estados</option>
                                                         <?php 
-                                                        if(isset($_GET['estado_busqueda'])) echo $funciones->llenarcombomodifica("SELECT id_estado as id, nombre as valor FROM tblc_estado ORDER BY nombre", $_GET['estado_busqueda']);
-                                                        else echo $funciones->llenarcombo("SELECT id_estado as id, nombre as valor FROM tblc_estado ORDER BY nombre");
+                                                        if(isset($_GET['estado_busqueda'])) echo $funciones->llenarcombomodifica($entity->statement('grafica_eleccion.86.2'), $_GET['estado_busqueda']);
+                                                        else echo $funciones->llenarcombo($entity->statement('grafica_eleccion.87.3'));
                                                         ?>
                                                     </select>
                                                     </div>
@@ -93,7 +93,7 @@
                                                       <select name="municipio_busqueda" id="municipio_busqueda" class="form-control" >
                                                          <option value="0">Todos los Municipios</option>
                                                             <?php 
-                                                            if(isset($_GET['municipio_busqueda']) && $_GET['estado_busqueda'] != 0) echo $funciones->llenarcombomodifica("SELECT id_municipio as id, nombre as valor FROM tblc_municipio WHERE id_estado = ".$_GET['estado_busqueda']." ORDER BY nombre", $_GET['municipio_busqueda']);
+                                                            if(isset($_GET['municipio_busqueda']) && $_GET['estado_busqueda'] != 0) echo $funciones->llenarcombomodifica($entity->statement('grafica_eleccion.96.4').$_GET['estado_busqueda'].$entity->statement('fragment.grafica_eleccion.96.8'), $_GET['municipio_busqueda']);
                                                             ?>
                                                         </select>
                                                     </div>
@@ -104,7 +104,7 @@
                                                     <div class="col-sm-4">
                                                       <select name="municipio_busqueda" id="municipio_busqueda" class="form-control" >
                                                       <?php 
-                                                       if(isset($_GET['municipio_busqueda'])) echo $funciones->llenarcombomodifica("SELECT id_municipio as id, nombre as valor FROM tblc_municipio WHERE id_estado = ".$id_estado." ORDER BY nombre", $_GET['municipio_busqueda']);
+                                                       if(isset($_GET['municipio_busqueda'])) echo $funciones->llenarcombomodifica($entity->statement('grafica_eleccion.107.5').$id_estado.$entity->statement('fragment.grafica_eleccion.107.9'), $_GET['municipio_busqueda']);
                                                                                 ?>
                                                    </select>
                                                     </div>
@@ -138,44 +138,41 @@
 
     $query = "";
     if(isset($_GET['q'])){
-         $query .= " WHERE id_proceso_electoral = ".$funciones->limpia($_GET['q']);                                    
+         $query .= $entity->statement('fragment.grafica_eleccion.141.10').$funciones->limpia($_GET['q']);                                    
       }else{
-        //$idpelectoral = $entity->scalar("SELECT MAX(id_proceso_electoral) FROM tblc_proceso_electoral WHERE estatus = 1 LIMIT 1");
-        $query .= " WHERE estatus = 1";
+        $query .= $entity->statement('fragment.grafica_eleccion.143.11');
       }
 
      if ($id_municipio != 0) {
-        $query .= " and id_municipio = ".$id_municipio."";
-        $query2 .= " and id_municipio = ".$id_municipio."";
+        $query .= $entity->statement('fragment.grafica_eleccion.147.12').$id_municipio."";
+        $query2 .= $entity->statement('fragment.grafica_eleccion.148.13').$id_municipio."";
      }
      elseif ($id_estado != 0) {
-        $query .= " and id_estado = ".$id_estado."";
-        $query2 .= " and estado_c = ".$id_estado."";
+        $query .= $entity->statement('fragment.grafica_eleccion.151.14').$id_estado."";
+        $query2 .= $entity->statement('fragment.grafica_eleccion.152.15').$id_estado."";
      }
      elseif(isset($_GET['municipio_busqueda']) && $_GET['municipio_busqueda'] != 0){
-        $query .= " and id_municipio = ".$_GET['municipio_busqueda']."";
-        $query2 .= " and id_municipio = ".$id_municipio."";
+        $query .= $entity->statement('fragment.grafica_eleccion.155.16').$_GET['municipio_busqueda']."";
+        $query2 .= $entity->statement('fragment.grafica_eleccion.156.17').$id_municipio."";
     }
      elseif(isset($_GET['estado_busqueda']) && $_GET['estado_busqueda'] != 0){ 
-        $query .= " and id_estado = ".$_GET['estado_busqueda']."";
-        $query2 .= " and estado_c = ".$_GET['estado_busqueda']."";
+        $query .= $entity->statement('fragment.grafica_eleccion.159.18').$_GET['estado_busqueda']."";
+        $query2 .= $entity->statement('fragment.grafica_eleccion.160.19').$_GET['estado_busqueda']."";
     }
      
-     $cadena = "SELECT * FROM tblc_proceso_electoral".$query." ORDER BY fecha ASC ";
-     $cadena2 = "SELECT COUNT(id_proceso_electoral) FROM tblc_proceso_electoral".$query;                                                              
+     $cadena = $entity->statement('grafica_eleccion.164.6').$query.$entity->statement('fragment.grafica_eleccion.163.20');
+     $cadena2 = $entity->statement('grafica_eleccion.165.7').$query;                                                              
       
       $totalRegistros = $entity->scalar($cadena2);
       $resul_lista = $entity->objects($cadena);
     
     foreach($resul_lista as $resultado_fila){
 
-        $tipo_eleccion = $entity->row("SELECT * FROM tblc_tipo_eleccion WHERE id_tipo_eleccion = ".$resultado_fila->id_tipo_eleccion);
-      $entity->scalar("SELECT c.id_casilla FROM tblc_casilla AS c 
-        INNER JOIN tblc_municipio as m ON c.id_municipio = c.id_municipio 
-        WHERE c.id_casilla != 0".$query_c1." GROUP BY c.id_casilla");
+        $tipo_eleccion = $entity->row($entity->statement('grafica_eleccion.172.8').$resultado_fila->id_tipo_eleccion);
+      $entity->scalar($entity->statement('grafica_eleccion.173.9').$query_c1.$entity->statement('fragment.grafica_eleccion.172.21'));
         $totalCasillas = $entity->numregistros();
           
-        $entity->objects("SELECT * FROM vw_resultado_elecciones WHERE idp_electoral_c = ".$resultado_fila->id_proceso_electoral.$query2." GROUP BY id_casilla"); 
+        $entity->objects($entity->statement('grafica_eleccion.178.10').$resultado_fila->id_proceso_electoral.$query2.$entity->statement('fragment.grafica_eleccion.175.22')); 
         $totalCasillasRegistradas = $entity->numregistros();
         $casillas_faltantes = $totalCasillas - $totalCasillasRegistradas;
 
@@ -243,8 +240,8 @@
           data.addColumn('number', 'Votos');
           data.addRows([
       <?php
-          $acta = $entity->row("SELECT SUM(votos_nulos) as nulos, SUM(no_registrados) as nr FROM tbl_acta WHERE id_proceso_electoral = ".$resultado_fila->id_proceso_electoral." GROUP BY id_proceso_electoral");
-          $votopartidos = $entity->objects("SELECT nombre_c, SUM(resultado) as votos FROM vw_resultado_elecciones WHERE idp_electoral_c = ".$resultado_fila->id_proceso_electoral.$query2." GROUP BY idcandidato_c");
+          $acta = $entity->row($entity->statement('grafica_eleccion.246.11').$resultado_fila->id_proceso_electoral.$entity->statement('fragment.grafica_eleccion.243.23'));
+          $votopartidos = $entity->objects($entity->statement('grafica_eleccion.247.12').$resultado_fila->id_proceso_electoral.$query2.$entity->statement('fragment.grafica_eleccion.244.24'));
           $cadena = "";
           foreach($votopartidos as $partido){
               $cadena .= ",
@@ -273,8 +270,8 @@
 
         var data = google.visualization.arrayToDataTable([
            <?php
-          $acta = $entity->row("SELECT SUM(votos_nulos) as nulos, SUM(no_registrados) as nr FROM tbl_acta WHERE id_proceso_electoral = ".$resultado_fila->id_proceso_electoral." GROUP BY id_proceso_electoral");
-              $candidatos = $entity->objects("SELECT nombre_pa, color_pa, SUM(resultado) as votos FROM vw_resultado_elecciones WHERE idp_electoral_c = ".$resultado_fila->id_proceso_electoral.$query2." GROUP BY idp_politico_c");
+          $acta = $entity->row($entity->statement('grafica_eleccion.276.13').$resultado_fila->id_proceso_electoral.$entity->statement('fragment.grafica_eleccion.273.25'));
+              $candidatos = $entity->objects($entity->statement('grafica_eleccion.277.14').$resultado_fila->id_proceso_electoral.$query2.$entity->statement('fragment.grafica_eleccion.274.26'));
               $cadena = "['Candidato', 'Votos', { role: 'style' }]";
               foreach($candidatos as $partido){
                   $cadena .= ",

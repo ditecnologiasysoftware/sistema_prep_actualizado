@@ -23,8 +23,8 @@ if ($id_estado == 0 && $id_municipio == 0) {
     }
   }
 } else if ($id_estado != 0 && $id_municipio == 0) {
-  $query .= " and estado_c = " . $id_estado . "";
-  $coordena = $entity->scalar("SELECT CONCAT(latitud,',',longitud) as coordenada FROM tblc_estado WHERE id_estado =" . $id_estado);
+  $query .= $entity->statement('fragment.mapa_seccion.26.1') . $id_estado . "";
+  $coordena = $entity->scalar($entity->statement('mapa_seccion.27.1') . $id_estado);
   $cerca = '8';
   $centro = $coordena;
   if (isset($_GET['m'])) {
@@ -37,9 +37,9 @@ if ($id_estado == 0 && $id_municipio == 0) {
     $nConsulta = 2;
   }
 } else if ($id_estado != 0 && $id_municipio != 0) {
-  $query .= " and municipio_c = " . $id_municipio . " and estado_c = " . $id_estado . "";
+  $query .= $entity->statement('fragment.mapa_seccion.40.2') . $id_municipio . $entity->statement('fragment.mapa_seccion.40.3') . $id_estado . "";
   $cerca = '13';
-  $coordena = $entity->scalar("SELECT CONCAT(latitud,',',longitud) as coordenada FROM tblc_municipio WHERE id_municipio =" . $id_municipio);
+  $coordena = $entity->scalar($entity->statement('mapa_seccion.42.2') . $id_municipio);
   $centro = $coordena;
   $nConsulta = 3;
 }
@@ -47,17 +47,17 @@ if ($id_estado == 0 && $id_municipio == 0) {
 
 if (isset($_GET['e'])) {
   if ($_GET['e'] != 0) {
-    $query .= " and estado_c = " . $_GET['e'] . "";
-    $coordena = $entity->scalar("SELECT CONCAT(latitud,',',longitud) as coordenada FROM tblc_estado WHERE id_estado =" . $_GET['e']);
+    $query .= $entity->statement('fragment.mapa_seccion.50.4') . $_GET['e'] . "";
+    $coordena = $entity->scalar($entity->statement('mapa_seccion.51.3') . $_GET['e']);
     $cerca = '8';
     $centro = $coordena;
   }
 }
 if (isset($_GET['m'])) {
   if ($_GET['m'] != 0) {
-    $query .= " and municipio_c = " . $_GET['m'] . "";
+    $query .= $entity->statement('fragment.mapa_seccion.58.5') . $_GET['m'] . "";
     $cerca = '13';
-    $coordena = $entity->scalar("SELECT CONCAT(latitud,',',longitud) as coordenada FROM tblc_municipio WHERE id_municipio =" . $_GET['m']);
+    $coordena = $entity->scalar($entity->statement('mapa_seccion.60.4') . $_GET['m']);
     $centro = $coordena;
   }
 }
@@ -66,10 +66,10 @@ if (isset($_GET['c'])) {
   $idpelectoral = $funciones->limpia($_GET['c']);
   if ($_GET['t'] != '0') {
     $idteleccion = $funciones->limpia($_GET['t']);
-    $eleccion .= " and idt_eleccion_c = " . $idteleccion . "";
+    $eleccion .= $entity->statement('fragment.mapa_seccion.69.6') . $idteleccion . "";
   }
 } else {
-  $idpelectoral = $entity->scalar("SELECT MAX(id_proceso_electoral) FROM tblc_proceso_electoral WHERE estatus = 1 LIMIT 1");
+  $idpelectoral = $entity->scalar($entity->statement('mapa_seccion.72.5'));
 }
 $cadenaa = "";
 $img = "";
@@ -77,12 +77,12 @@ $tipo = "";
 
 switch ($nConsulta) {
   case 1:
-    $cadena = "SELECT * FROM vw_resultado_elecciones WHERE idp_electoral_c = " . $idpelectoral . $query . " GROUP BY estado_c";
+    $cadena = $entity->statement('mapa_seccion.80.6') . $idpelectoral . $query . $entity->statement('fragment.mapa_seccion.80.7');
     $cadenaResultado = $entity->objects($cadena);
     $total = $entity->numregistros();
     # ADMINISTRADOR                                                          
     foreach ($cadenaResultado as $value) {
-      $datEstado = $entity->row("SELECT * FROM tblc_estado WHERE id_estado =" . $value->estado_c);
+      $datEstado = $entity->row($entity->statement('mapa_seccion.85.7') . $value->estado_c);
 
       $idEstado = $datEstado['id_estado'];
       $estado  = $datEstado['nombre'];
@@ -96,12 +96,12 @@ switch ($nConsulta) {
 
     break;
   case 2:
-    $cadena = "SELECT * FROM vw_resultado_elecciones WHERE idp_electoral_c = " . $idpelectoral . $query . " GROUP BY municipio_c";
+    $cadena = $entity->statement('mapa_seccion.99.8') . $idpelectoral . $query . $entity->statement('fragment.mapa_seccion.99.8');
     $cadenaResultado = $entity->objects($cadena);
     $total = $entity->numregistros();
     # ESTADO ASIGNADO
     foreach ($cadenaResultado as $value) {
-      $datMunicipio = $entity->row("SELECT * FROM tblc_municipio WHERE id_municipio =" . $value->municipio_c);
+      $datMunicipio = $entity->row($entity->statement('mapa_seccion.104.9') . $value->municipio_c);
       $idMunicipio = $datMunicipio['id_municipio'];
       $municipio  = $datMunicipio['nombre'];
       $latitud = $datMunicipio['latitud'];
@@ -114,17 +114,17 @@ switch ($nConsulta) {
     }
     break;
   case 3:
-    $cadena = "SELECT * FROM vw_resultado_elecciones WHERE idp_electoral_c = " . $idpelectoral . $eleccion . $query . " GROUP BY seccion";
+    $cadena = $entity->statement('mapa_seccion.117.10') . $idpelectoral . $eleccion . $query . $entity->statement('fragment.mapa_seccion.117.9');
     $cadenaResultado = $entity->objects($cadena);
     $total = $entity->numregistros();
     # MUNICIPIO ASIGNADO
     foreach ($cadenaResultado as $value) {
       $idCasilla =    $value->id_casilla;
       $numCasilla = $value->seccion;
-      $municipio  = $entity->scalar("SELECT nombre FROM tblc_municipio WHERE id_municipio =" . $value->id_municipio);
+      $municipio  = $entity->scalar($entity->statement('mapa_seccion.124.11') . $value->id_municipio);
       $latitud = $value->latitud;
       $longitud   = $value->longitud;
-      $distrito  = $entity->scalar("SELECT d.nombre FROM tblc_distrito as d JOIN tblc_seccion as s ON(d.id_distrito = s.id_distrito) WHERE s.nombre =" . $value->seccion);
+      $distrito  = $entity->scalar($entity->statement('mapa_seccion.127.12') . $value->seccion);
       $seccion  = $value->seccion;
       if (isset($_GET['t'])) {
         if ($_GET['t'] != '0') {
@@ -147,7 +147,7 @@ switch ($nConsulta) {
           $tipo = "Extraordinaria";
           break;
       }
-      $ganador = $entity->row("SELECT vw_resultado_elecciones.*, SUM(resultado) AS resultado_total FROM vw_resultado_elecciones WHERE seccion = " . $value->seccion . $eleccion . " GROUP BY idcandidato_c ORDER BY resultado_total DESC LIMIT 1");
+      $ganador = $entity->row($entity->statement('mapa_seccion.150.13') . $value->seccion . $eleccion . $entity->statement('fragment.mapa_seccion.150.10'));
 
       $votos_ganador = $ganador['resultado_total'];
       if (isset($_GET['c'])) {
@@ -227,7 +227,7 @@ switch ($nConsulta) {
 
                               <select name="c" id="c" class="form-control">
                                 <?php
-                                echo $funciones->llenarcombomodifica("SELECT id_proceso_electoral as id, CONCAT(descripcion,' - ', fecha) as valor FROM tblc_proceso_electoral WHERE estatus = 1 ORDER BY fecha DESC", $_GET['c']);
+                                echo $funciones->llenarcombomodifica($entity->statement('mapa_seccion.230.14'), $_GET['c']);
                                 ?>
                               </select>
                             </div>
@@ -235,7 +235,7 @@ switch ($nConsulta) {
                               <select name="t" id="t" class="form-control">
                                 <option value="0">-- Todo Tipo de Elección --</option>
                                 <?php
-                                echo $funciones->llenarcombomodifica("SELECT id_tipo_eleccion as id, nombre as valor FROM tblc_tipo_eleccion ORDER BY nombre DESC", $_GET['t']);
+                                echo $funciones->llenarcombomodifica($entity->statement('mapa_seccion.238.15'), $_GET['t']);
                                 ?>
                               </select>
 
@@ -247,8 +247,8 @@ switch ($nConsulta) {
                                 <select name="e" id="e" onchange="combodependiente('e', 'm', 'combo_dependiente/municipios.php')" class="form-control" required>
                                   <option value="0">-- Todos los Estados --</option>
                                   <?php
-                                  if (isset($_GET['e'])) echo $funciones->llenarcombomodifica("SELECT id_estado as id, nombre as valor FROM tblc_estado ORDER BY nombre", $_GET['e']);
-                                  else echo $funciones->llenarcombo("SELECT id_estado as id, nombre as valor FROM tblc_estado ORDER BY nombre");
+                                  if (isset($_GET['e'])) echo $funciones->llenarcombomodifica($entity->statement('mapa_seccion.250.16'), $_GET['e']);
+                                  else echo $funciones->llenarcombo($entity->statement('mapa_seccion.251.17'));
                                   ?>
                                 </select>
                               </div>
@@ -257,7 +257,7 @@ switch ($nConsulta) {
                                 <select name="m" id="m" class="form-control">
                                   <option value="0">-- Todos los Municipios --</option>
                                   <?php
-                                  if (isset($_GET['m']) && $_GET['e'] != 0) echo $funciones->llenarcombomodifica("SELECT id_municipio as id, nombre as valor FROM tblc_municipio WHERE id_estado = " . $_GET['e'] . " ORDER BY nombre", $_GET['m']);
+                                  if (isset($_GET['m']) && $_GET['e'] != 0) echo $funciones->llenarcombomodifica($entity->statement('mapa_seccion.260.18') . $_GET['e'] . $entity->statement('fragment.mapa_seccion.260.11'), $_GET['m']);
                                   ?>
                                 </select>
                               </div>
@@ -267,7 +267,7 @@ switch ($nConsulta) {
                               <div class="col-sm-6">
                                 <select name="m" id="m" class="form-control">
                                   <?php
-                                  if (isset($_GET['m'])) echo $funciones->llenarcombomodifica("SELECT id_municipio as id, nombre as valor FROM tblc_municipio WHERE id_estado = " . $id_estado . " ORDER BY nombre", $_GET['m']);
+                                  if (isset($_GET['m'])) echo $funciones->llenarcombomodifica($entity->statement('mapa_seccion.270.19') . $id_estado . $entity->statement('fragment.mapa_seccion.270.12'), $_GET['m']);
                                   ?>
                                 </select>
                               </div>
@@ -292,7 +292,7 @@ switch ($nConsulta) {
       <div style="float:left;"><strong><?php echo $total; ?></strong> REGISTROS ENCONTRADOS </h4>
       </div><?php if ($_GET['e'] != 0) { ?><div id="verestado" style="float:left; "><a href="mapa_seccion"><b>&nbsp;&nbsp;IR A ESTADOS</b></a></div><?php }
         if ($_GET['m'] != 0) { ?><div id="vermun" style="float:left; "><a href="mapa_seccion?e=<?= $_GET['e'] ?>">&nbsp;&nbsp; | &nbsp;&nbsp; <b>IR A MUNICIPIOS</b></a></div>
-        <div id="vermun" style="float:left; "><a href="#">&nbsp;&nbsp; | &nbsp;&nbsp; <font color="#009327" style="font-weight: bold;"><?= $funciones->pasarMayusculas($entity->scalar("SELECT nombre FROM tblc_municipio WHERE id_municipio=" . $_GET['m'])); ?></font></a></div><?php } ?>
+        <div id="vermun" style="float:left; "><a href="#">&nbsp;&nbsp; | &nbsp;&nbsp; <font color="#009327" style="font-weight: bold;"><?= $funciones->pasarMayusculas($entity->scalar($entity->statement('mapa_seccion.295.20') . $_GET['m'])); ?></font></a></div><?php } ?>
       <div id="google-map2" style="width: 100%; height: 435px; position:relative;"></div>
     </div><!-- row -->
 

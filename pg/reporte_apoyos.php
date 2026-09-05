@@ -92,7 +92,7 @@
 												<div class="col-sm-7">
 													<select name="estado" id="estado" class="form-control" onchange="combodependiente('estado','municipio','combo_dependiente/municipios2.php')" required>
                                                 		<option value="0">Todos los estados</option>
-                                                		<?php echo $funciones->llenarcombo("select id_estado as id, nombre as valor from tblc_estado");?>
+                                                		<?php echo $funciones->llenarcombo($entity->statement('reporte_apoyos.95.1'));?>
                                                     </select>
 												</div>
 											</div>
@@ -111,7 +111,7 @@
 												<div class="col-sm-7">
 													<select name="captura" id="captura" class="form-control" required>
                                                 		<option value="0">Todos los usuarios</option>
-                                                		<?php echo $funciones->llenarcombo("select id_usuario as id, nombre as valor from tblc_usuario");?>
+                                                		<?php echo $funciones->llenarcombo($entity->statement('reporte_apoyos.114.2'));?>
                                                     </select>
 												</div>
 											</div>
@@ -121,7 +121,7 @@
 												<div class="col-sm-7">
 													<select name="autoriza" id="autoriza" class="form-control" required>
                                                 		<option value="0">Todos los usuarios</option>
-                                                		<?php echo $funciones->llenarcombo("select id_usuario as id, nombre as valor from tblc_usuario WHERE autoriza_apoyo = 1");?>
+                                                		<?php echo $funciones->llenarcombo($entity->statement('reporte_apoyos.124.3'));?>
                                                     </select>
 												</div>
 											</div>			

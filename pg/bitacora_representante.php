@@ -32,19 +32,19 @@
             if(isset($_GET['q'])){
                 if ($_GET['q'] != '' || $_GET['q'] != null ) {
                      $fecha = date("Y-m-d",strtotime($_GET['q']));
-                     $sentencia .= " AND fecha_acceso LIKE '%".$fecha."%'";
+                     $sentencia .= $entity->statement('fragment.bitacora_representante.35.1').$fecha."%'";
                      $peticion_enlace .= "&fecha_acceso LIKE '%".$fecha."%'";
                 }               
             }
 			$idRepresentante = $funciones->limpia(base64_decode($_GET['c']));
 
-			$cadena = "SELECT tbl_representante_movil.estatus as estatus_disp, tbl_representante_movil.*, tblc_representante.* FROM tblc_representante INNER JOIN tbl_representante_movil WHERE tbl_representante_movil.id_representante = tblc_representante.id_representante  and tbl_representante_movil.id_representante =".$idRepresentante.$sentencia." ORDER BY tbl_representante_movil.id_representante_movil DESC LIMIT ".$inicio.','.$limite;
+			$cadena = $entity->statement('bitacora_representante.41.1').$idRepresentante.$sentencia.$entity->statement('fragment.bitacora_representante.41.2').$inicio.','.$limite;
 
-			$cadena2 = "SELECT COUNT(tblc_representante.id_representante) FROM tblc_representante INNER JOIN tbl_representante_movil WHERE tbl_representante_movil.id_representante = tblc_representante.id_representante and tbl_representante_movil.id_representante =".$idRepresentante.$sentencia;	
+			$cadena2 = $entity->statement('bitacora_representante.43.2').$idRepresentante.$sentencia;	
 			$totalRegistros = $entity->scalar($cadena2);
 			$cadenaResultado = $entity->objects($cadena);	
 			
-            $representante = ' del representante - <b>'.$entity->scalar("SELECT nombre FROM tblc_representante WHERE id_representante =".$idRepresentante).'</b>';													
+            $representante = ' del representante - <b>'.$entity->scalar($entity->statement('bitacora_representante.47.3').$idRepresentante).'</b>';													
 
 		}
 

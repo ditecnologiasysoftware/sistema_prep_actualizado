@@ -5,8 +5,8 @@
                     $sentencias = "";
                     $sentencias2 = "";
                     if ($id_municipio != 0) {
-                        $sentencias = " AND id_municipio = " . $id_municipio;
-                        $sentencias2 = " AND r.id_municipio = " . $id_municipio;
+                        $sentencias = $entity->statement('fragment.graficas.8.1') . $id_municipio;
+                        $sentencias2 = $entity->statement('fragment.graficas.9.2') . $id_municipio;
                     }
                     ?>
                     <style type="text/css">
@@ -121,8 +121,8 @@
 
                                             <div id="etiquetas" class="cloud-label-widget-content">
                                                 <?php
-                                                $total = $entity->scalar("SELECT (SELECT COUNT(re.id_reporte) FROM tbl_reporte_etiqueta AS re INNER JOIN tbl_reporte AS r ON re.id_reporte = r.id_reporte WHERE re.id_etiqueta = e.id_etiqueta" . $sentencias2 . ") AS conteo FROM tblc_etiqueta AS e ORDER BY conteo DESC LIMIT 1 ");
-                                                $etiquetas = $entity->objects("SELECT e.etiqueta, e.id_etiqueta, (SELECT COUNT(re.id_reporte) FROM tbl_reporte_etiqueta AS re INNER JOIN tbl_reporte AS r ON re.id_reporte = r.id_reporte WHERE e.id_etiqueta = re.id_etiqueta" . $sentencias2 . ") AS conteo FROM tblc_etiqueta AS e ORDER BY conteo");
+                                                $total = $entity->scalar($entity->statement('graficas.124.1') . $sentencias2 . $entity->statement('graficas.etiquetas_total_suffix'));
+                                                $etiquetas = $entity->objects($entity->statement('graficas.125.2') . $sentencias2 . $entity->statement('graficas.etiquetas_list_suffix'));
                                                 foreach ($etiquetas as $value) {
                                                     // Verificar si $total no es cero para evitar la división por cero
                                                     $porcentaje = 0;
@@ -180,9 +180,9 @@
                                 data.addColumn('number', 'Reportes');
                                 data.addRows([
                                     <?php
-                                    $telefono = $entity->scalar("SELECT COUNT(id_reporte) FROM tbl_reporte WHERE tipo_registro = 1" . $sentencias);
-                                    $whatsapp = $entity->scalar("SELECT COUNT(id_reporte) FROM tbl_reporte WHERE tipo_registro = 2" . $sentencias);
-                                    $personal = $entity->scalar("SELECT COUNT(id_reporte) FROM tbl_reporte WHERE tipo_registro = 3" . $sentencias);
+                                    $telefono = $entity->scalar($entity->statement('graficas.183.3') . $sentencias);
+                                    $whatsapp = $entity->scalar($entity->statement('graficas.184.4') . $sentencias);
+                                    $personal = $entity->scalar($entity->statement('graficas.185.5') . $sentencias);
 
                                     echo "['Teléfono (" . $telefono . ")', " . $telefono . "],
                 ";
@@ -214,7 +214,7 @@
                                 data.addColumn('number', 'Reportes');
                                 data.addRows([
                                     <?php
-                                    $categorias = $entity->objects("SELECT c.nombre, (SELECT COUNT(re.id_reporte) FROM tbl_reporte_etiqueta AS re INNER JOIN tbl_reporte AS r ON re.id_reporte = r.id_reporte INNER JOIN tblc_etiqueta AS e ON e.id_etiqueta = re.id_etiqueta WHERE e.id_categoria = c.id_categoria" . $sentencias2 . ") AS conteo FROM tblc_categoria AS c ORDER BY conteo DESC");
+                                    $categorias = $entity->objects($entity->statement('graficas.217.6') . $sentencias2 . $entity->statement('graficas.categorias_suffix'));
                                     $cadena = "";
                                     foreach ($categorias as $categoria) {
                                         $cadena .= ",

@@ -3,7 +3,7 @@ require "../php/inicializandoDatosExterno.php";
 
 if ($_POST['id'] > 0) {
     $id = $funciones->limpia($_POST['id']);
-    $row = $entity->row("SELECT * FROM tblc_etiqueta WHERE id_etiqueta = " . $id . " ");
+    $row = $entity->row($entity->statement('etiquetas_registro.6.1') . $id . " ");
 }
 ?>
 <div class="col-md-4">
@@ -22,8 +22,8 @@ if ($_POST['id'] > 0) {
                     <div class="col-sm-8">
                         <select name="id_categoria" class="form-control" required>
                             <?php
-                                if (!empty($_POST['id'])) echo $funciones->llenarcombomodifica("SELECT id_categoria as id, nombre as valor from tblc_categoria", $row['id_categoria']);
-                                else echo $funciones->llenarcombo("SELECT id_categoria as id, nombre as valor from tblc_categoria");
+                                if (!empty($_POST['id'])) echo $funciones->llenarcombomodifica($entity->statement('etiquetas_registro.25.2'), $row['id_categoria']);
+                                else echo $funciones->llenarcombo($entity->statement('etiquetas_registro.26.3'));
                             ?>
                         </select>
                     </div>

@@ -9,12 +9,12 @@ $peticion_enlace = "";
 $sentencia = "";
 
 if (isset($_POST['nombre_busqueda'])) {
-    $sentencia .= " AND nombre LIKE '%" . $_POST['nombre_busqueda'] . "%'";
+    $sentencia .= $entity->statement('fragment.municipios_listado.12.1') . $_POST['nombre_busqueda'] . "%'";
     $peticion_enlace .= "&nombre_busqueda=" . $_POST['nombre_busqueda'];
 }
 
-$cadena = "SELECT * FROM tblc_municipio WHERE fecha_eliminado IS NULL" . $sentencia . " ORDER BY nombre ASC LIMIT " . $inicio . "," . $limite . "";
-$cadena2 = "SELECT COUNT(id_municipio) FROM tblc_municipio WHERE fecha_eliminado IS NULL" . $sentencia;
+$cadena = $entity->statement('municipios_listado.16.1') . $sentencia . $entity->statement('fragment.municipios_listado.16.2') . $inicio . "," . $limite . "";
+$cadena2 = $entity->statement('municipios_listado.17.2') . $sentencia;
 
 $totalCirculares = $entity->scalar($cadena2);
 $resul_lista = $entity->objects($cadena);
@@ -51,7 +51,7 @@ $resul_lista = $entity->objects($cadena);
                         <tr>
                             <td><?php echo htmlspecialchars($resultado_fila->clave, ENT_QUOTES, 'UTF-8'); ?></td>
                             <td><?php echo $resultado_fila->nombre; ?></td>
-                            <td><?php echo $entity->scalar("select nombre from tblc_estado where id_estado=" . $resultado_fila->id_estado); ?></td>
+                            <td><?php echo $entity->scalar($entity->statement('municipios_listado.54.3') . $resultado_fila->id_estado); ?></td>
                             <?php if ($editar == 1) { ?>
                                 <td align="center"><a class="btn btn-success" onclick="municipios_registro(<?= $resultado_fila->id_municipio ?>)"><span class="fa fa-pen"></span></a></td>
                             <?php } ?>

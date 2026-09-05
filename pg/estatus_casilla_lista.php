@@ -10,26 +10,18 @@ $peticion_enlace = "";
 $sentencia = "";
 $query = "";
 if ($id_estado != 0) {
-    $query .= " and m.id_estado = " . $id_estado . "";
+    $query .= $entity->statement('fragment.estatus_casilla_lista.13.1') . $id_estado . "";
 }
 if ($id_municipio != 0) {
-    $query .= " and c.id_municipio = " . $id_municipio . "";
+    $query .= $entity->statement('fragment.estatus_casilla_lista.16.2') . $id_municipio . "";
 }
 if (isset($_POST['c'])) {
-    $sentencia .= " AND ec.id_casilla = '" . $_POST['c'] . "'";
+    $sentencia .= $entity->statement('fragment.estatus_casilla_lista.19.3') . $_POST['c'] . "'";
     $peticion_enlace .= "&c=" . $_POST['c'];
 }
-$cadena = "SELECT ec.*, c.nombre as casilla, c.seccion, m.nombre as muni  FROM tbl_estatus_casilla as ec 
-JOIN tblc_casilla as c ON(c.id_casilla = ec.id_casilla) 
-JOIN tblc_municipio as m ON(c.id_municipio = m.id_municipio) 
-JOIN tblc_estado as e ON(e.id_estado = m.id_estado) 
-WHERE ec.id_estatus_casilla != 0" . $sentencia . $query . " ORDER BY ec.fecha_hora ASC LIMIT " . $inicio . "," . $limite . "";
+$cadena = $entity->statement('estatus_casilla_lista.22.1') . $sentencia . $query . $entity->statement('fragment.estatus_casilla_lista.22.4') . $inicio . "," . $limite . "";
 
-$cadena2 = "SELECT COUNT(ec.id_estatus_casilla) FROM tbl_estatus_casilla as ec 
-JOIN tblc_casilla as c ON(c.id_casilla = ec.id_casilla) 
-JOIN tblc_municipio as m ON(c.id_municipio = m.id_municipio) 
-JOIN tblc_estado as e ON(e.id_estado = m.id_estado) 
-WHERE ec.id_estatus_casilla != 0" . $sentencia . $query;
+$cadena2 = $entity->statement('estatus_casilla_lista.28.2') . $sentencia . $query;
 
 $totalRegistros = $entity->scalar($cadena2);
 $resul_lista = $entity->objects($cadena);
@@ -65,7 +57,7 @@ $resul_lista = $entity->objects($cadena);
                                                     <select name="c" id="c" class="form-control">
                                                         <option value="0"> - Todas las Casilla -</option>
                                                         <?php
-                                                        echo $funciones->llenarcombomodificaCasilla("SELECT c.* FROM tblc_casilla as c JOIN tblc_municipio as m ON(c.id_municipio = m.id_municipio) WHERE c.id_casilla != 0" . $query . "  ORDER BY c.seccion ASC, c.tipo ASC, c.nombre ASC", $_GET['c']);
+                                                        echo $funciones->llenarcombomodificaCasilla($entity->statement('estatus_casilla_lista.68.3') . $query . $entity->statement('fragment.estatus_casilla_lista.60.5'), $_GET['c']);
                                                         ?>
                                                     </select>
 

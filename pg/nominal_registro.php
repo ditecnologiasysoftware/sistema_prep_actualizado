@@ -2,9 +2,7 @@
 require "../php/inicializandoDatosExterno.php";
 if (!empty($_POST['id'])) {
     $id = $funciones->limpia($_POST['id']);
-    $row = $entity->row("SELECT pe.id_estado, pe.id_municipio, ln.* FROM tbl_lista_nominal as ln 
-    JOIN tblc_proceso_electoral as pe ON(ln.id_proceso_electoral = pe.id_proceso_electoral)
-    WHERE ln.id_lista_nominal = " . $id . " ");
+    $row = $entity->row($entity->statement('nominal_registro.5.1') . $id . " ");
 }
 ?>
 <div class="col-md-4">
@@ -22,8 +20,8 @@ if (!empty($_POST['id'])) {
                     <div class="col-sm-9">
                         <select name="id_proceso_electoral" id="id_proceso_electoral" class="form-control" required>
                             <?php
-                            if (!empty($_POST['id'])) echo $funciones->llenarcombomodifica("SELECT id_proceso_electoral as id, CONCAT(descripcion,' - ', fecha) as valor FROM tblc_proceso_electoral WHERE estatus = 1" . $query_pe . " ORDER BY fecha DESC", $row['id_proceso_electoral']);
-                            else echo $funciones->llenarcombo("SELECT id_proceso_electoral as id, CONCAT(descripcion,' - ', fecha) as valor FROM tblc_proceso_electoral WHERE estatus = 1" . $query_pe . " ORDER BY fecha DESC");
+                            if (!empty($_POST['id'])) echo $funciones->llenarcombomodifica($entity->statement('nominal_registro.25.2') . $query_pe . $entity->statement('fragment.nominal_registro.23.1'), $row['id_proceso_electoral']);
+                            else echo $funciones->llenarcombo($entity->statement('nominal_registro.26.3') . $query_pe . $entity->statement('fragment.nominal_registro.24.2'));
                             ?>
                         </select>
                     </div>
@@ -35,8 +33,8 @@ if (!empty($_POST['id'])) {
                         <div class="col-sm-9">
                             <select name="id_estado" id="id_estado" onchange="combodependiente('id_estado', 'id_municipio', 'combo_dependiente/municipios2.php')" class="form-control" required>
                                 <?php
-                                if (!empty($_POST['id'])) echo $funciones->llenarcombomodifica("SELECT id_estado as id, nombre as valor FROM tblc_estado ORDER BY nombre", $row['id_estado']);
-                                else echo $funciones->llenarcombo("SELECT id_estado as id, nombre as valor FROM tblc_estado ORDER BY nombre");
+                                if (!empty($_POST['id'])) echo $funciones->llenarcombomodifica($entity->statement('nominal_registro.38.4'), $row['id_estado']);
+                                else echo $funciones->llenarcombo($entity->statement('nominal_registro.39.5'));
                                 ?>
                             </select>
                         </div>
@@ -46,7 +44,7 @@ if (!empty($_POST['id'])) {
                         <div class="col-sm-9">
                             <select name="id_municipio" id="id_municipio" class="form-control" onchange="combodependiente('id_municipio', 'casilla', 'combo_dependiente/casillas.php')" required>
                                 <?php
-                                if (!empty($_POST['id'])) echo $funciones->llenarcombomodifica("SELECT id_municipio as id, nombre as valor FROM tblc_municipio WHERE id_estado = " . $row['id_estado'] . " ORDER BY nombre", $row['id_municipio']);
+                                if (!empty($_POST['id'])) echo $funciones->llenarcombomodifica($entity->statement('nominal_registro.49.6') . $row['id_estado'] . $entity->statement('fragment.nominal_registro.47.3'), $row['id_municipio']);
                                 ?>
                             </select>
                         </div>
@@ -57,8 +55,8 @@ if (!empty($_POST['id'])) {
                         <div class="col-sm-9">
                             <select name="id_municipio" id="id_municipio" class="form-control" onchange="combodependiente('id_municipio', 'casilla', 'combo_dependiente/casillas.php')" required>
                                 <?php
-                                if (!empty($_POST['id'])) echo $funciones->llenarcombomodifica("SELECT id_municipio as id, nombre as valor FROM tblc_municipio WHERE id_estado = " . $id_estado . " ORDER BY nombre", $row['id_municipio']);
-                                else echo $funciones->llenarcombo("SELECT id_municipio as id, nombre as valor FROM tblc_municipio WHERE id_estado = " . $id_estado . " ORDER BY nombre");
+                                if (!empty($_POST['id'])) echo $funciones->llenarcombomodifica($entity->statement('nominal_registro.60.7') . $id_estado . $entity->statement('fragment.nominal_registro.58.4'), $row['id_municipio']);
+                                else echo $funciones->llenarcombo($entity->statement('nominal_registro.61.8') . $id_estado . $entity->statement('fragment.nominal_registro.59.5'));
                                 ?>
                             </select>
                         </div>
@@ -87,13 +85,13 @@ if (!empty($_POST['id'])) {
                             if (!empty($_POST['id'])) {
                                 $query = "";
                                 if ($id_estado != 0) {
-                                    $query .= " and m.id_estado = " . $id_estado . "";
+                                    $query .= $entity->statement('fragment.nominal_registro.88.6') . $id_estado . "";
                                 }
                                 if ($id_municipio != 0) {
-                                    $query .= " and c.id_municipio = " . $id_municipio . "";
+                                    $query .= $entity->statement('fragment.nominal_registro.91.7') . $id_municipio . "";
                                 }
 
-                                echo $funciones->llenarcombomodificaCasilla("SELECT c.id_casilla as id, c.numero as numero_casilla, c.num_contigua as contigua_num_casilla, c.tipo as tipo_casilla, c.seccion as seccion_casilla FROM tblc_casilla as c JOIN tblc_municipio as m ON(c.id_municipio = m.id_municipio) WHERE c.id_casilla != 0" . $query . "  ORDER BY c.id_casilla ASC", $row['id_casilla']);
+                                echo $funciones->llenarcombomodificaCasilla($entity->statement('nominal_registro.96.9') . $query . $entity->statement('fragment.nominal_registro.94.8'), $row['id_casilla']);
                             }
                             ?>
                         </select>

@@ -77,8 +77,8 @@
                                                     $tipoE = $funciones->limpia(base64_decode($_GET['tipoE'])); 
 
                                                     
-                                                    $row = $entity->row("SELECT * FROM tbl_resultado WHERE id_resultado = ".$id);                                                                                           
-                                                      $cadena = "SELECT * FROM vw_resultado_elecciones WHERE idrepresentante_r =".$row['id_representante']." and id_casilla=".$row['id_casilla']." and idt_eleccion_c = '".$tipoE."' ORDER BY resultado DESC "; 
+                                                    $row = $entity->row($entity->statement('editar_resultado.80.1').$id);                                                                                           
+                                                      $cadena = $entity->statement('editar_resultado.81.2').$row['id_representante'].$entity->statement('fragment.editar_resultado.81.1').$row['id_casilla'].$entity->statement('fragment.editar_resultado.81.2').$tipoE."' ORDER BY resultado DESC "; 
                                                             $resul_lista = $entity->objects($cadena);
                                                              foreach($resul_lista as $resultado_fila){
                                                       ?>
@@ -107,12 +107,12 @@
                                             <?php 
                                                if(isset($_GET['id'])){
                                                 $id = $funciones->limpia(base64_decode($_GET['id'])); 
-                                                $row = $entity->row("SELECT * FROM tbl_resultado WHERE id_resultado = ".$id." ");
+                                                $row = $entity->row($entity->statement('editar_resultado.110.3').$id." ");
                                                }
                                             ?>
 
                                             <div class="form-group">  
-                                                <font color="#3E62A2"><b>Representante: </b><?php if(isset($_GET['id'])) echo $entity->scalar("SELECT nombre FROM tblc_representante WHERE id_representante =".$row['id_representante']);?></font>                                                
+                                                <font color="#3E62A2"><b>Representante: </b><?php if(isset($_GET['id'])) echo $entity->scalar($entity->statement('editar_resultado.115.4').$row['id_representante']);?></font>                                                
                                             </div>    
 
                                             <button class="btn btn-primary mr5"><?php if(isset($_GET['id'])) echo "Modificar"; ?></button>

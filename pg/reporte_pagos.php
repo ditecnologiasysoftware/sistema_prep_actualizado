@@ -67,7 +67,7 @@
 													<select name="id_proveedor" id="id_proveedor" class="form-control" required>
                                                 		<option value="0">Todos los proveedores</option>
                                                 		<?php 
-                                                		echo $funciones->llenarcombo("select id_proveedor as id, nombre as valor from tblc_proveedor ORDER BY nombre");
+                                                		echo $funciones->llenarcombo($entity->statement('reporte_pagos.70.1'));
                                                 		?>
                                                     </select>
 												</div>
@@ -80,7 +80,7 @@
 														<select name="id_partida" id="id_partida" class="form-control" required>
 	                                                		<option value="0">Todas las partidas</option>
 	                                                		<?php 
-	                                                		echo $funciones->llenarcombo("select id_partida as id, nombre as valor from tblc_partida ORDER BY nombre");
+	                                                		echo $funciones->llenarcombo($entity->statement('reporte_pagos.83.2'));
 	                                                		?>
 	                                                    </select>
 													</div>	
@@ -92,7 +92,7 @@
 														<select name="id_concepto_pago" id="id_concepto_pago" class="form-control" required>
 	                                                		<option value="0">Todos los conceptos de pago</option>
 	                                                		<?php 
-	                                                		echo $funciones->llenarcombo("select id_concepto_pago as id, nombre as valor from tblc_concepto_pago ORDER BY nombre");
+	                                                		echo $funciones->llenarcombo($entity->statement('reporte_pagos.95.3'));
 	                                                		?>
 	                                                    </select>
 													</div>	
@@ -104,7 +104,7 @@
 														<select name="id_forma_pago" id="id_forma_pago" class="form-control" required>
 	                                                		<option value="0">Todas las formas de pago</option>
 	                                                		<?php
-	                                                			echo $funciones->llenarcombo("select id_forma_pago as id, nombre as valor from tblc_forma_pago ORDER BY nombre");
+	                                                			echo $funciones->llenarcombo($entity->statement('reporte_pagos.107.4'));
 	                                                		?>
 	                                                    </select>
 													</div>	
@@ -122,7 +122,7 @@
 												<div class="col-sm-7">
 													<select name="captura" id="captura" class="form-control" required>
                                                 		<option value="0">Todos los usuarios</option>
-                                                		<?php echo $funciones->llenarcombo("select id_usuario as id, nombre as valor from tblc_usuario");?>
+                                                		<?php echo $funciones->llenarcombo($entity->statement('reporte_pagos.125.5'));?>
                                                     </select>
 												</div>
 											</div>
@@ -132,7 +132,7 @@
 												<div class="col-sm-7">
 													<select name="autoriza" id="autoriza" class="form-control" required>
                                                 		<option value="0">Todos los usuarios</option>
-                                                		<?php echo $funciones->llenarcombo("select id_usuario as id, nombre as valor from tblc_usuario WHERE autoriza_apoyo = 1");?>
+                                                		<?php echo $funciones->llenarcombo($entity->statement('reporte_pagos.135.6'));?>
                                                     </select>
 												</div>
 											</div>			

@@ -10,14 +10,14 @@
 
         if(isset($_POST['seccion']) && $_POST['seccion'] != ""){
             $seccion = $funciones->limpia($_POST['seccion']);
-            $sentencia .= " AND seccion = ".$seccion;          
+            $sentencia .= $entity->statement('fragment.casilla_resultados_lista.13.1').$seccion;          
         }
 
 		$idcandidatoP = $funciones->limpia($_POST['cand']);
         $idprocesoE = $funciones->limpia($_POST['c']);
 
-		$cadena = "SELECT *, sum(resultado) as suma FROM vw_resultado_elecciones WHERE idp_electoral_c = ".$idprocesoE.$sentencia." GROUP BY id_casilla LIMIT ".$inicio.",".$limite;
-		$cadena2 = "SELECT id_casilla FROM vw_resultado_elecciones WHERE idp_electoral_c = ".$idprocesoE.$sentencia." GROUP BY id_casilla";	
+		$cadena = $entity->statement('casilla_resultados_lista.19.1').$idprocesoE.$sentencia.$entity->statement('fragment.casilla_resultados_lista.19.2').$inicio.",".$limite;
+		$cadena2 = $entity->statement('casilla_resultados_lista.20.2').$idprocesoE.$sentencia.$entity->statement('fragment.casilla_resultados_lista.20.3');	
 
         $total = $entity->scalar($cadena2);
         $totalRegistros = $entity->numregistros();
@@ -38,10 +38,10 @@
         <tbody>
         <?php                                                   
          foreach($cadenaResultado as $resultado_fila){
-            $votos = $entity->scalar("SELECT SUM(resultado) as sumaresultado FROM tbl_resultado WHERE id_candidato = ".$idcandidatoP." AND id_casilla = ".$resultado_fila->id_casilla);
-            $votos_nulos = $entity->scalar("SELECT SUM(votos_nulos) as sumaresultado FROM tbl_acta WHERE id_proceso_electoral = ".$idprocesoE." AND id_casilla = ".$resultado_fila->id_casilla);
-            $no_registrados = $entity->scalar("SELECT SUM(no_registrados) as sumaresultado FROM tbl_acta WHERE id_proceso_electoral = ".$idprocesoE." AND id_casilla = ".$resultado_fila->id_casilla);
-            $total_votos = $entity->scalar("SELECT SUM(total_votos) as total_votos FROM tbl_acta WHERE id_proceso_electoral = ".$idprocesoE." AND id_casilla = ".$resultado_fila->id_casilla);
+            $votos = $entity->scalar($entity->statement('casilla_resultados_lista.41.3').$idcandidatoP.$entity->statement('fragment.casilla_resultados_lista.41.4').$resultado_fila->id_casilla);
+            $votos_nulos = $entity->scalar($entity->statement('casilla_resultados_lista.42.4').$idprocesoE.$entity->statement('fragment.casilla_resultados_lista.42.5').$resultado_fila->id_casilla);
+            $no_registrados = $entity->scalar($entity->statement('casilla_resultados_lista.43.5').$idprocesoE.$entity->statement('fragment.casilla_resultados_lista.43.6').$resultado_fila->id_casilla);
+            $total_votos = $entity->scalar($entity->statement('casilla_resultados_lista.44.6').$idprocesoE.$entity->statement('fragment.casilla_resultados_lista.44.7').$resultado_fila->id_casilla);
 
             $votos_total = $resultado_fila->suma + $votos_nulos + $no_registrados;
         ?>                                                  
@@ -67,7 +67,7 @@
                     </td>
                     <td align="center">
                         <?php
-                        $archivo = $entity->scalar("SELECT archivo FROM tbl_acta WHERE id_casilla =".$resultado_fila->id_casilla." and id_proceso_electoral =".$idprocesoE);
+                        $archivo = $entity->scalar($entity->statement('casilla_resultados_lista.70.7').$resultado_fila->id_casilla.$entity->statement('fragment.casilla_resultados_lista.70.8').$idprocesoE);
                         if ($archivo != null || $archivo != '') {
                         ?>
                         <a onclick="window.open('../archivos/actas_eleccion/<?php echo $archivo; ?>','Comprobante', 'width=600,height=900');" title="Ver Acta"><span class="glyphicon glyphicon-file"></span></a>

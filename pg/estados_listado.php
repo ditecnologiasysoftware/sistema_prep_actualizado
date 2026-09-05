@@ -9,12 +9,12 @@ $peticion_enlace = "";
 $sentencia = "";
 
 if (!empty($_POST['nombre_busqueda'])) {
-    $sentencia .= " AND nombre LIKE '%" . $_POST['nombre_busqueda'] . "%'";
+    $sentencia .= $entity->statement('fragment.estados_listado.12.1') . $_POST['nombre_busqueda'] . "%'";
     $peticion_enlace .= "&nombre_busqueda=" . $_POST['nombre_busqueda'];
 }
 
-$cadena = "SELECT * FROM tblc_estado WHERE fecha_eliminado IS NULL" . $sentencia . " ORDER BY nombre ASC LIMIT " . $inicio . "," . $limite . "";
-$cadena2 = "SELECT COUNT(id_estado) FROM tblc_estado WHERE fecha_eliminado IS NULL" . $sentencia;
+$cadena = $entity->statement('estados_listado.16.1') . $sentencia . $entity->statement('fragment.estados_listado.16.2') . $inicio . "," . $limite . "";
+$cadena2 = $entity->statement('estados_listado.17.2') . $sentencia;
 
 $totalCirculares = $entity->scalar($cadena2);
 $resul_lista = $entity->objects($cadena);

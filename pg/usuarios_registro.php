@@ -3,7 +3,7 @@ require "../php/inicializandoDatosExterno.php";
 
 if (!empty($_POST['id'])) {
 	$id = $funciones->limpia($_POST['id']);
-	$row = $entity->row("SELECT * FROM tblc_usuario WHERE id_usuario = " . $id);
+	$row = $entity->row($entity->statement('usuarios_registro.6.1') . $id);
 }
 
 ?>
@@ -78,9 +78,9 @@ if (!empty($_POST['id'])) {
 												<option value="0">Todos los Estados</option>
 												<?php
 												if (!empty($_POST['id']))
-													echo $funciones->llenarcombomodifica("SELECT id_estado as id, nombre as valor FROM tblc_estado ORDER BY nombre", $row['id_estado']);
+													echo $funciones->llenarcombomodifica($entity->statement('usuarios_registro.81.2'), $row['id_estado']);
 												else
-													echo $funciones->llenarcombo("SELECT id_estado as id, nombre as valor FROM tblc_estado ORDER BY nombre");
+													echo $funciones->llenarcombo($entity->statement('usuarios_registro.83.3'));
 												?>
 											</select>
 										</div>
@@ -98,7 +98,7 @@ if (!empty($_POST['id'])) {
 												<option value="0">Todos los Municipio</option>
 												<?php
 												if (!empty($_POST['id']))
-													echo $funciones->llenarcombomodifica("SELECT id_municipio as id, nombre as valor FROM tblc_municipio WHERE id_estado = " . $row['id_estado'] . " ORDER BY nombre", $row['id_municipio']);
+													echo $funciones->llenarcombomodifica($entity->statement('usuarios_registro.101.4') . $row['id_estado'] . $entity->statement('fragment.usuarios_registro.101.1'), $row['id_municipio']);
 												?>
 											</select>
 										</div>

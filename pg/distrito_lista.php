@@ -10,19 +10,18 @@ $inicio = ($pagina - 1) * $limite;
 $peticion_enlace = "";
 $sentencia = "";
 if ($id_estado != 0) {
-    $sentencia .= " and d.id_estado = " . $id_estado . "";
+    $sentencia .= $entity->statement('fragment.distrito_lista.13.1') . $id_estado . "";
 }
 if ($id_municipio != 0) {
-    $sentencia .= " and d.id_municipio = " . $id_municipio . "";
+    $sentencia .= $entity->statement('fragment.distrito_lista.16.2') . $id_municipio . "";
 }
 if (!empty($_POST['n'])) {
-    $sentencia .= " AND d.nombre LIKE '%" . $_POST['n'] . "%'";
+    $sentencia .= $entity->statement('fragment.distrito_lista.19.3') . $_POST['n'] . "%'";
     $peticion_enlace .= "&n=" . $_POST['n'];
 }
-$cadena = "SELECT d.*, e.nombre as estado FROM tblc_distrito as d 
-JOIN tblc_estado as e ON(d.id_estado = e.id_estado) WHERE d.fecha_eliminado IS NULL" . $sentencia . " ORDER BY d.nombre ASC LIMIT " . $inicio . "," . $limite . "";
+$cadena = $entity->statement('distrito_lista.22.1') . $sentencia . $entity->statement('fragment.distrito_lista.22.4') . $inicio . "," . $limite . "";
 
-$cadena2 = "SELECT COUNT(d.id_distrito) FROM tblc_distrito as d WHERE d.fecha_eliminado IS NULL" . $sentencia . " ORDER BY d.nombre ASC";
+$cadena2 = $entity->statement('distrito_lista.25.2') . $sentencia . $entity->statement('fragment.distrito_lista.24.5');
 
 $totalRegistros = $entity->scalar($cadena2);
 $resul_lista = $entity->objects($cadena);
@@ -54,7 +53,7 @@ $resul_lista = $entity->objects($cadena);
                     
                     foreach ($resul_lista as $resultado_fila) {
 
-                        $secciones = $entity->scalar("SELECT COUNT(id_seccion) FROM tblc_seccion WHERE id_distrito = " . $resultado_fila->id_distrito);
+                        $secciones = $entity->scalar($entity->statement('distrito_lista.57.3') . $resultado_fila->id_distrito);
                     ?>
                         <tr>
                             <td><strong><?php echo $resultado_fila->nombre ?></strong></td>

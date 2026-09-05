@@ -16,10 +16,10 @@
   $idproceso = $funciones->limpia($_POST['p']); 
   $casilla = $funciones->limpia($_POST['c']);
 
-  $acta = $entity->row("SELECT * FROM tbl_acta WHERE id_proceso_electoral = ".$idproceso." AND id_casilla = ".$casilla);
+  $acta = $entity->row($entity->statement('lista_bingo.19.1').$idproceso.$entity->statement('fragment.lista_bingo.19.1').$casilla);
 
 
-  $consulta =  "SELECT * FROM tbl_bingo ORDER BY numero ASC";
+  $consulta =  $entity->statement('lista_bingo.22.2');
     $resultados = $entity->objects($consulta);
  ?>
    <style>

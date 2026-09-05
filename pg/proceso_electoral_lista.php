@@ -9,11 +9,11 @@ require "../php/inicializandoDatosExterno.php";
  $sentencia = "";
  if (isset($_POST['n']) && $_POST['n'] != "") {
      $fecha = date("Y-m-d", strtotime($_POST['n']));
-     $sentencia .= " AND fecha LIKE '%" . $fecha . "%'";
+     $sentencia .= $entity->statement('fragment.proceso_electoral_lista.12.1') . $fecha . "%'";
  }
- $cadena = "SELECT * FROM tblc_proceso_electoral WHERE fecha_eliminado IS NULL" . $sentencia . " ORDER BY fecha ASC LIMIT " . $inicio . "," . $limite . "";
+ $cadena = $entity->statement('proceso_electoral_lista.14.1') . $sentencia . $entity->statement('fragment.proceso_electoral_lista.14.2') . $inicio . "," . $limite . "";
 
- $cadena2 = "SELECT COUNT(id_proceso_electoral) FROM tblc_proceso_electoral WHERE fecha_eliminado IS NULL" . $sentencia . " ORDER BY fecha ASC ";
+ $cadena2 = $entity->statement('proceso_electoral_lista.16.2') . $sentencia . $entity->statement('fragment.proceso_electoral_lista.16.3');
  $totalRegistros = $entity->scalar($cadena2);
  $resul_lista = $entity->objects($cadena);
   

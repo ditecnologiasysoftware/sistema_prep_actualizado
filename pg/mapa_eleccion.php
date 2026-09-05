@@ -14,32 +14,32 @@
         else{ $nConsulta = 1; } }
 
     }else if ($id_estado != 0 && $id_municipio == 0) {
-          $query .= " and estado_c = ".$id_estado."";
-          $coordena = $entity->scalar("SELECT CONCAT(latitud,',',longitud) as coordenada FROM tblc_estado WHERE id_estado =".$id_estado);
+          $query .= $entity->statement('fragment.mapa_eleccion.17.1').$id_estado."";
+          $coordena = $entity->scalar($entity->statement('mapa_eleccion.18.1').$id_estado);
         $cerca = '8';
         $centro = $coordena;
       if(isset($_GET['m'])){ if($_GET['m'] != 0){ $nConsulta = 3; }
       else{ $nConsulta = 2; } }else{ $nConsulta = 2;}
     }else if ($id_estado != 0 && $id_municipio != 0) {
-        $query .= " and municipio_c = ".$id_municipio." and estado_c = ".$id_estado."";
+        $query .= $entity->statement('fragment.mapa_eleccion.24.2').$id_municipio.$entity->statement('fragment.mapa_eleccion.24.3').$id_estado."";
         $cerca = '13';
-         $coordena = $entity->scalar("SELECT CONCAT(latitud,',',longitud) as coordenada FROM tblc_municipio WHERE id_municipio =".$id_municipio);
+         $coordena = $entity->scalar($entity->statement('mapa_eleccion.26.2').$id_municipio);
         $centro = $coordena;
         $nConsulta = 3;
     }
     if(isset($_GET['e'])){ 
       if ($_GET['e'] != 0) {
-        $query .= " and estado_c = ".$_GET['e']."";
-         $coordena = $entity->scalar("SELECT CONCAT(latitud,',',longitud) as coordenada FROM tblc_estado WHERE id_estado =".$_GET['e']);
+        $query .= $entity->statement('fragment.mapa_eleccion.32.4').$_GET['e']."";
+         $coordena = $entity->scalar($entity->statement('mapa_eleccion.33.3').$_GET['e']);
         $cerca = '8';
         $centro = $coordena;
       }
     }
     if(isset($_GET['m'])){
       if($_GET['m'] != 0){
-        $query .= " and municipio_c = ".$_GET['m']."";
+        $query .= $entity->statement('fragment.mapa_eleccion.40.5').$_GET['m']."";
          $cerca = '13';
-         $coordena = $entity->scalar("SELECT CONCAT(latitud,',',longitud) as coordenada FROM tblc_municipio WHERE id_municipio =".$_GET['m']);
+         $coordena = $entity->scalar($entity->statement('mapa_eleccion.42.4').$_GET['m']);
         $centro = $coordena;
       }
     }
@@ -48,10 +48,10 @@
       $idpelectoral = $funciones->limpia($_GET['c']);
         if ($_GET['t'] != '0') {
           $idteleccion = $funciones->limpia($_GET['t']);
-          $eleccion .= " and idt_eleccion_c = ".$idteleccion."";
+          $eleccion .= $entity->statement('fragment.mapa_eleccion.51.6').$idteleccion."";
         }              
       }else{
-      $idpelectoral = $entity->scalar("SELECT MAX(id_proceso_electoral) FROM tblc_proceso_electoral WHERE estatus = 1 LIMIT 1");
+      $idpelectoral = $entity->scalar($entity->statement('mapa_eleccion.54.5'));
       }    
             $cadenaa = "";
             $img = "";
@@ -59,12 +59,12 @@
 
             switch ($nConsulta) {
               case 1:
-               $cadena = "SELECT * FROM vw_resultado_elecciones WHERE idp_electoral_c = ".$idpelectoral.$query." GROUP BY estado_c";
+               $cadena = $entity->statement('mapa_eleccion.62.6').$idpelectoral.$query.$entity->statement('fragment.mapa_eleccion.62.7');
                $cadenaResultado = $entity->objects($cadena);
                $total = $entity->numregistros();
                 # ADMINISTRADOR                                                          
                   foreach ($cadenaResultado as $value){
-                        $datEstado = $entity->row("SELECT * FROM tblc_estado WHERE id_estado =".$value->estado_c);
+                        $datEstado = $entity->row($entity->statement('mapa_eleccion.67.7').$value->estado_c);
                   
                         $idEstado = $datEstado['id_estado'];
                         $estado  = $datEstado['nombre'];
@@ -78,12 +78,12 @@
                
               break;
               case 2:
-               $cadena = "SELECT * FROM vw_resultado_elecciones WHERE idp_electoral_c = ".$idpelectoral.$query." GROUP BY municipio_c";
+               $cadena = $entity->statement('mapa_eleccion.81.8').$idpelectoral.$query.$entity->statement('fragment.mapa_eleccion.81.8');
                $cadenaResultado = $entity->objects($cadena);
                $total = $entity->numregistros();
                 # ESTADO ASIGNADO
                   foreach ($cadenaResultado as $value){
-                        $datMunicipio = $entity->row("SELECT * FROM tblc_municipio WHERE id_municipio =".$value->municipio_c);
+                        $datMunicipio = $entity->row($entity->statement('mapa_eleccion.86.9').$value->municipio_c);
                         $idMunicipio = $datMunicipio['id_municipio'];
                         $municipio  = $datMunicipio['nombre'];
                         $latitud = $datMunicipio['latitud'];
@@ -96,14 +96,14 @@
                 }   
               break;
               case 3:
-                $cadena = "SELECT * FROM vw_resultado_elecciones WHERE idp_electoral_c = ".$idpelectoral.$eleccion.$query." GROUP BY id_casilla";
+                $cadena = $entity->statement('mapa_eleccion.99.10').$idpelectoral.$eleccion.$query.$entity->statement('fragment.mapa_eleccion.99.9');
                 $cadenaResultado = $entity->objects($cadena);
                 $total = $entity->numregistros();
                 # MUNICIPIO ASIGNADO
             foreach ($cadenaResultado as $value){
                     $idCasilla =    $value->id_casilla;
                     $numCasilla = $funciones->llenarCasillatbl($value->id_casilla);
-                    $municipio  = $entity->scalar("SELECT nombre FROM tblc_municipio WHERE id_municipio =".$value->id_municipio);
+                    $municipio  = $entity->scalar($entity->statement('mapa_eleccion.106.11').$value->id_municipio);
                     $latitud = $value->latitud;
                     $longitud   = $value->longitud;
                     $direccion  = $value->direccion;
@@ -125,7 +125,7 @@
                             $tipo="Extraordinaria";
                         break;               
                     }
-                    $ganador = $entity->row("SELECT vw_resultado_elecciones.* FROM vw_resultado_elecciones WHERE id_casilla = ".$value->id_casilla.$eleccion." ORDER BY resultado DESC LIMIT 1");
+                    $ganador = $entity->row($entity->statement('mapa_eleccion.128.12').$value->id_casilla.$eleccion.$entity->statement('fragment.mapa_eleccion.128.10'));
                     $votos_ganador = $ganador['resultado'];
                       if(isset($_GET['c'])){ if ($_GET['t'] != '0') { $img = $ganador['icono_pa']; }else{ $img = 'marker.png'; } }else{ $img = 'marker.png'; }
                     
@@ -195,7 +195,7 @@
 
                                                                               <select name="c" id="c" class="form-control">
                                                                                   <?php 
-                                                                                      echo $funciones->llenarcombomodifica("SELECT id_proceso_electoral as id, CONCAT(descripcion,' - ', fecha) as valor FROM tblc_proceso_electoral WHERE estatus = 1 ORDER BY fecha DESC", $_GET['c'] );
+                                                                                      echo $funciones->llenarcombomodifica($entity->statement('mapa_eleccion.198.13'), $_GET['c'] );
                                                                                   ?>
                                                                               </select>
                                                                               </div>
@@ -203,7 +203,7 @@
                                                                                <select name="t" id="t" class="form-control">
                                                                                <option value="0">-- Todo Tipo de Elección --</option>
                                                                                   <?php 
-                                                                                      echo $funciones->llenarcombomodifica("SELECT id_tipo_eleccion as id, nombre as valor FROM tblc_tipo_eleccion ORDER BY nombre DESC", $_GET['t'] );
+                                                                                      echo $funciones->llenarcombomodifica($entity->statement('mapa_eleccion.206.14'), $_GET['t'] );
                                                                                   ?>
                                                                               </select>
 
@@ -215,8 +215,8 @@
                                                                                 <select name="e" id="e" onchange="combodependiente('e', 'm', 'combo_dependiente/municipios.php')" class="form-control" required>
                                                                                   <option value="0">-- Todos los Estados --</option>
                                                                                   <?php 
-                                                                                  if(isset($_GET['e'])) echo $funciones->llenarcombomodifica("SELECT id_estado as id, nombre as valor FROM tblc_estado ORDER BY nombre", $_GET['e']);
-                                                                                  else echo $funciones->llenarcombo("SELECT id_estado as id, nombre as valor FROM tblc_estado ORDER BY nombre");
+                                                                                  if(isset($_GET['e'])) echo $funciones->llenarcombomodifica($entity->statement('mapa_eleccion.218.15'), $_GET['e']);
+                                                                                  else echo $funciones->llenarcombo($entity->statement('mapa_eleccion.219.16'));
                                                                                   ?>
                                                                                 </select>
                                                                               </div>
@@ -225,7 +225,7 @@
                                                                                 <select name="m" id="m" class="form-control" >
                                                                                   <option value="0">-- Todos los Municipios --</option>
                                                                                   <?php 
-                                                                                if(isset($_GET['m']) && $_GET['e'] != 0) echo $funciones->llenarcombomodifica("SELECT id_municipio as id, nombre as valor FROM tblc_municipio WHERE id_estado = ".$_GET['e']." ORDER BY nombre", $_GET['m']);
+                                                                                if(isset($_GET['m']) && $_GET['e'] != 0) echo $funciones->llenarcombomodifica($entity->statement('mapa_eleccion.228.17').$_GET['e'].$entity->statement('fragment.mapa_eleccion.228.11'), $_GET['m']);
                                                                                 ?>
                                                                                 </select>
                                                                               </div>
@@ -236,7 +236,7 @@
                                                                               <div class="col-sm-6">
                                                                                 <select name="m" id="m" class="form-control" >
                                                                                     <?php 
-                                                                                      if(isset($_GET['m'])) echo $funciones->llenarcombomodifica("SELECT id_municipio as id, nombre as valor FROM tblc_municipio WHERE id_estado = ".$id_estado." ORDER BY nombre", $_GET['m']);
+                                                                                      if(isset($_GET['m'])) echo $funciones->llenarcombomodifica($entity->statement('mapa_eleccion.239.18').$id_estado.$entity->statement('fragment.mapa_eleccion.239.12'), $_GET['m']);
                                                                                     ?>
                                                                                 </select>
                                                                               </div>
@@ -258,7 +258,7 @@
                                       </div><!-- panel -->
                                   </div><!-- panel-group -->
                             </div>
-                            <div style="float:left;"><strong><?php echo $total; ?></strong> REGISTROS ENCONTRADOS </h4></div><?php if($_GET['e'] != 0){ ?><div id="verestado" style="float:left; "><a href="mapa_eleccion"><b>&nbsp;&nbsp;IR A ESTADOS</b></a></div><?php } if($_GET['m'] != 0){ ?><div id="vermun" style="float:left; "><a href="mapa_eleccion?e=<?= $_GET['e'] ?>">&nbsp;&nbsp; | &nbsp;&nbsp; <b>IR A MUNICIPIOS</b></a></div><div id="vermun" style="float:left; "><a href="#">&nbsp;&nbsp; | &nbsp;&nbsp; <font color="#009327" style="font-weight: bold;"><?= $funciones->pasarMayusculas($entity->scalar("SELECT nombre FROM tblc_municipio WHERE id_municipio=".$_GET['m'])); ?></font></a></div><?php } ?>
+                            <div style="float:left;"><strong><?php echo $total; ?></strong> REGISTROS ENCONTRADOS </h4></div><?php if($_GET['e'] != 0){ ?><div id="verestado" style="float:left; "><a href="mapa_eleccion"><b>&nbsp;&nbsp;IR A ESTADOS</b></a></div><?php } if($_GET['m'] != 0){ ?><div id="vermun" style="float:left; "><a href="mapa_eleccion?e=<?= $_GET['e'] ?>">&nbsp;&nbsp; | &nbsp;&nbsp; <b>IR A MUNICIPIOS</b></a></div><div id="vermun" style="float:left; "><a href="#">&nbsp;&nbsp; | &nbsp;&nbsp; <font color="#009327" style="font-weight: bold;"><?= $funciones->pasarMayusculas($entity->scalar($entity->statement('mapa_eleccion.261.19').$_GET['m'])); ?></font></a></div><?php } ?>
                             <div id="google-map" style="width: 100%; height: 435px; position:relative;"></div> 
                             </div><!-- row -->
                                         

@@ -2,7 +2,7 @@
 require "../php/inicializandoDatosExterno.php";
 if ($_POST['id'] > 0) {
     $id = $funciones->limpia($_POST['id']);
-    $row = $entity->row("SELECT * FROM tblc_permiso WHERE id_permiso = " . $id);
+    $row = $entity->row($entity->statement('permisos_registro.5.1') . $id);
 }
 ?>
 <div class="col-md-5">
@@ -22,7 +22,7 @@ if ($_POST['id'] > 0) {
                     <select class="select2-container form-control" name="menu2" id="menu2" data-placeholder="Elige un Menu" style="width:100%">
                         <option value="0" selected>Ninguno</option>
                         <?php
-                            $funciones->llenarcombomodificaiconoMostrarMenu('SELECT id_permiso AS id, nombre AS valor, icono AS nombre_icono FROM tblc_permiso WHERE id_padre = 0 AND fecha_eliminado IS NULL ORDER BY nombre ASC', $row['id_padre']);
+                            $funciones->llenarcombomodificaiconoMostrarMenu($entity->statement('permisos_registro.25.2'), $row['id_padre']);
                         ?>
                     </select>
                 </div>
@@ -39,7 +39,7 @@ if ($_POST['id'] > 0) {
                     <select class="select2-container form-control" name="icono" id="icono" data-placeholder="Elige un Icono" style="width:100%">
                         <option value="">Sin icono</option>
                         <?php
-                            $funciones->llenarcombomodificaicono('SELECT id_icono AS id, nombre AS valor FROM tblc_iconos', $row['icono']);
+                            $funciones->llenarcombomodificaicono($entity->statement('permisos_registro.42.3'), $row['icono']);
                         ?>
                     </select>
                 </div>

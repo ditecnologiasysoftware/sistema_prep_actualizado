@@ -9,7 +9,7 @@
     $entity = Entity::createInstance();
 
     $id = $funciones->limpia($_GET['id']);
-    $latlon = $entity->row("SELECT latitud, longitud FROM tbl_reporte WHERE id_reporte = ".$id);
+    $latlon = $entity->row($entity->statement('mapa.12.1').$id);
 ?>
 <html lang="es">
     <head>

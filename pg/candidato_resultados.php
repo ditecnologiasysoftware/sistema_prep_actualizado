@@ -4,15 +4,11 @@
     $idcandidatoP = $funciones->limpia($_POST['cand']);
     $idprocesoE = $funciones->limpia($_POST['c']);
 
-    $cadena = "SELECT c.nombre, r.id_candidato, c.id_proceso_electoral, pe.descripcion, pe.fecha, SUM(r.resultado) as suma 
-    FROM tbl_resultado AS r 
-    INNER JOIN tblc_candidato AS c ON r.id_candidato = c.id_candidato 
-    INNER JOIN tblc_proceso_electoral AS pe ON pe.id_proceso_electoral = c.id_proceso_electoral 
-    WHERE c.id_proceso_electoral = ".$idprocesoE." GROUP BY r.id_candidato ORDER BY suma DESC";
+    $cadena = $entity->statement('candidato_resultados.7.1').$idprocesoE.$entity->statement('fragment.candidato_resultados.7.1');
     //echo $cadena;
     $cadenaResultado = $entity->objects($cadena);    
 
-    $candidato = ' Resultado del candidato - <b>'.$entity->scalar("SELECT nombre FROM tblc_candidato WHERE id_candidato =".$idcandidatoP).'</b>';  
+    $candidato = ' Resultado del candidato - <b>'.$entity->scalar($entity->statement('candidato_resultados.15.2').$idcandidatoP).'</b>';  
 
 ?>
 
@@ -51,7 +47,7 @@
                                     $color = ' style="background-color:green !important; color:#fff !important;"';
 
                                 $tipoPartidos = "";
-                                    $partidos = $entity->objects("SELECT p.nombre FROM tblc_candidato_partido AS cp JOIN tblc_partido_politico AS p ON cp.id_partido_politico = p.id_partido_politico WHERE cp.id_candidato =".$resultado_fila->id_candidato);
+                                    $partidos = $entity->objects($entity->statement('candidato_resultados.54.3').$resultado_fila->id_candidato);
                                     foreach ($partidos as $value) {
                                         $tipoPartidos .= $value->nombre.', ';
                                     }

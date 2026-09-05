@@ -12,17 +12,17 @@
       $cerca = '4';
       $centro = '21.8852562, -102.2915677';
     }else if ($id_estado != 0 && $id_municipio == 0) {
-      $coordena = $entity->scalar("SELECT CONCAT(latitud,',',longitud) as coordenada FROM tblc_estado WHERE id_estado =".$id_estado);
+      $coordena = $entity->scalar($entity->statement('mapa_seccion_2.15.1').$id_estado);
       $cerca = '8';
       $centro = $coordena;
     }else if ($id_estado != 0 && $id_municipio != 0) {
       $cerca = '12';
-      $coordena = $entity->scalar("SELECT CONCAT(latitud,',',longitud) as coordenada FROM tblc_municipio WHERE id_municipio =".$id_municipio);
+      $coordena = $entity->scalar($entity->statement('mapa_seccion_2.20.2').$id_municipio);
       $centro = $coordena;
     }
     if(isset($_GET['e'])){ 
       if ($_GET['e'] != 0) {
-        $coordena = $entity->scalar("SELECT CONCAT(latitud,',',longitud) as coordenada FROM tblc_estado WHERE id_estado =".$_GET['e']);
+        $coordena = $entity->scalar($entity->statement('mapa_seccion_2.25.3').$_GET['e']);
         $cerca = '8';
         $centro = $coordena;
       }
@@ -30,7 +30,7 @@
     if(isset($_GET['m'])){
       if($_GET['m'] != 0){
         $cerca = '12';
-        $coordena = $entity->scalar("SELECT CONCAT(latitud,',',longitud) as coordenada FROM tblc_municipio WHERE id_municipio =".$_GET['m']);
+        $coordena = $entity->scalar($entity->statement('mapa_seccion_2.33.4').$_GET['m']);
         $centro = $coordena;
       }
     }
@@ -82,7 +82,7 @@
                                                                                                 <option value="0">-- Todo Proceso de Elección --</option>
 
                                                                                                 <?php 
-                                                                                                    echo $funciones->llenarcombomodifica("SELECT id_proceso_electoral as id, CONCAT('Fecha del Proceso Electoral: ', fecha) as valor FROM tblc_proceso_electoral WHERE estatus = 1 ORDER BY fecha DESC", $_GET['c'] );
+                                                                                                    echo $funciones->llenarcombomodifica($entity->statement('mapa_seccion_2.85.5'), $_GET['c'] );
                                                                                                 ?>
                                                                                             </select>
                                                                                             </div>
@@ -90,7 +90,7 @@
                                                                                              <select name="t" id="t" class="form-control">
                                                                                              <option value="0">-- Todo Tipo de Elección --</option>
                                                                                                 <?php 
-                                                                                                    echo $funciones->llenarcombomodifica("SELECT id_tipo_eleccion as id, nombre as valor FROM tblc_tipo_eleccion ORDER BY nombre DESC", $_GET['t'] );
+                                                                                                    echo $funciones->llenarcombomodifica($entity->statement('mapa_seccion_2.93.6'), $_GET['t'] );
                                                                                                 ?>
                                                                                             </select>
 
@@ -102,8 +102,8 @@
                                                                                               <select name="e" id="e" onchange="combodependiente('e', 'm', 'combo_dependiente/municipios.php')" class="form-control" required>
                                                                                                                         <option value="0">-- Todos los Estados --</option>
                                                                                                                         <?php 
-                                                                                                                        if(isset($_GET['e'])) echo $funciones->llenarcombomodifica("SELECT id_estado as id, nombre as valor FROM tblc_estado ORDER BY nombre", $_GET['e']);
-                                                                                                                        else echo $funciones->llenarcombo("SELECT id_estado as id, nombre as valor FROM tblc_estado ORDER BY nombre");
+                                                                                                                        if(isset($_GET['e'])) echo $funciones->llenarcombomodifica($entity->statement('mapa_seccion_2.105.7'), $_GET['e']);
+                                                                                                                        else echo $funciones->llenarcombo($entity->statement('mapa_seccion_2.106.8'));
                                                                                                                         ?>
                                                                                                                         </select>
                                                                                             </div>
@@ -112,7 +112,7 @@
                                                                                               <select name="m" id="m" class="form-control" >
                                                                                                                           <option value="0">-- Todos los Municipios --</option>
                                                                                                                           <?php 
-                                                                                                                        if(isset($_GET['m']) && $_GET['e'] != 0) echo $funciones->llenarcombomodifica("SELECT id_municipio as id, nombre as valor FROM tblc_municipio WHERE id_estado = ".$_GET['e']." ORDER BY nombre", $_GET['m']);
+                                                                                                                        if(isset($_GET['m']) && $_GET['e'] != 0) echo $funciones->llenarcombomodifica($entity->statement('mapa_seccion_2.115.9').$_GET['e'].$entity->statement('fragment.mapa_seccion_2.115.1'), $_GET['m']);
                                                                                                                         ?>
                                                                                                                         </select>
                                                                                             </div>
@@ -123,7 +123,7 @@
                                                                                             <div class="col-sm-6">
                                                                                               <select name="m" id="m" class="form-control" >
                                                                                                   <?php 
-                                                                                                    if(isset($_GET['m'])) echo $funciones->llenarcombomodifica("SELECT id_municipio as id, nombre as valor FROM tblc_municipio WHERE id_estado = ".$id_estado." ORDER BY nombre", $_GET['m']);
+                                                                                                    if(isset($_GET['m'])) echo $funciones->llenarcombomodifica($entity->statement('mapa_seccion_2.126.10').$id_estado.$entity->statement('fragment.mapa_seccion_2.126.2'), $_GET['m']);
                                                                                                   ?>
                                                                                               </select>
                                                                                             </div>

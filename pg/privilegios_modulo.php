@@ -4,8 +4,8 @@ require "../php/inicializandoDatosExterno.php";
 if (isset($_POST['id']))
 	$id = $funciones->limpia($_POST['id']);
 
-$obtener_permisos_usu = $entity->objects("SELECT * FROM tbl_usuario_permiso WHERE id_usuario = " . $id);
-$obtener_menualto = $entity->objects("SELECT * FROM tblc_permiso WHERE id_padre = 0 AND fecha_eliminado IS NULL ORDER BY ordenamiento ASC");
+$obtener_permisos_usu = $entity->objects($entity->statement('privilegios_modulo.7.1') . $id);
+$obtener_menualto = $entity->objects($entity->statement('privilegios_modulo.8.2'));
 ?>
 
 		<div class="panel panel-default">
@@ -21,7 +21,7 @@ $obtener_menualto = $entity->objects("SELECT * FROM tblc_permiso WHERE id_padre 
 					<?php
 					foreach ($obtener_menualto as $menu_alto) {
 
-						$obtener_subchicos = $entity->objects('SELECT * FROM tblc_permiso WHERE id_padre = ' . $menu_alto->id_permiso . ' AND fecha_eliminado IS NULL ORDER BY ordenamiento ASC');
+						$obtener_subchicos = $entity->objects($entity->statement('privilegios_modulo.24.3') . $menu_alto->id_permiso . $entity->statement('fragment.privilegios_modulo.24.1'));
 
 						$num_arreglo_1 = count($obtener_subchicos);
 

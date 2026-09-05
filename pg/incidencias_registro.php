@@ -6,11 +6,11 @@ $limite = 10;
 $cantenlaces = 7;
 $inicio = ($pagina - 1) * $limite;
 if ($id_municipio != 0) {
-	$query .= " and c.id_municipio = " . $id_municipio . "";
-	$query_pe .= " and id_municipio = " . $id_municipio . "";
+	$query .= $entity->statement('fragment.incidencias_registro.9.1') . $id_municipio . "";
+	$query_pe .= $entity->statement('fragment.incidencias_registro.10.2') . $id_municipio . "";
 } elseif ($id_estado != 0) {
-	$query .= " and m.id_estado = " . $id_estado . "";
-	$query_pe .= " and id_estado = " . $id_estado . "";
+	$query .= $entity->statement('fragment.incidencias_registro.12.3') . $id_estado . "";
+	$query_pe .= $entity->statement('fragment.incidencias_registro.13.4') . $id_estado . "";
 }
 ?>
 <!--FIN ARRIBA-------------------------------------------------------------------------------- -->
@@ -27,7 +27,7 @@ if ($id_municipio != 0) {
 					<?php
 					if (!empty($_POST['id'])) {
 						$id = $funciones->limpia($_POST['id']);
-						$row = $entity->row("SELECT r.*, m.id_estado FROM tbl_reporte as r INNER JOIN tblc_municipio as m ON r.id_municipio = m.id_municipio WHERE r.id_reporte = " . $id);
+						$row = $entity->row($entity->statement('incidencias_registro.30.1') . $id);
 					}
 					?>
 					<div class="panel-body">
@@ -45,8 +45,8 @@ if ($id_municipio != 0) {
 										<select class="select2-container form-control" name="id_estado" id="id_estado" required onchange="combodependiente('id_estado', 'id_municipio', 'combo_dependiente/municipios.php')" style="width: 98%">
 											<option value=""> - Seleccionar Estado - </option>
 											<?php
-											if (!empty($_POST['id'])) echo $funciones->llenarcombomodifica("SELECT id_estado as id, nombre as valor FROM tblc_estado ORDER BY nombre", $row['id_estado']);
-											else echo $funciones->llenarcombo("SELECT id_estado as id, nombre as valor FROM tblc_estado ORDER BY nombre");
+											if (!empty($_POST['id'])) echo $funciones->llenarcombomodifica($entity->statement('incidencias_registro.48.2'), $row['id_estado']);
+											else echo $funciones->llenarcombo($entity->statement('incidencias_registro.49.3'));
 											?>
 										</select>
 									</div>
@@ -65,7 +65,7 @@ if ($id_municipio != 0) {
 									<div>
 										<select class="select2-container form-control" name="id_municipio" id="id_municipio" required>
 											<?php
-											if (!empty($_POST['id'])) echo $funciones->llenarcombomodifica("SELECT id_municipio as id, nombre as valor FROM tblc_municipio WHERE id_estado = " . $row['id_estado'] . " ORDER BY nombre", $row['id_municipio']);
+											if (!empty($_POST['id'])) echo $funciones->llenarcombomodifica($entity->statement('incidencias_registro.68.4') . $row['id_estado'] . $entity->statement('fragment.incidencias_registro.68.5'), $row['id_municipio']);
 											?>
 										</select>
 									</div>
@@ -82,9 +82,9 @@ if ($id_municipio != 0) {
 									<select class="select2-container form-control" name="id_casilla" id="id_casilla" required>
 										<?php
 										if (!empty($_POST['id']))
-											echo $funciones->llenarcombomodificaCasilla("SELECT c.* FROM tblc_casilla as c JOIN tblc_municipio as m ON(c.id_municipio = m.id_municipio) WHERE c.id_casilla != 0" . $query . "  ORDER BY c.seccion ASC, c.tipo ASC, c.nombre ASC", 0);
+											echo $funciones->llenarcombomodificaCasilla($entity->statement('incidencias_registro.85.5') . $query . $entity->statement('fragment.incidencias_registro.85.6'), 0);
 										else
-											echo $funciones->llenarcombomodificaCasilla("SELECT c.* FROM tblc_casilla as c JOIN tblc_municipio as m ON(c.id_municipio = m.id_municipio) WHERE c.id_casilla != 0" . $query . "  ORDER BY c.seccion ASC, c.tipo ASC, c.nombre ASC", $row['id_casilla']);
+											echo $funciones->llenarcombomodificaCasilla($entity->statement('incidencias_registro.87.6') . $query . $entity->statement('fragment.incidencias_registro.87.7'), $row['id_casilla']);
 
 										?>
 									</select>
@@ -111,10 +111,10 @@ if ($id_municipio != 0) {
 								<select class="select2-container form-control" name="etiquetas[]" id="etiquetas" style="width:100%" required>
 									<option value=""> - Seleccionar Estado - </option>
 									<?php
-									$sqletiquetas = "SELECT id_etiqueta as id, etiqueta as valor FROM tblc_etiqueta ORDER BY etiqueta";
+									$sqletiquetas = $entity->statement('incidencias_registro.114.7');
 									if (!empty($_POST['id'])) {
 										$etiquetas = array();
-										$etq = $entity->objects("SELECT id_etiqueta FROM tbl_reporte_etiqueta WHERE id_reporte = " . $id);
+										$etq = $entity->objects($entity->statement('incidencias_registro.117.8') . $id);
 										foreach ($etq as $value) {
 											array_push($etiquetas, $value->id_etiqueta);
 										}

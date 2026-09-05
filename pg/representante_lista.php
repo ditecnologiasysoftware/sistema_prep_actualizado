@@ -10,31 +10,27 @@ $sentencia = "";
 $query = "";
 if ($_POST['id_estado'] != 0) {
     $id_estado = $funciones->limpia($_POST['id_estado']);
-    $sentencia .= " AND m.id_estado = " . $id_estado . "";
+    $sentencia .= $entity->statement('fragment.representante_lista.13.1') . $id_estado . "";
 }
 
 if ($_POST['id_municipio'] != 0) {
     $id_municipio = $funciones->limpia($_POST['id_municipio']);
-    $sentencia .= " AND r.id_municipio = " . $id_municipio . "";
+    $sentencia .= $entity->statement('fragment.representante_lista.18.2') . $id_municipio . "";
 }
 
 if ($_POST['id_municipio'] != 0) {
     $id_municipio = $funciones->limpia($_POST['id_municipio']);
-    $sentencia .= " AND r.id_municipio = " . $id_municipio . "";
+    $sentencia .= $entity->statement('fragment.representante_lista.23.3') . $id_municipio . "";
 }
 
 if (isset($_POST['n'])) {
-$sentencia .= " AND r.nombre LIKE '%" . $_POST['n'] . "%'";
+$sentencia .= $entity->statement('fragment.representante_lista.27.4') . $_POST['n'] . "%'";
 $peticion_enlace .= "&n=" . $_POST['n'];
 }
 
-$cadena = "SELECT r.*, m.nombre as municipio, m.id_estado FROM tblc_representante as r
-INNER JOIN tblc_municipio as m ON r.id_municipio = m.id_municipio
-WHERE r.fecha_eliminado IS NULL" . $sentencia . " ORDER BY r.nombre ASC LIMIT " . $inicio . "," . $limite . "";
+$cadena = $entity->statement('representante_lista.31.1') . $sentencia . $entity->statement('fragment.representante_lista.31.5') . $inicio . "," . $limite . "";
 
-$cadena2 = "SELECT COUNT(r.id_representante) FROM tblc_representante as r
-INNER JOIN tblc_municipio as m ON r.id_municipio = m.id_municipio
-WHERE r.fecha_eliminado IS NULL" . $sentencia;
+$cadena2 = $entity->statement('representante_lista.35.2') . $sentencia;
 
 $totalRegistros = $entity->scalar($cadena2);
 
@@ -67,7 +63,7 @@ $resul_lista = $entity->objects($cadena);
                 <tbody>
                     <?php
                     foreach ($resul_lista as $resultado_fila) {
-                        $procesoelQuery = "SELECT CONCAT(descripcion,' - ', fecha) FROM tblc_proceso_electoral WHERE id_proceso_electoral = ".$resultado_fila->id_proceso_electoral;
+                        $procesoelQuery = $entity->statement('representante_lista.70.3').$resultado_fila->id_proceso_electoral;
                         $precesoElectoral = $entity->scalar($procesoelQuery);
                     ?>
                         <tr>

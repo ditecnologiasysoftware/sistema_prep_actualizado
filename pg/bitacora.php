@@ -7,9 +7,9 @@
 				$inicio = ($pagina - 1) * $limite;
 				
 				$id = $funciones->limpia(base64_decode($_GET['id'])); 
-				$nombre = $entity->scalar("SELECT nombre FROM tblc_usuario WHERE id_usuario = ".$id);
+				$nombre = $entity->scalar($entity->statement('bitacora.10.1').$id);
 
-				$ultimo_acceso = $entity->row("SELECT date_format(fecha_acceso, '%H:%i') as hora, date_format(fecha_acceso, '%d-%m-%Y') as fecha FROM tbl_sesion WHERE id_usuario = ".$id);
+				$ultimo_acceso = $entity->row($entity->statement('bitacora.12.2').$id);
 				?>
                     
                    <div class="pageheader">
@@ -72,7 +72,7 @@
 																							<label class="col-sm-4">Año :</label>
 																							<div class="col-sm-8">
 																								<select name="anio_busqueda" class="form-control">
-																			                    	<?php $funciones->llenarcombomodifica("SELECT DISTINCT YEAR(fecha_acceso) as id, YEAR(fecha_acceso) as valor FROM tbl_sesion WHERE id_usuario=".$id,$anio_busqueda) ?>
+																			                    	<?php $funciones->llenarcombomodifica($entity->statement('bitacora.75.3').$id,$anio_busqueda) ?>
 																			                    </select>
 																							</div>
 																						</div>
@@ -118,28 +118,28 @@
 
 															if(isset($_GET['mes_busqueda'])){
 																$mes_busqueda = $funciones->limpia($_GET['mes_busqueda']);
-															    $sentencia .= " AND MONTH(log.fecha) = '".$mes_busqueda."'";
+															    $sentencia .= $entity->statement('fragment.bitacora.121.1').$mes_busqueda."'";
 															    $peticion_enlace .= "&mes_busqueda=".$mes_busqueda;
 															}
 															else{
 																$mes_busqueda = date('m');
-															    $sentencia .= " AND MONTH(log.fecha) = '".$mes_busqueda."'";
+															    $sentencia .= $entity->statement('fragment.bitacora.126.2').$mes_busqueda."'";
 															    $peticion_enlace .= "&mes_busqueda=".$mes_busqueda;
 															}	
 
 															if(isset($_GET['anio_busqueda'])){
 																$anio_busqueda = $funciones->limpia($_GET['anio_busqueda']);
-															    $sentencia .= " AND YEAR(log.fecha) = '".$anio_busqueda."'";
+															    $sentencia .= $entity->statement('fragment.bitacora.132.3').$anio_busqueda."'";
 															    $peticion_enlace .= "&anio_busqueda=".$anio_busqueda;
 															}
 															else{
 																$anio_busqueda = date('Y');
-															    $sentencia .= " AND YEAR(log.fecha) = '".$anio_busqueda."'";
+															    $sentencia .= $entity->statement('fragment.bitacora.137.4').$anio_busqueda."'";
 															    $peticion_enlace .= "&anio_busqueda=".$anio_busqueda;
 															}
 
-															$cadena = "SELECT ses.so, ses.navegador, ses.ip, log.descripcion, log.fecha, date_format(log.fecha, '%H:%i') as hora, date_format(log.fecha, '%Y-%m-%d') as fecha2 FROM tbl_log AS log INNER JOIN tbl_sesion AS ses ON log.id_sesion = ses.id_sesion WHERE ses.id_usuario = ".$id.$sentencia." LIMIT ".$inicio.",".$limite."";
-															$cadena2 = "SELECT COUNT(log.id_log) FROM tbl_log AS log INNER JOIN tbl_sesion AS ses ON log.id_sesion = ses.id_sesion WHERE ses.id_usuario = ".$id.$sentencia;	
+															$cadena = $entity->statement('bitacora.141.4').$id.$sentencia.$entity->statement('fragment.bitacora.141.5').$inicio.",".$limite."";
+															$cadena2 = $entity->statement('bitacora.142.5').$id.$sentencia;	
 															
 															$totalCirculares = $entity->scalar($cadena2);
 															$resul_lista = $entity->objects($cadena);

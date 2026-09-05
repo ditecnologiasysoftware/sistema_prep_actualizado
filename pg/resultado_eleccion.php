@@ -43,7 +43,7 @@
                                                             <select name="q" id="q" class="form-control">
                                                                 <option value="0"> -  Todos los procesos electorales - </option>
                                                                 <?php
-                                                                echo $funciones->llenarcombomodifica("SELECT id_proceso_electoral as id, CONCAT(descripcion,' - ', fecha) as valor FROM tblc_proceso_electoral WHERE estatus = 1" . $query_pe . " ORDER BY fecha DESC", $_POST['q']);
+                                                                echo $funciones->llenarcombomodifica($entity->statement('resultado_eleccion.46.1') . $query_pe . $entity->statement('fragment.resultado_eleccion.46.1'), $_POST['q']);
                                                                 ?>
                                                             </select>
                                                         </div>
@@ -54,8 +54,8 @@
                                                                 <select name="estado_busqueda" id="estado_busqueda" onchange="combodependiente('estado_busqueda', 'municipio_busqueda', 'combo_dependiente/municipios.php')" class="form-control" required>
                                                                     <option value="0">Todos los Estados</option>
                                                                     <?php
-                                                                    if (!empty($_POST['estado_busqueda'])) echo $funciones->llenarcombomodifica("SELECT id_estado as id, nombre as valor FROM tblc_estado ORDER BY nombre", $_POST['estado_busqueda']);
-                                                                    else echo $funciones->llenarcombo("SELECT id_estado as id, nombre as valor FROM tblc_estado ORDER BY nombre");
+                                                                    if (!empty($_POST['estado_busqueda'])) echo $funciones->llenarcombomodifica($entity->statement('resultado_eleccion.57.2'), $_POST['estado_busqueda']);
+                                                                    else echo $funciones->llenarcombo($entity->statement('resultado_eleccion.58.3'));
                                                                     ?>
                                                                 </select>
                                                             </div>
@@ -63,7 +63,7 @@
                                                                 <select name="municipio_busqueda" id="municipio_busqueda" class="form-control">
                                                                     <option value="0">Todos los Municipios</option>
                                                                     <?php
-                                                                    if (!empty($_POST['municipio_busqueda']) && $_POST['estado_busqueda'] != 0) echo $funciones->llenarcombomodifica("SELECT id_municipio as id, nombre as valor FROM tblc_municipio WHERE id_estado = " . $_POST['estado_busqueda'] . " ORDER BY nombre", $_POST['municipio_busqueda']);
+                                                                    if (!empty($_POST['municipio_busqueda']) && $_POST['estado_busqueda'] != 0) echo $funciones->llenarcombomodifica($entity->statement('resultado_eleccion.66.4') . $_POST['estado_busqueda'] . $entity->statement('fragment.resultado_eleccion.66.2'), $_POST['municipio_busqueda']);
                                                                     ?>
                                                                 </select>
                                                             </div>
@@ -73,7 +73,7 @@
                                                             <div class="col-sm-4">
                                                                 <select name="municipio_busqueda" id="municipio_busqueda" class="form-control">
                                                                     <?php
-                                                                    if (!empty($_POST['municipio_busqueda'])) echo $funciones->llenarcombomodifica("SELECT id_municipio as id, nombre as valor FROM tblc_municipio WHERE id_estado = " . $id_estado . " ORDER BY nombre", $_POST['municipio_busqueda']);
+                                                                    if (!empty($_POST['municipio_busqueda'])) echo $funciones->llenarcombomodifica($entity->statement('resultado_eleccion.76.5') . $id_estado . $entity->statement('fragment.resultado_eleccion.76.3'), $_POST['municipio_busqueda']);
                                                                     ?>
                                                                 </select>
                                                             </div>

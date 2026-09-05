@@ -10,12 +10,12 @@ $sentencia = "";
 $query = "";
 
 if (!empty($_POST['n'])) {
-    $sentencia .= " AND nombre LIKE '%" . $_POST['n'] . "%'";
+    $sentencia .= $entity->statement('fragment.nominal_lista.13.1') . $_POST['n'] . "%'";
     $peticion_enlace .= "&n=" . $_POST['n'];
 }
-$cadena = "SELECT * FROM tbl_lista_nominal  WHERE fecha_eliminado IS NULL" . $sentencia . " ORDER BY nombre ASC LIMIT " . $inicio . "," . $limite . "";
+$cadena = $entity->statement('nominal_lista.16.1') . $sentencia . $entity->statement('fragment.nominal_lista.16.2') . $inicio . "," . $limite . "";
 
-$cadena2 = "SELECT COUNT(id_lista_nominal) FROM tbl_lista_nominal WHERE fecha_eliminado IS NULL" . $sentencia;
+$cadena2 = $entity->statement('nominal_lista.18.2') . $sentencia;
 
 $totalRegistros = $entity->scalar($cadena2);
 
@@ -86,7 +86,7 @@ $resul_lista = $entity->objects($cadena);
                 <tbody>
                     <?php
                     foreach ($resul_lista as $resultado_fila) {
-                        $casilla = $entity->row("SELECT * FROM tblc_casilla as c WHERE c.id_casilla =" . $resultado_fila->id_casilla);
+                        $casilla = $entity->row($entity->statement('nominal_lista.89.3') . $resultado_fila->id_casilla);
                     ?>
                         <tr>
                             <td><?php echo $resultado_fila->folio; ?></td>

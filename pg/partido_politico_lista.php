@@ -1,6 +1,6 @@
 <?php 
 require "../php/inicializandoDatosExterno.php";
-$cadena = "SELECT * FROM tblc_partido_politico WHERE fecha_eliminado IS NULL ORDER BY nombre ASC";
+$cadena = $entity->statement('partido_politico_lista.3.1');
 $resul_lista = $entity->objects($cadena);
 ?>
     <div class="panel panel-default">

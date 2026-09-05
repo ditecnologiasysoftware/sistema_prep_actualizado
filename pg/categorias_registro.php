@@ -2,7 +2,7 @@
 require "../php/inicializandoDatosExterno.php";
     if ($_POST['id'] > 0) {
         $id = $funciones->limpia($_POST['id']);
-        $row = $entity->row("SELECT * FROM tblc_categoria WHERE id_categoria = " . $id . " ");
+        $row = $entity->row($entity->statement('categorias_registro.5.1') . $id . " ");
     }
 ?>
 

@@ -3,11 +3,11 @@
     $query_pe = "";
 
     if ($id_municipio != 0) {
-         $query .= " and c.id_municipio = ".$id_municipio."";
-       $query_pe .= " and id_municipio = ".$id_municipio."";
+         $query .= $entity->statement('fragment.registro_resultados_completo.6.1').$id_municipio."";
+       $query_pe .= $entity->statement('fragment.registro_resultados_completo.7.2').$id_municipio."";
       }elseif ($id_estado != 0) {
-         $query .= " and m.id_estado = ".$id_estado."";
-       $query_pe .= " and id_estado = ".$id_estado."";
+         $query .= $entity->statement('fragment.registro_resultados_completo.9.3').$id_estado."";
+       $query_pe .= $entity->statement('fragment.registro_resultados_completo.10.4').$id_estado."";
       }
  ?>
                   <!--  ARRIBA----------------------------------------------------------------------------------- -->
@@ -48,7 +48,7 @@
                                             <select name="idprocesoElect" id="idprocesoElect" style="width:95%;" required onchange="lista_candidatos_completo(this)">
                                                 <option value=""> - Seleccionar Proceso Electoral - </option>
                                                 <?php
-                                                echo $funciones->llenarcombo("SELECT id_proceso_electoral as id, CONCAT(descripcion,' - ', fecha) as valor FROM tblc_proceso_electoral WHERE estatus = 1" . $query_pe . " ORDER BY fecha DESC");
+                                                echo $funciones->llenarcombo($entity->statement('registro_resultados_completo.51.1') . $query_pe . $entity->statement('fragment.registro_resultados_completo.51.5'));
                                                 ?>
                                             </select>
                                     </div> 
@@ -62,8 +62,8 @@
                                                     <label>Estado :</label>
                                                         <select name="id_estado" id="id_estado" onchange="combodependiente('id_estado', 'id_municipio', 'combo_dependiente/municipios2.php')" style="width:90%;" required>
                                                             <?php 
-                                                            if(isset($_GET['id'])) echo $funciones->llenarcombomodifica("SELECT id_estado as id, nombre as valor FROM tblc_estado ORDER BY nombre", $row['id_estado']);
-                                                            else echo $funciones->llenarcombo("SELECT id_estado as id, nombre as valor FROM tblc_estado ORDER BY nombre");
+                                                            if(isset($_GET['id'])) echo $funciones->llenarcombomodifica($entity->statement('registro_resultados_completo.65.2'), $row['id_estado']);
+                                                            else echo $funciones->llenarcombo($entity->statement('registro_resultados_completo.66.3'));
                                                             ?>
                                                         </select>
                                                 </div>
@@ -72,7 +72,7 @@
                                                     <label>Municipio :</label>
                                                         <select name="id_municipio" id="id_municipio" style="width:90%;" required onchange="combodependiente('id_municipio', 'seccion', 'combo_dependiente/secciones.php')">
                                                             <?php 
-                                                            if(isset($_GET['id'])) echo $funciones->llenarcombomodifica("SELECT id_municipio as id, nombre as valor FROM tblc_municipio WHERE id_estado = ".$row['id_estado']." ORDER BY nombre", $row['id_municipio']);
+                                                            if(isset($_GET['id'])) echo $funciones->llenarcombomodifica($entity->statement('registro_resultados_completo.75.4').$row['id_estado'].$entity->statement('fragment.registro_resultados_completo.75.6'), $row['id_municipio']);
                                                             ?>
                                                         </select>
                                                 </div> 
@@ -81,8 +81,8 @@
                                                 <label>Municipio :</label>
                                                     <select name="id_municipio" id="id_municipio" style="width:90%;" required onchange="combodependiente('id_municipio', 'seccion', 'combo_dependiente/secciones.php')">
                                                         <?php 
-                                                        if(isset($_GET['id'])) echo $funciones->llenarcombomodifica("SELECT id_municipio as id, nombre as valor FROM tblc_municipio WHERE id_estado = ".$id_estado." ORDER BY nombre", $row['id_municipio']);
-                                                        else echo $funciones->llenarcombo("SELECT id_municipio as id, nombre as valor FROM tblc_municipio WHERE id_estado = ".$id_estado." ORDER BY nombre");
+                                                        if(isset($_GET['id'])) echo $funciones->llenarcombomodifica($entity->statement('registro_resultados_completo.84.5').$id_estado.$entity->statement('fragment.registro_resultados_completo.84.7'), $row['id_municipio']);
+                                                        else echo $funciones->llenarcombo($entity->statement('registro_resultados_completo.85.6').$id_estado.$entity->statement('fragment.registro_resultados_completo.85.8'));
                                                         ?>
                                                     </select>
                                             </div> 
@@ -130,11 +130,7 @@
                                               <?php    
                                                 $sentencia = "";
 
-                                                $consulta =  "SELECT c.*, p.id_partido_politico, p.nombre as partido, p.icono, p.colo 
-                                              FROM tblc_candidato_partido AS cp 
-                                              INNER JOIN tblc_candidato AS c ON c.id_candidato = cp.id_candidato 
-                                              INNER JOIN tblc_partido_politico AS p ON p.id_partido_politico = cp.id_partido_politico 
-                                              WHERE c.id_proceso_electoral = ".$id_proceso_electoral." ORDER BY cp.ordenamiento ASC";
+                                                $consulta =  $entity->statement('registro_resultados_completo.133.7').$id_proceso_electoral.$entity->statement('fragment.registro_resultados_completo.133.9');
                                               //echo $consulta;
                                               $resul_lista = $entity->objects($consulta);
 

@@ -6,11 +6,7 @@
             <?php    
               $sentencia = "";
 
-              $consulta =  "SELECT c.*, cp.ordenamiento, p.id_partido_politico, p.nombre as partido, p.icono, p.colo 
-            FROM tblc_candidato_partido AS cp 
-            INNER JOIN tblc_candidato AS c ON c.id_candidato = cp.id_candidato 
-            INNER JOIN tblc_partido_politico AS p ON p.id_partido_politico = cp.id_partido_politico 
-            WHERE c.id_proceso_electoral = ".$id_proceso_electoral." ORDER BY cp.ordenamiento ASC";
+              $consulta =  $entity->statement('ordenar_acta_lista.9.1').$id_proceso_electoral.$entity->statement('fragment.ordenar_acta_lista.9.1');
             //echo $consulta;
             $resul_lista = $entity->objects($consulta);
 

@@ -3,11 +3,11 @@
     $query_pe = "";
 
     if ($id_municipio != 0) {
-         $query .= " and c.id_municipio = ".$id_municipio."";
-       $query_pe .= " and id_municipio = ".$id_municipio."";
+         $query .= $entity->statement('fragment.registro_bingo.6.1').$id_municipio."";
+       $query_pe .= $entity->statement('fragment.registro_bingo.7.2').$id_municipio."";
       }elseif ($id_estado != 0) {
-         $query .= " and m.id_estado = ".$id_estado."";
-       $query_pe .= " and id_estado = ".$id_estado."";
+         $query .= $entity->statement('fragment.registro_bingo.9.3').$id_estado."";
+       $query_pe .= $entity->statement('fragment.registro_bingo.10.4').$id_estado."";
       }
  ?>
                   <!--  ARRIBA----------------------------------------------------------------------------------- -->
@@ -39,7 +39,7 @@
                 												<label class="col-sm-12"><b>Proceso Electoral :</b></label>
                 												<select name="p" id="p" class="form-control">
                                              <?php 
-                                               echo $funciones->llenarcombomodifica("SELECT id_proceso_electoral as id, CONCAT(descripcion,' - ', fecha) as valor FROM tblc_proceso_electoral WHERE estatus = 1".$query_pe." ORDER BY fecha DESC", $_GET['p'] );
+                                               echo $funciones->llenarcombomodifica($entity->statement('registro_bingo.42.1').$query_pe.$entity->statement('fragment.registro_bingo.42.5'), $_GET['p'] );
                                              ?>
                                         </select><br><br>
 
@@ -48,15 +48,15 @@
                                             <select name="edo" id="id_estado" onchange="combodependiente('id_estado', 'id_municipio', 'combo_dependiente/municipios2.php')" class="form-control" required>
                                                 <option value="0">Todos los Estados</option>
                                                 <?php 
-                                                   if(isset($_GET['edo'])) echo $funciones->llenarcombomodifica("SELECT id_estado as id, nombre as valor FROM tblc_estado ORDER BY nombre", $_GET['edo']);
-                                                    else echo $funciones->llenarcombo("SELECT id_estado as id, nombre as valor FROM tblc_estado ORDER BY nombre");
+                                                   if(isset($_GET['edo'])) echo $funciones->llenarcombomodifica($entity->statement('registro_bingo.51.2'), $_GET['edo']);
+                                                    else echo $funciones->llenarcombo($entity->statement('registro_bingo.52.3'));
                                                 ?>
                                             </select><br><br>
                                         <label class="col-sm-12"><b>Municipio :</b></label>
                                             <select name="mun" id="id_municipio" class="form-control" required onchange="combodependiente('id_municipio', 'c', 'combo_dependiente/casillas.php');">
                                               <option value="0">Todos los Municipios</option>
                                                 <?php 
-                                                if(isset($_GET['mun'])) echo $funciones->llenarcombomodifica("SELECT id_municipio as id, nombre as valor FROM tblc_municipio WHERE id_estado = ".$_GET['edo']." ORDER BY nombre", $_GET['mun']);
+                                                if(isset($_GET['mun'])) echo $funciones->llenarcombomodifica($entity->statement('registro_bingo.59.4').$_GET['edo'].$entity->statement('fragment.registro_bingo.59.6'), $_GET['mun']);
                                                 ?>
                                             </select><br><br>
                                         <?php }else if ($id_estado != 0 && $id_municipio == 0) { ?> 
@@ -65,8 +65,8 @@
                                               <option value="0">Todos los Municipios</option>
                                                 <?php 
 
-                                                if(isset($_GET['mun'])) echo $funciones->llenarcombomodifica("SELECT id_municipio as id, nombre as valor FROM tblc_municipio WHERE id_estado = ".$id_estado." ORDER BY nombre", $_GET['mun']);
-                                                else echo $funciones->llenarcombo("SELECT id_municipio as id, nombre as valor FROM tblc_municipio WHERE id_estado = ".$id_estado." ORDER BY nombre");
+                                                if(isset($_GET['mun'])) echo $funciones->llenarcombomodifica($entity->statement('registro_bingo.68.5').$id_estado.$entity->statement('fragment.registro_bingo.68.7'), $_GET['mun']);
+                                                else echo $funciones->llenarcombo($entity->statement('registro_bingo.69.6').$id_estado.$entity->statement('fragment.registro_bingo.69.8'));
                                                 ?>
                                             </select><br><br>
                                         <?php } ?>
@@ -75,7 +75,7 @@
 								                            <select name="c" id="c" class="form-control" onchange="lista_bingo();">
                                               <option value=""> - Seleccionar Casilla -</option>
                                              <?php                                                    
-                                               echo $funciones->llenarcombomodificaCasilla("SELECT c.* FROM tblc_casilla as c JOIN tblc_municipio as m ON(c.id_municipio = m.id_municipio) WHERE c.id_casilla != 0".$query."  ORDER BY c.seccion ASC, c.tipo ASC, c.nombre ASC", 0 );
+                                               echo $funciones->llenarcombomodificaCasilla($entity->statement('registro_bingo.78.7').$query.$entity->statement('fragment.registro_bingo.78.9'), 0 );
                                              ?>
                                         </select>
 

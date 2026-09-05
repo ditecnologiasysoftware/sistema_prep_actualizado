@@ -4,7 +4,7 @@ require "../php/inicializandoDatosExterno.php";
 if (isset($_POST['id']) && is_numeric($_POST['id']) && (int) $_POST['id'] > 0) {
     $id = (int) $_POST['id'];
     $row = $entity->row(
-        "SELECT (SELECT id_estado FROM tblc_municipio WHERE id_municipio = dis.id_municipio) as id_estado, dis.* FROM tblc_casilla as dis WHERE dis.id_casilla = ?",
+        $entity->statement('casilla_electoral_registro.7.1'),
         [$id]
     );
 
@@ -12,7 +12,7 @@ if (isset($_POST['id']) && is_numeric($_POST['id']) && (int) $_POST['id'] > 0) {
     // permite mostrarla seleccionada y migrarla al guardar la edicion.
     if (empty($row['id_seccion']) && !empty($row['seccion']) && !empty($row['id_municipio'])) {
         $row['id_seccion'] = $entity->scalar(
-            "SELECT id_seccion FROM tblc_seccion WHERE fecha_eliminado IS NULL AND id_municipio = ? AND nombre = ? LIMIT 1",
+            $entity->statement('casilla_electoral_registro.15.2'),
             [(int) $row['id_municipio'], $row['seccion']]
         );
     }

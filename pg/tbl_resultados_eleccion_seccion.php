@@ -24,7 +24,7 @@ $query = "";
 $seccion = $funciones->limpia($_POST['seccion']);
 $idtie = $funciones->limpia($_POST['idtie']);
 if ($idtie != '0') {
-	$query .= " and idt_eleccion_c =" . $idtie . "";
+	$query .= $entity->statement('fragment.tbl_resultados_eleccion_seccion.27.1') . $idtie . "";
 }
 
 $result = '<center><br><table style="width: 100%;">
@@ -35,7 +35,7 @@ $result = '<center><br><table style="width: 100%;">
 		          </tr>
 		        </thead>
 		        <tbody>';
-$resultado = "SELECT vw_resultado_elecciones.*, SUM(resultado) AS resultado_total FROM vw_resultado_elecciones WHERE seccion = " . $seccion . $query . " GROUP BY idcandidato_c ORDER BY idt_eleccion_c, resultado_total DESC";
+$resultado = $entity->statement('tbl_resultados_eleccion_seccion.38.1') . $seccion . $query . $entity->statement('fragment.tbl_resultados_eleccion_seccion.38.2');
 
 $resultadoss = $entity->objects($resultado);
 foreach ($resultadoss as $resultadoo) {

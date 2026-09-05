@@ -10,20 +10,17 @@ $inicio = ($pagina - 1) * $limite;
 $sentencia = "";
 
 if ($id_estado != 0) {
-    $sentencia .= " and m.id_estado = ".$id_estado."";
+    $sentencia .= $entity->statement('fragment.seccion_listado.13.1').$id_estado."";
 }
 if ($id_municipio != 0) {
-    $sentencia .= " and s.id_municipio = ".$id_municipio."";
+    $sentencia .= $entity->statement('fragment.seccion_listado.16.2').$id_municipio."";
 }
 if(isset($_GET['n'])){
-        $sentencia .= " AND s.nombre LIKE '%".$_GET['n']."%'";
+        $sentencia .= $entity->statement('fragment.seccion_listado.19.3').$_GET['n']."%'";
     }
-$cadena = "SELECT s.*, e.nombre as estado, m.nombre as muni FROM tblc_seccion as s 
-JOIN tblc_municipio as m ON(s.id_municipio = m.id_municipio) 
-JOIN tblc_estado as e ON(e.id_estado = m.id_estado) 
-WHERE s.fecha_eliminado IS NULL".$sentencia." ORDER BY s.nombre ASC LIMIT ".$inicio.",".$limite."";
+$cadena = $entity->statement('seccion_listado.21.1').$sentencia.$entity->statement('fragment.seccion_listado.21.4').$inicio.",".$limite."";
 
-$cadena2 = "SELECT COUNT(s.id_seccion) FROM tblc_seccion as s JOIN tblc_distrito as d ON(s.id_distrito = d.id_distrito) JOIN tblc_municipio as m ON(d.id_municipio = m.id_municipio) WHERE s.fecha_eliminado IS NULL".$sentencia." ORDER BY s.nombre ASC";
+$cadena2 = $entity->statement('seccion_listado.26.2').$sentencia.$entity->statement('fragment.seccion_listado.23.5');
 
 $totalRegistros = $entity->scalar($cadena2);
 $resul_lista = $entity->objects($cadena);

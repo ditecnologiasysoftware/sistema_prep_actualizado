@@ -3,7 +3,7 @@ require "../php/inicializandoDatosExterno.php";
 $id = (int) ($_POST['id'] ?? 0);
 $es_edicion = $id > 0;
 if($es_edicion){
-    $row = $entity->row("SELECT * FROM tblc_estado WHERE id_estado = ".$id." ");
+    $row = $entity->row($entity->statement('estados_registro.6.1').$id." ");
 }
 ?>
     <form class="form-horizontal" id="enviar_formulario" method="post" enctype="multipart/form-data" action="php/subir.php">

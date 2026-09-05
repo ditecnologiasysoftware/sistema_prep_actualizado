@@ -10,13 +10,12 @@ $peticion_enlace = "";
 $sentencia = "";
 
 if (isset($_POST['nombre_busqueda'])) {
-    $sentencia .= " WHERE e.etiqueta LIKE '%" . $_POST['nombre_busqueda'] . "%'";
+    $sentencia .= $entity->statement('fragment.etiquetas_listado.13.1') . $_POST['nombre_busqueda'] . "%'";
     $peticion_enlace .= "&nombre_busqueda=" . $_POST['nombre_busqueda'];
 }
 
-$cadena = "SELECT e.*, c.nombre as categoria FROM tblc_etiqueta AS e 
-                                                            INNER JOIN tblc_categoria AS c ON e.id_categoria = c.id_categoria" . $sentencia . " ORDER BY e.etiqueta DESC LIMIT " . $inicio . "," . $limite . "";
-$cadena2 = "SELECT COUNT(id_etiqueta) FROM tblc_etiqueta AS e" . $sentencia;
+$cadena = $entity->statement('etiquetas_listado.17.1') . $sentencia . $entity->statement('fragment.etiquetas_listado.17.2') . $inicio . "," . $limite . "";
+$cadena2 = $entity->statement('etiquetas_listado.19.2') . $sentencia;
 
 $totalCirculares = $entity->scalar($cadena2);
 $resul_lista = $entity->objects($cadena);

@@ -4,7 +4,7 @@
 		$idcandidatoP = $funciones->limpia($_POST['cand']);
 		$idprocesoE = $funciones->limpia($_POST['c']);
 
-        $candidato = ' Resultado de casillas  para el candidato - <b>'.$entity->scalar("SELECT nombre FROM tblc_candidato WHERE id_candidato =".$idcandidatoP).'</b>';  
+        $candidato = ' Resultado de casillas  para el candidato - <b>'.$entity->scalar($entity->statement('casilla_resultados.7.1').$idcandidatoP).'</b>';  
 ?>
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>

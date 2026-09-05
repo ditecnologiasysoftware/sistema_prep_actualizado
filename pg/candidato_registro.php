@@ -36,7 +36,7 @@ if (!empty($_POST['id'])) {
                             <?php
                             if (!empty($_POST['id'])) {
                                 $partidos = array();
-                                $resultados = $entity->objects("SELECT id_partido_politico FROM tblc_candidato_partido WHERE id_candidato = " . $id);
+                                $resultados = $entity->objects($entity->statement('candidato_registro.39.1') . $id);
                                 foreach ($resultados as $resultado) {
                                     array_push($partidos, $resultado->id_partido_politico);
                                 }

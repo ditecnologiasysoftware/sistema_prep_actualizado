@@ -4,13 +4,9 @@ require "../php/inicializandoDatosExterno.php";
  $idproceso = $funciones->limpia($_POST['id_proceso_electoral']);
  $casilla = $funciones->limpia($_POST['casilla']);
 
- $acta = $entity->row("SELECT * FROM tbl_acta WHERE id_proceso_electoral = " . $idproceso . " AND id_casilla = " . $casilla);
+ $acta = $entity->row($entity->statement('lista_candidatos.7.1') . $idproceso . $entity->statement('fragment.lista_candidatos.7.1') . $casilla);
 
- $consulta =  "SELECT c.*, p.id_partido_politico, p.nombre as partido, p.icono, p.colo 
-                               FROM tblc_candidato_partido AS cp 
-                               INNER JOIN tblc_candidato AS c ON c.id_candidato = cp.id_candidato 
-                               INNER JOIN tblc_partido_politico AS p ON p.id_partido_politico = cp.id_partido_politico 
-                               WHERE c.id_proceso_electoral = " . $idproceso . " ORDER BY cp.ordenamiento ASC";
+ $consulta =  $entity->statement('lista_candidatos.9.2') . $idproceso . $entity->statement('fragment.lista_candidatos.9.2');
  $resul_lista = $entity->objects($consulta);
 
 ?>
@@ -27,7 +23,7 @@ require "../php/inicializandoDatosExterno.php";
             <tbody>
                 <?php
                     foreach ($resul_lista as $resultado_fila) {
-                        $resultados = $entity->scalar("SELECT resultado FROM tbl_resultado WHERE id_casilla = " . $casilla . " AND id_partido_politico = " . $resultado_fila->id_partido_politico);
+                        $resultados = $entity->scalar($entity->statement('lista_candidatos.30.3') . $casilla . $entity->statement('fragment.lista_candidatos.26.3') . $resultado_fila->id_partido_politico);
                 ?>
                         <tr>
                             <td>

@@ -29,7 +29,7 @@
 
             if(isset($_GET['q'])){
                 if ($_GET['q'] != '' || $_GET['q'] != null ) {
-                     $sentencia .= " AND seccion = ".$_GET['q'];
+                     $sentencia .= $entity->statement('fragment.casilla_faltante.32.1').$_GET['q'];
                      $peticion_enlace .= "&seccion=".$_GET['q'];
                 }               
             }
@@ -37,26 +37,23 @@
             $peticion_enlace .= "&c=".$_GET['c'];
 
 
-            $pe = $entity->row("SELECT * FROM tblc_proceso_electoral WHERE id_proceso_electoral = ".$idprocesoE);
-            $tipo_eleccion = $entity->row("SELECT * FROM tblc_tipo_eleccion WHERE id_tipo_eleccion = ".$pe['id_tipo_eleccion']);
+            $pe = $entity->row($entity->statement('casilla_faltante.40.1').$idprocesoE);
+            $tipo_eleccion = $entity->row($entity->statement('casilla_faltante.41.2').$pe['id_tipo_eleccion']);
             
             switch ($tipo_eleccion['tipo']) {
               case '1': //FEDERAL
-                $totalCasillas = $entity->scalar("SELECT COUNT(id_casilla) FROM tblc_casilla");
+                $totalCasillas = $entity->scalar($entity->statement('casilla_faltante.45.3'));
                 break;
 
               case '2'://ESTATAL
-                $totalCasillas = $entity->scalar("SELECT COUNT(c.id_casilla) FROM tblc_casilla AS c 
-                  INNER JOIN tblc_municipio AS m On c.id_municipio = m.id_municipio WHERE m.id_estado = ".$pe['id_estado']);
+                $totalCasillas = $entity->scalar($entity->statement('casilla_faltante.49.4').$pe['id_estado']);
                 break;
 
               case '3'://MUNICIPAL
-                $cadena2 = "SELECT COUNT(c.id_casilla) FROM tblc_casilla as c
-                  WHERE c.id_municipio = ".$pe['id_municipio']." 
-                  AND (SELECT COUNT(DISTINCT r.id_casilla) FROM tbl_resultado as r INNER JOIN tblc_candidato AS can ON r.id_candidato = can.id_candidato WHERE r.id_casilla = c.id_casilla AND can.id_proceso_electoral = ".$idprocesoE.") = 0";
-                $cadena = "SELECT c.* FROM tblc_casilla as c
-                  WHERE c.id_municipio = ".$pe['id_municipio']." 
-                  AND (SELECT COUNT(DISTINCT r.id_casilla) FROM tbl_resultado as r INNER JOIN tblc_candidato AS can ON r.id_candidato = can.id_candidato WHERE r.id_casilla = c.id_casilla AND can.id_proceso_electoral = ".$idprocesoE.") = 0";
+                $cadena2 = $entity->statement('casilla_faltante.municipal_count_suffix').$pe['id_municipio'].
+                    $entity->statement('casilla_faltante.municipal_missing_suffix').$idprocesoE.") = 0";
+                $cadena = $entity->statement('casilla_faltante.municipal_list_suffix').$pe['id_municipio'].
+                    $entity->statement('casilla_faltante.municipal_missing_suffix').$idprocesoE.") = 0";
 
                 break;
             }

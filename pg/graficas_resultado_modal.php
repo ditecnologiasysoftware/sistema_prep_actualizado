@@ -12,14 +12,14 @@
     $query_c2 = "";
 
     if ($id_municipio != 0) {
-       $query_pe .= " and id_municipio = ".$id_municipio."";
-       $query_c1 .= " and c.id_municipio = ".$id_municipio."";
-        $query_c2 .= " and municipio_c = ".$id_municipio."";
+       $query_pe .= $entity->statement('fragment.graficas_resultado_modal.15.1').$id_municipio."";
+       $query_c1 .= $entity->statement('fragment.graficas_resultado_modal.16.2').$id_municipio."";
+        $query_c2 .= $entity->statement('fragment.graficas_resultado_modal.17.3').$id_municipio."";
     }
     elseif ($id_estado != 0) {
-       $query_pe .= " and id_estado = ".$id_estado."";
-        $query_c1 .= " and m.id_estado = ".$id_estado."";
-        $query_c2 .= " and estado_c = ".$id_estado."";
+       $query_pe .= $entity->statement('fragment.graficas_resultado_modal.20.4').$id_estado."";
+        $query_c1 .= $entity->statement('fragment.graficas_resultado_modal.21.5').$id_estado."";
+        $query_c2 .= $entity->statement('fragment.graficas_resultado_modal.22.6').$id_estado."";
     }
 
 
@@ -64,33 +64,31 @@
                               }
 
                             $query = "";
-                            $query .= " WHERE id_proceso_electoral = ".$idcandidatoP;                                    
+                            $query .= $entity->statement('fragment.graficas_resultado_modal.67.7').$idcandidatoP;                                    
 
 
                              if ($id_municipio != 0) {
-                                $query .= " and id_municipio = ".$id_municipio."";
-                                $query2 .= " and id_municipio = ".$id_municipio."";
+                                $query .= $entity->statement('fragment.graficas_resultado_modal.71.8').$id_municipio."";
+                                $query2 .= $entity->statement('fragment.graficas_resultado_modal.72.9').$id_municipio."";
                              }
                              elseif ($id_estado != 0) {
-                                $query .= " and id_estado = ".$id_estado."";
-                                $query2 .= " and estado_c = ".$id_estado."";
+                                $query .= $entity->statement('fragment.graficas_resultado_modal.75.10').$id_estado."";
+                                $query2 .= $entity->statement('fragment.graficas_resultado_modal.76.11').$id_estado."";
                              }
                              
-                             $cadena = "SELECT * FROM tblc_proceso_electoral".$query." ORDER BY fecha ASC ";
-                             $cadena2 = "SELECT COUNT(id_proceso_electoral) FROM tblc_proceso_electoral".$query;                                                              
+                             $cadena = $entity->statement('graficas_resultado_modal.79.1').$query.$entity->statement('fragment.graficas_resultado_modal.79.12');
+                             $cadena2 = $entity->statement('graficas_resultado_modal.80.2').$query;                                                              
                               
                               $totalRegistros = $entity->scalar($cadena2);
                               $resul_lista = $entity->objects($cadena);
                             
                             foreach($resul_lista as $resultado_fila){
 
-                                $tipo_eleccion = $entity->row("SELECT * FROM tblc_tipo_eleccion WHERE id_tipo_eleccion = ".$resultado_fila->id_tipo_eleccion);
-                              $entity->scalar("SELECT c.id_casilla FROM tblc_casilla AS c 
-                                INNER JOIN tblc_municipio as m ON c.id_municipio = c.id_municipio 
-                                WHERE c.id_casilla != 0".$query_c1." GROUP BY c.id_casilla");
+                                $tipo_eleccion = $entity->row($entity->statement('graficas_resultado_modal.87.3').$resultado_fila->id_tipo_eleccion);
+                              $entity->scalar($entity->statement('graficas_resultado_modal.88.4').$query_c1.$entity->statement('fragment.graficas_resultado_modal.88.13'));
                                 $totalCasillas = $entity->numregistros();
                                   
-                                $entity->objects("SELECT * FROM vw_resultado_elecciones WHERE idp_electoral_c = ".$resultado_fila->id_proceso_electoral.$query2." GROUP BY id_casilla"); 
+                                $entity->objects($entity->statement('graficas_resultado_modal.93.5').$resultado_fila->id_proceso_electoral.$query2.$entity->statement('fragment.graficas_resultado_modal.91.14')); 
                                 $totalCasillasRegistradas = $entity->numregistros();
                                 $casillas_faltantes = $totalCasillas - $totalCasillasRegistradas;
 
@@ -158,8 +156,8 @@
                                       data.addColumn('number', 'Votos');
                                       data.addRows([
                                   <?php
-                                      $acta = $entity->row("SELECT SUM(votos_nulos) as nulos, SUM(no_registrados) as nr FROM tbl_acta WHERE id_proceso_electoral = ".$resultado_fila->id_proceso_electoral." GROUP BY id_proceso_electoral");
-                                      $votopartidos = $entity->objects("SELECT nombre_c, SUM(resultado) as votos FROM vw_resultado_elecciones WHERE idp_electoral_c = ".$resultado_fila->id_proceso_electoral.$query2." GROUP BY idcandidato_c");
+                                      $acta = $entity->row($entity->statement('graficas_resultado_modal.161.6').$resultado_fila->id_proceso_electoral.$entity->statement('fragment.graficas_resultado_modal.159.15'));
+                                      $votopartidos = $entity->objects($entity->statement('graficas_resultado_modal.162.7').$resultado_fila->id_proceso_electoral.$query2.$entity->statement('fragment.graficas_resultado_modal.160.16'));
                                       $cadena = "";
                                       foreach($votopartidos as $partido){
                                           $cadena .= ",
@@ -190,8 +188,8 @@
 
                                     var data = google.visualization.arrayToDataTable([
                                        <?php
-                                      $acta = $entity->row("SELECT SUM(votos_nulos) as nulos, SUM(no_registrados) as nr FROM tbl_acta WHERE id_proceso_electoral = ".$resultado_fila->id_proceso_electoral." GROUP BY id_proceso_electoral");
-                                          $candidatos = $entity->objects("SELECT nombre_pa, color_pa, SUM(resultado) as votos FROM vw_resultado_elecciones WHERE idp_electoral_c = ".$resultado_fila->id_proceso_electoral.$query2." GROUP BY idp_politico_c");
+                                      $acta = $entity->row($entity->statement('graficas_resultado_modal.193.8').$resultado_fila->id_proceso_electoral.$entity->statement('fragment.graficas_resultado_modal.191.17'));
+                                          $candidatos = $entity->objects($entity->statement('graficas_resultado_modal.194.9').$resultado_fila->id_proceso_electoral.$query2.$entity->statement('fragment.graficas_resultado_modal.192.18'));
                                           $cadena = "['Candidato', 'Votos', { role: 'style' }]";
                                           foreach($candidatos as $partido){
                                               $cadena .= ",

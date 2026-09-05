@@ -48,7 +48,7 @@
                                             <select name="pe" id="pe" style="width: 100%;">
                                                 <option value="">-- Ninguno --</option>
                                                 <?php
-                                                echo $funciones->llenarcombomodifica("SELECT id_proceso_electoral as id, CONCAT('Fecha: ', fecha) as valor FROM tblc_proceso_electoral WHERE estatus = 1 ORDER BY fecha DESC", $_POST['pe']);
+                                                echo $funciones->llenarcombomodifica($entity->statement('candidato.51.1'), $_POST['pe']);
                                                 ?>
                                             </select>
                                         </div>

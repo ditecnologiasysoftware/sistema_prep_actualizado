@@ -70,7 +70,7 @@
                   $tipmap = $funciones->limpia($_GET['tipmap']);
                   $latLon = $funciones->limpia($_GET['latLon']);
 
-                  $cadena = "SELECT * FROM vw_resultado_elecciones WHERE idp_electoral_c = ".$idpelectoral." and idt_eleccion_c =".$tipoelec." GROUP BY id_casilla";
+                  $cadena = $entity->statement('mapa_resultados.73.1').$idpelectoral.$entity->statement('fragment.mapa_resultados.73.1').$tipoelec.$entity->statement('fragment.mapa_resultados.73.2');
                   $cadenaResultado = $entity->objects($cadena);
              }
         ?>
@@ -84,7 +84,7 @@
             foreach ($cadenaResultado as $value){
                     $idCasilla =    $value->id_casilla;
                     $numCasilla = $funciones->llenarCasillatbl($value->id_casilla);
-                    $municipio  = $entity->scalar("SELECT nombre FROM tblc_municipio WHERE id_municipio =".$value->id_municipio);
+                    $municipio  = $entity->scalar($entity->statement('mapa_resultados.87.2').$value->id_municipio);
                     $latitud = $value->latitud;
                     $longitud   = $value->longitud;
                     $direccion  = $value->direccion;
@@ -102,7 +102,7 @@
                             $tipo="Extraordinaria";
                         break;               
                     }
-                    $ganador = $entity->row("SELECT vw_resultado_elecciones.* FROM vw_resultado_elecciones WHERE id_casilla = ".$value->id_casilla." and idt_eleccion_c =".$value->idt_eleccion_c." ORDER BY resultado DESC LIMIT 1");
+                    $ganador = $entity->row($entity->statement('mapa_resultados.105.3').$value->id_casilla.$entity->statement('fragment.mapa_resultados.105.3').$value->idt_eleccion_c.$entity->statement('fragment.mapa_resultados.105.4'));
                     $votos_ganador = $ganador['resultado'];
                      if($votos_ganador != 0){ $img = $ganador['icono_pa']; }else{ $img = 'marker.png'; }
                     

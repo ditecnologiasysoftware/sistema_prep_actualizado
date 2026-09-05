@@ -12,31 +12,31 @@ $query = "";
 
 
 if ($id_municipio != 0) {
-    $query .= " and c.id_municipio = " . $id_municipio . "";
+    $query .= $entity->statement('fragment.casilla_electoral_listado.15.1') . $id_municipio . "";
 } elseif (isset($_POST['municipio']) && $_POST['municipio'] != 0) {
-    $query .= " and c.id_municipio = " . $_POST['municipio'] . "";
+    $query .= $entity->statement('fragment.casilla_electoral_listado.17.2') . $_POST['municipio'] . "";
     $peticion_enlace .= "&municipio=" . $_POST['municipio'];
 }
 if ($id_estado != 0) {
-    $query .= " and m.id_estado = " . $id_estado . "";
+    $query .= $entity->statement('fragment.casilla_electoral_listado.21.3') . $id_estado . "";
 } elseif (isset($_POST['estado']) && $_POST['estado'] != 0) {
-    $query .= " and m.id_estado = " . $_POST['estado'] . "";
+    $query .= $entity->statement('fragment.casilla_electoral_listado.23.4') . $_POST['estado'] . "";
     $peticion_enlace .= "&estado=" . $_POST['estado'];
 }
 
 if (isset($_POST['n']) && $_POST['n'] != "") {
-    $query .= " AND c.seccion = '" . $_POST['n'] . "'";
+    $query .= $entity->statement('fragment.casilla_electoral_listado.28.5') . $_POST['n'] . "'";
     $peticion_enlace .= "&n=" . $_POST['n'];
 }
 
 if (isset($_POST['tipo']) && $_POST['tipo'] != "0") {
-    $query .= " AND c.tipo = '" . $_POST['tipo'] . "'";
+    $query .= $entity->statement('fragment.casilla_electoral_listado.33.6') . $_POST['tipo'] . "'";
     $peticion_enlace .= "&tipo=" . $_POST['tipo'];
 }
 
-$cadena = "SELECT c.* FROM tblc_casilla as c JOIN tblc_municipio as m ON(c.id_municipio = m.id_municipio) WHERE c.fecha_eliminado IS NULL" . $query . " ORDER BY seccion ASC, tipo ASC, num_contigua ASC LIMIT " . $inicio . "," . $limite . "";
+$cadena = $entity->statement('casilla_electoral_listado.37.1') . $query . $entity->statement('fragment.casilla_electoral_listado.37.7') . $inicio . "," . $limite . "";
 
-$cadena2 = "SELECT COUNT(c.id_casilla) FROM tblc_casilla as c JOIN tblc_municipio as m ON(c.id_municipio = m.id_municipio) WHERE c.fecha_eliminado IS NULL" . $query . " ORDER BY c.numero ASC";
+$cadena2 = $entity->statement('casilla_electoral_listado.39.2') . $query . $entity->statement('fragment.casilla_electoral_listado.39.8');
 $totalCirculares = $entity->scalar($cadena2);
 $resul_lista = $entity->objects($cadena);
 ?>
@@ -75,7 +75,7 @@ $resul_lista = $entity->objects($cadena);
                             <td><?php
                                 echo $funciones->getcomboTipoEleccionText($resultado_fila->tipo);
                                 ?></td>
-                            <td><?php echo $entity->scalar("SELECT nombre FROM tblc_municipio WHERE id_municipio =" . $resultado_fila->id_municipio); ?></td>
+                            <td><?php echo $entity->scalar($entity->statement('casilla_electoral_listado.78.3') . $resultado_fila->id_municipio); ?></td>
                             <?php if ($editar == 1) { ?>
                                 <td align="center"><a class="btn btn-success" onclick="casilla_electoral_registro(<?= $resultado_fila->id_casilla ?>)"><span class="fa fa-pen"></span></a></td>
                             <?php } ?>

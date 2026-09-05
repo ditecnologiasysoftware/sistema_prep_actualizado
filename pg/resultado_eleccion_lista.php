@@ -9,53 +9,47 @@ $query_c1 = "";
 $query_c2 = "";
 
 if ($id_municipio != 0) {
-    $query_pe .= " and id_municipio = " . $id_municipio . "";
-    $query_c1 .= " and c.id_municipio = " . $id_municipio . "";
-    $query_c2 .= " and municipio_c = " . $id_municipio . "";
+    $query_pe .= $entity->statement('fragment.resultado_eleccion_lista.12.1') . $id_municipio . "";
+    $query_c1 .= $entity->statement('fragment.resultado_eleccion_lista.13.2') . $id_municipio . "";
+    $query_c2 .= $entity->statement('fragment.resultado_eleccion_lista.14.3') . $id_municipio . "";
 } elseif ($id_estado != 0) {
-    $query_pe .= " and id_estado = " . $id_estado . "";
-    $query_c1 .= " and m.id_estado = " . $id_estado . "";
-    $query_c2 .= " and estado_c = " . $id_estado . "";
+    $query_pe .= $entity->statement('fragment.resultado_eleccion_lista.16.4') . $id_estado . "";
+    $query_c1 .= $entity->statement('fragment.resultado_eleccion_lista.17.5') . $id_estado . "";
+    $query_c2 .= $entity->statement('fragment.resultado_eleccion_lista.18.6') . $id_estado . "";
 }
 
 $peticion_enlace = "";
 $sentencia = "";
 
 if (!empty($_POST['q'])) {
-    $sentencia .= " AND c.id_proceso_electoral = '" . $_POST['q'] . "'";
+    $sentencia .= $entity->statement('fragment.resultado_eleccion_lista.25.7') . $_POST['q'] . "'";
     $peticion_enlace .= "&q=" . $_POST['q'];
 }
 
 $query = "";
 
 if ($id_municipio != 0) {
-    $query .= " and pe.id_municipio = " . $id_municipio . "";
+    $query .= $entity->statement('fragment.resultado_eleccion_lista.32.8') . $id_municipio . "";
 } elseif ($id_estado != 0) {
-    $query .= " and pe.id_estado = " . $id_estado . "";
+    $query .= $entity->statement('fragment.resultado_eleccion_lista.34.9') . $id_estado . "";
 }
 
 if (!empty($_POST['estado_busqueda'])) {
     if ($_POST['estado_busqueda'] != 0) {
-        $query .= " and pe.id_estado = " . $_POST['estado_busqueda'] . "";
+        $query .= $entity->statement('fragment.resultado_eleccion_lista.39.10') . $_POST['estado_busqueda'] . "";
     }
     $peticion_enlace .= "&estado_busqueda=" . $_POST['estado_busqueda'];
 }
 
 if (!empty($_POST['municipio_busqueda'])) {
     if ($_POST['municipio_busqueda'] != 0) {
-        $query .= " and pe.id_municipio = " . $_POST['municipio_busqueda'] . "";
+        $query .= $entity->statement('fragment.resultado_eleccion_lista.46.11') . $_POST['municipio_busqueda'] . "";
     }
     $peticion_enlace .= "&municipio_busqueda=" . $_POST['municipio_busqueda'];
 }
-$cadena = "SELECT c.*, pe.id_tipo_eleccion, pe.id_municipio, pe.id_estado, pe.fecha as f_proceso, pe.descripcion as desc_proceso, t.nombre as nom_tipoeleccion, t.tipo as tipo_eleccion 
-FROM tblc_candidato AS c 
-INNER JOIN tblc_proceso_electoral AS pe ON c.id_proceso_electoral = pe.id_proceso_electoral 
-INNER JOIN tblc_tipo_eleccion as t ON pe.id_tipo_eleccion = t.id_tipo_eleccion 
-WHERE c.principal = 1" . $query . $sentencia . " LIMIT " . $inicio . "," . $limite;
+$cadena = $entity->statement('resultado_eleccion_lista.50.1') . $query . $sentencia . $entity->statement('fragment.resultado_eleccion_lista.50.12') . $inicio . "," . $limite;
 
-$cadena2 = "SELECT COUNT(c.id_candidato) FROM tblc_candidato AS c 
-INNER JOIN tblc_proceso_electoral AS pe ON c.id_proceso_electoral = pe.id_proceso_electoral 
-WHERE c.principal = 1" . $query . $sentencia;
+$cadena2 = $entity->statement('resultado_eleccion_lista.56.2') . $query . $sentencia;
 
 $entity->objects($cadena2);
 $totalRegistros = $entity->numregistros();
@@ -93,36 +87,34 @@ $resul_lista = $entity->objects($cadena);
                         $estadolist = '';
 
                         if ($resultado_fila->id_estado != 0 && $resultado_fila->id_municipio != 0) {
-                            $estadolist = $entity->row("SELECT CONCAT(e.nombre,', ',m.nombre) AS nom, m.latitud as lat, m.longitud as lon FROM tblc_estado as e JOIN tblc_municipio as m ON(e.id_estado = m.id_estado) WHERE m.id_municipio = " . $resultado_fila->id_municipio);
+                            $estadolist = $entity->row($entity->statement('resultado_eleccion_lista.96.3') . $resultado_fila->id_municipio);
                             $mapatipo = '2';
                             $latLong = $estadolist['lat'] . ',' . $estadolist['lon'];
                         } elseif ($resultado_fila->id_estado != 0 || $resultado_fila->id_municipio == 0) {
-                            $estadolist = $entity->row("SELECT e.nombre as nom, e.latitud as lat, e.longitud as lon FROM tblc_estado as e WHERE e.id_estado = " . $resultado_fila->id_estado);
+                            $estadolist = $entity->row($entity->statement('resultado_eleccion_lista.100.4') . $resultado_fila->id_estado);
                             $mapatipo = '1';
                             $latLong = $estadolist['lat'] . ',' . $estadolist['lon'];
                         }
 
-                        $entity->scalar("SELECT c.id_casilla FROM tblc_casilla AS c 
-                                                        INNER JOIN tblc_municipio as m ON c.id_municipio = c.id_municipio 
-                                                        WHERE c.id_casilla != 0" . $query_c1 . " GROUP BY c.id_casilla");
+                        $entity->scalar($entity->statement('resultado_eleccion_lista.105.5') . $query_c1 . $entity->statement('fragment.resultado_eleccion_lista.99.13'));
                         $totalCasillas = $entity->numregistros();
 
-                        $entity->objects("SELECT * FROM vw_resultado_elecciones WHERE idp_electoral_c = " . $resultado_fila->id_proceso_electoral . $query_c2 . " GROUP BY id_casilla");
+                        $entity->objects($entity->statement('resultado_eleccion_lista.110.6') . $resultado_fila->id_proceso_electoral . $query_c2 . $entity->statement('fragment.resultado_eleccion_lista.102.14'));
                         $totalCasillasRegistradas = $entity->numregistros();
 
                         $tipoPartidos = "";
-                        $partidos = $entity->objects("SELECT p.nombre FROM tblc_candidato_partido AS cp JOIN tblc_partido_politico AS p ON cp.id_partido_politico = p.id_partido_politico WHERE cp.id_candidato =" . $resultado_fila->id_candidato);
+                        $partidos = $entity->objects($entity->statement('resultado_eleccion_lista.114.7') . $resultado_fila->id_candidato);
                         foreach ($partidos as $value) {
                             $tipoPartidos .= $value->nombre . ', ';
                         }
                         $tipoPartidos = trim($tipoPartidos, ', ');
 
-                        $votos = $entity->scalar("SELECT SUM(resultado) as sumaresultado FROM tbl_resultado WHERE id_candidato = " . $resultado_fila->id_candidato);
+                        $votos = $entity->scalar($entity->statement('resultado_eleccion_lista.120.8') . $resultado_fila->id_candidato);
 
-                        $votos_total = $entity->scalar("SELECT SUM(resultado) as sumaresultado FROM vw_resultado_elecciones WHERE idp_electoral_c = " . $resultado_fila->id_proceso_electoral);
+                        $votos_total = $entity->scalar($entity->statement('resultado_eleccion_lista.122.9') . $resultado_fila->id_proceso_electoral);
 
-                        $votos_nulos = $entity->scalar("SELECT SUM(votos_nulos) as sumaresultado FROM tbl_acta WHERE id_proceso_electoral = " . $resultado_fila->id_proceso_electoral);
-                        $no_registrados = $entity->scalar("SELECT SUM(no_registrados) as sumaresultado FROM tbl_acta WHERE id_proceso_electoral = " . $resultado_fila->id_proceso_electoral);
+                        $votos_nulos = $entity->scalar($entity->statement('resultado_eleccion_lista.124.10') . $resultado_fila->id_proceso_electoral);
+                        $no_registrados = $entity->scalar($entity->statement('resultado_eleccion_lista.125.11') . $resultado_fila->id_proceso_electoral);
 
                         $votos_total = $votos_total + $votos_nulos + $no_registrados;
                     ?>

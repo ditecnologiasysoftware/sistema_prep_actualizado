@@ -1,6 +1,8 @@
 <?php
 require_once __DIR__ . '/clase_variables.php';
 require_once __DIR__ . '/clase_mysql.php';
+require_once __DIR__ . '/EntityPgStatements.php';
+require_once __DIR__ . '/EntityPgFragments.php';
 
 class Entity extends DB_mysql
 {
@@ -10,6 +12,17 @@ class Entity extends DB_mysql
     private array $schemaCache = [];
 
     private int $transactionDepth = 0;
+
+    /**
+     * Obtiene una consulta registrada para las vistas de pg. Centralizar las
+     * sentencias evita que la capa de presentacion contenga SQL crudo.
+     */
+    public function statement(string $key): string
+    {
+        return EntityPgFragments::has($key)
+            ? EntityPgFragments::get($key)
+            : EntityPgStatements::get($key);
+    }
 
     /**
      * Conserva el comportamiento anterior y permite reutilizar una conexión

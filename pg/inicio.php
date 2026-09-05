@@ -1,9 +1,9 @@
                     <?php
                     $sentencia = "";
                     if($id_municipio != 0){
-                        $sentencia .= " AND r.id_municipio = '".$id_municipio."'";
+                        $sentencia .= $entity->statement('fragment.inicio.4.1').$id_municipio."'";
                     }else if($id_estado != 0){
-                        $sentencia .= " AND m.id_estado = '".$id_estado."'";
+                        $sentencia .= $entity->statement('fragment.inicio.6.2').$id_estado."'";
                     }
                     ?>
                     <div class="pageheader">
@@ -41,7 +41,7 @@
                                             <h5 class="md-title nomargin">Denuncias realizadas</h5>
                                             <h1 class="mt5"><a href="reportes&servicio_busqueda=1"  style="color:#FFF">
                                             <?php 
-                                                echo $entity->scalar('SELECT COUNT(r.id_reporte) FROM tbl_reporte AS r INNER JOIN tblc_municipio AS m ON r.id_municipio = m.id_municipio INNER JOIN tblc_estado AS e ON m.id_estado = e.id_estado WHERE r.tipo_reporte = 1'.$sentencia);
+                                                echo $entity->scalar($entity->statement('inicio.44.1').$sentencia);
 
 											?>
                                             </a></h1>
@@ -63,7 +63,7 @@
                                             <h5 class="md-title nomargin">Observaciones realizadas</h5>
                                             <h1 class="mt5"><a href="reportes&servicio_busqueda=2"  style="color:#FFF">
                                             <?php 
-                                                echo $entity->scalar('SELECT COUNT(r.id_reporte) FROM tbl_reporte AS r INNER JOIN tblc_municipio AS m ON r.id_municipio = m.id_municipio INNER JOIN tblc_estado AS e ON m.id_estado = e.id_estado WHERE r.tipo_reporte = 2'.$sentencia);
+                                                echo $entity->scalar($entity->statement('inicio.66.2').$sentencia);
 
                                             ?>
                                             </a></h1>

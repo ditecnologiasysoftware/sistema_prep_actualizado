@@ -3,7 +3,7 @@ require "../php/inicializandoDatosExterno.php";
 
 if (!empty($_POST['id'])) {
     $id = $funciones->limpia($_POST['id']);
-    $row = $entity->row("SELECT  * FROM tbl_estatus_casilla WHERE id_estatus_casilla = " . $id . " ");
+    $row = $entity->row($entity->statement('estatus_casilla_registro.6.1') . $id . " ");
 }
 ?>
     <form class="form-horizontal" id="enviar_formulario" method="post" enctype="multipart/form-data"
@@ -21,9 +21,9 @@ if (!empty($_POST['id'])) {
                         <select name="id_proceso_electoral" id="id_proceso_electoral" class="form-control">
                             <?php
                             if (!empty($_POST['id']))
-                                echo $funciones->llenarcombomodifica("SELECT id_proceso_electoral as id, CONCAT(descripcion,' - ', fecha) as valor FROM tblc_proceso_electoral WHERE estatus = 1" . $query_pe . " ORDER BY fecha DESC", $row['id_proceso_electoral']);
+                                echo $funciones->llenarcombomodifica($entity->statement('estatus_casilla_registro.24.2') . $query_pe . $entity->statement('fragment.estatus_casilla_registro.24.1'), $row['id_proceso_electoral']);
                             else
-                                echo $funciones->llenarcombomodifica("SELECT id_proceso_electoral as id, CONCAT(descripcion,' - ', fecha) as valor FROM tblc_proceso_electoral WHERE estatus = 1" . $query_pe . " ORDER BY fecha DESC", $row['id_proceso_electoral']);
+                                echo $funciones->llenarcombomodifica($entity->statement('estatus_casilla_registro.26.3') . $query_pe . $entity->statement('fragment.estatus_casilla_registro.26.2'), $row['id_proceso_electoral']);
                             ?>
                         </select>
                     </div>
@@ -50,9 +50,9 @@ if (!empty($_POST['id'])) {
                             <option value=""> - Seleccionar Casilla -</option>
                             <?php
                             if (!empty($_POST['id']))
-                                echo $funciones->llenarcombomodificaCasilla("SELECT c.* FROM tblc_casilla as c JOIN tblc_municipio as m ON(c.id_municipio = m.id_municipio) WHERE c.id_casilla != 0" . $query . "  ORDER BY c.seccion ASC, c.tipo ASC, c.nombre ASC", $row['id_casilla']);
+                                echo $funciones->llenarcombomodificaCasilla($entity->statement('estatus_casilla_registro.53.4') . $query . $entity->statement('fragment.estatus_casilla_registro.53.3'), $row['id_casilla']);
                             else
-                                echo $funciones->llenarcombomodificaCasilla("SELECT c.* FROM tblc_casilla as c JOIN tblc_municipio as m ON(c.id_municipio = m.id_municipio) WHERE c.id_casilla != 0" . $query . "  ORDER BY c.seccion ASC, c.tipo ASC, c.nombre ASC", 0);
+                                echo $funciones->llenarcombomodificaCasilla($entity->statement('estatus_casilla_registro.55.5') . $query . $entity->statement('fragment.estatus_casilla_registro.55.4'), 0);
                             ?>
                         </select>
                     </div>

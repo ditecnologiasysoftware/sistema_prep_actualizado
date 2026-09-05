@@ -2,7 +2,7 @@
 require "../php/inicializandoDatosExterno.php";
 if ($_POST['id'] > 0) {
     $id = $funciones->limpia($_POST['id']);
-    $row = $entity->row("SELECT * FROM tblc_partido_politico WHERE id_partido_politico = " . $id . " ");
+    $row = $entity->row($entity->statement('partido_politico_registro.5.1') . $id . " ");
 }
 ?>
     <form id="enviar_formulario" class="form-horizontal" method="post" enctype="multipart/form-data" action="php/subir.php">

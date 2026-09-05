@@ -4,12 +4,7 @@
     $cand = $funciones->limpia($_POST['cand']);
     $idprocesoE = $funciones->limpia($_POST['c']);
 	    
-    $cadena = "SELECT c.nombre, r.id_candidato, r.id_partido_politico, c.id_proceso_electoral, pe.descripcion, pe.fecha, p.nombre as partido, p.icono, p.colo, SUM(r.resultado) as suma 
-    FROM tbl_resultado AS r 
-    INNER JOIN tblc_candidato AS c ON r.id_candidato = c.id_candidato 
-    INNER JOIN tblc_partido_politico AS p ON p.id_partido_politico = r.id_partido_politico 
-    INNER JOIN tblc_proceso_electoral AS pe ON pe.id_proceso_electoral = c.id_proceso_electoral 
-    WHERE c.id_proceso_electoral = ".$idprocesoE." GROUP BY r.id_partido_politico ORDER BY suma DESC";
+    $cadena = $entity->statement('partido_resultados.7.1').$idprocesoE.$entity->statement('fragment.partido_resultados.7.1');
 	//echo $cadena;
     $cadenaResultado = $entity->objects($cadena);	
 

@@ -2,7 +2,7 @@
 require "../php/inicializandoDatosExterno.php";
 if (!empty($_POST['id'])) {
 	$id = $funciones->limpia($_POST['id']);
-	$row = $entity->row("SELECT r.*, m.id_estado FROM tbl_reporte as r INNER JOIN tblc_municipio as m ON r.id_municipio = m.id_municipio WHERE r.id_reporte = " . $id);
+	$row = $entity->row($entity->statement('reportes_registro.5.1') . $id);
 }
 ?>
 
@@ -106,10 +106,10 @@ if (!empty($_POST['id'])) {
 								<label>Etiquetas:</label>
 								<select name="etiquetas[]" id="etiquetas" multiple style="width:100%" required>
 									<?php
-									$sqletiquetas = "SELECT id_etiqueta as id, etiqueta as valor FROM tblc_etiqueta ORDER BY etiqueta";
+									$sqletiquetas = $entity->statement('reportes_registro.109.2');
 									if (!empty($id)) {
 										$etiquetas = array();
-										$etq = $entity->objects("SELECT id_etiqueta FROM tbl_reporte_etiqueta WHERE id_reporte = " . $id);
+										$etq = $entity->objects($entity->statement('reportes_registro.112.3') . $id);
 										foreach ($etq as $value) {
 											array_push($etiquetas, $value->id_etiqueta);
 										}

@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 		          </tr>
 		        </thead>
 		        <tbody>';
-		                $resultado = "SELECT * FROM vw_resultado_elecciones WHERE id_casilla = ".$idcasilla." and idt_eleccion_c = ".$tipoe." ORDER BY resultado DESC" ;
+		                $resultado = $entity->statement('tbl_resultados.34.1').$idcasilla.$entity->statement('fragment.tbl_resultados.34.1').$tipoe.$entity->statement('fragment.tbl_resultados.34.2') ;
 		                $resultadoss = $entity->objects($resultado);
 		                foreach($resultadoss as $resultadoo){                  
 		                    $result.='<tr>

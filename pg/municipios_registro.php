@@ -3,7 +3,7 @@ require "../php/inicializandoDatosExterno.php";
 $id = (int) ($_POST['id'] ?? 0);
 $es_edicion = $id > 0;
 if ($es_edicion) {
-    $row = $entity->row("SELECT * FROM tblc_municipio WHERE id_municipio = " . $id . " ");
+    $row = $entity->row($entity->statement('municipios_registro.6.1') . $id . " ");
 }
 ?>
     <form class="form-horizontal" id="enviar_formulario" method="post" enctype="multipart/form-data" action="php/subir.php">
@@ -20,8 +20,8 @@ if ($es_edicion) {
                     <div class="col-sm-8">
                         <select name="id_estado" class="form-control">
                             <?php echo $es_edicion
-                                ? $funciones->llenarcombomodifica("select id_estado as id, nombre as valor from tblc_estado", $row['id_estado'])
-                                : $funciones->llenarcombo("select id_estado as id, nombre as valor from tblc_estado"); ?>
+                                ? $funciones->llenarcombomodifica($entity->statement('municipios_registro.23.2'), $row['id_estado'])
+                                : $funciones->llenarcombo($entity->statement('municipios_registro.24.3')); ?>
                         </select>
                     </div>
                 </div>

@@ -50,8 +50,8 @@
 																<select class="select2-container" name="estado_busqueda" id="estado_busqueda" onchange="combodependiente('estado_busqueda', 'municipio_busqueda', 'combo_dependiente/municipios2.php')" required style="width: 98%">
 																	<option value="0">Todos los Estados</option>
 																	<?php
-																	if (!empty($_POST['estado_busqueda'])) echo $funciones->llenarcombomodifica("SELECT id_estado as id, nombre as valor FROM tblc_estado ORDER BY nombre", $_GET['estado_busqueda']);
-																	else echo $funciones->llenarcombo("SELECT id_estado as id, nombre as valor FROM tblc_estado ORDER BY nombre");
+																	if (!empty($_POST['estado_busqueda'])) echo $funciones->llenarcombomodifica($entity->statement('reportes.53.1'), $_GET['estado_busqueda']);
+																	else echo $funciones->llenarcombo($entity->statement('reportes.54.2'));
 																	?>
 																</select>
 															</div>
@@ -70,7 +70,7 @@
 																<select class="select2-container"name="municipio_busqueda" id="municipio_busqueda" required style="width: 98%" onchange="combodependiente('municipio_busqueda', 'casilla_busqueda', 'combo_dependiente/casillas.php')">
 																	<option value="0">Todos los Municipios</option>
 																	<?php
-																	if ($id_estado != 0) echo $funciones->llenarcombo("SELECT id_municipio as id, nombre as valor FROM tblc_municipio WHERE id_estado = " . $id_estado . " ORDER BY nombre");
+																	if ($id_estado != 0) echo $funciones->llenarcombo($entity->statement('reportes.73.3') . $id_estado . $entity->statement('fragment.reportes.73.1'));
 																	?>
 																</select>
 															</div>
@@ -125,8 +125,8 @@
 															<select class="select2-container" name="etiqueta" id="etiqueta" required style="width: 98%">
 																<option value="0">Todas las etiquetas</option>
 																<?php
-																if (!empty($_POST['etiqueta'])) echo $funciones->llenarcombomodifica("SELECT id_etiqueta as id, etiqueta as valor FROM tblc_etiqueta ORDER BY etiqueta");
-																else echo $funciones->llenarcombo("SELECT id_etiqueta as id, etiqueta as valor FROM tblc_etiqueta ORDER BY etiqueta");
+																if (!empty($_POST['etiqueta'])) echo $funciones->llenarcombomodifica($entity->statement('reportes.128.4'));
+																else echo $funciones->llenarcombo($entity->statement('reportes.129.5'));
 																?>
 															</select>
 														</div>
@@ -145,7 +145,7 @@
 															<select class="select2-container" name="casilla_busqueda" id="casilla_busqueda" required style="width: 98%">
 																<option value="0">Todas Casilla</option>
 																<?php
-																if ($id_municipio != 0) echo $funciones->llenarcombomodificaCasilla("SELECT c.* FROM tblc_casilla as c JOIN tblc_municipio as m ON(c.id_municipio = m.id_municipio) WHERE c.id_casilla != 0 AND c.id_municipio = " . $id_municipio . "  ORDER BY c.seccion ASC, c.tipo ASC, c.nombre ASC",0);
+																if ($id_municipio != 0) echo $funciones->llenarcombomodificaCasilla($entity->statement('reportes.148.6') . $id_municipio . $entity->statement('fragment.reportes.148.2'),0);
 																?>
 															</select>
 														</div>

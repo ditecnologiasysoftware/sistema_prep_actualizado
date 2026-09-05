@@ -11,66 +11,58 @@ $sentencia = "";
 $inner = "";
 
 if (!empty($_POST['casilla_busqueda'])) {
-	$sentencia .= " AND r.id_casilla = '" . $funciones->limpia($_POST['casilla_busqueda']) . "'";
+	$sentencia .= $entity->statement('fragment.reportes_listado.14.1') . $funciones->limpia($_POST['casilla_busqueda']) . "'";
 	$peticion_enlace .= "&casilla_busqueda=" . $_POST['casilla_busqueda'];
 }
 
 if ($id_municipio != 0) {
-	$sentencia .= " AND r.id_municipio = '" . $id_municipio . "'";
+	$sentencia .= $entity->statement('fragment.reportes_listado.19.2') . $id_municipio . "'";
 	$peticion_enlace .= "&municipio_busqueda=" . $_POST['municipio_busqueda'];
 } else if ($id_estado != 0) {
-	$sentencia .= " AND m.id_estado = '" . $id_estado . "'";
+	$sentencia .= $entity->statement('fragment.reportes_listado.22.3') . $id_estado . "'";
 }
 
 if (isset($_POST['municipio_busqueda']) && $_POST['municipio_busqueda'] != 0) {
-	$sentencia .= " AND r.id_municipio = '" . $funciones->limpia($_POST['municipio_busqueda']) . "'";
+	$sentencia .= $entity->statement('fragment.reportes_listado.26.4') . $funciones->limpia($_POST['municipio_busqueda']) . "'";
 	$peticion_enlace .= "&municipio_busqueda=" . $_POST['municipio_busqueda'];
 }
 
 if (isset($_POST['estado_busqueda']) && $_POST['estado_busqueda'] != 0) {
-	$sentencia .= " AND m.id_estado = '" . $funciones->limpia($_POST['estado_busqueda']) . "'";
+	$sentencia .= $entity->statement('fragment.reportes_listado.31.5') . $funciones->limpia($_POST['estado_busqueda']) . "'";
 	$peticion_enlace .= "&estado_busqueda=" . $_POST['estado_busqueda'];
 }
 
 if (!empty($_POST['hora_busqueda']) && $_POST['hora2_busqueda'] != "") {
-	$sentencia .= " AND date_format(r.fecha_registro, '%H:%i') >= '" . $_POST['hora_busqueda'] . "'";
-	$sentencia .= " AND date_format(r.fecha_registro, '%H:%i') <= '" . $_POST['hora2_busqueda'] . "'";
+	$sentencia .= $entity->statement('fragment.reportes_listado.36.6') . $_POST['hora_busqueda'] . "'";
+	$sentencia .= $entity->statement('fragment.reportes_listado.37.7') . $_POST['hora2_busqueda'] . "'";
 	$peticion_enlace .= "&hora_busqueda=" . $_POST['hora_busqueda'];
 	$peticion_enlace .= "&hora2_busqueda=" . $_POST['hora2_busqueda'];
 }
 
 if (isset($_POST['folio_busqueda']) && $_POST['folio_busqueda'] != "") {
-	$sentencia .= " AND r.folio LIKE '%" . $funciones->limpia($_POST['folio_busqueda']) . "%'";
+	$sentencia .= $entity->statement('fragment.reportes_listado.43.8') . $funciones->limpia($_POST['folio_busqueda']) . "%'";
 	$peticion_enlace .= "&folio_busqueda=" . $_POST['folio_busqueda'];
 }
 
 if (isset($_POST['servicio_busqueda']) && $_POST['servicio_busqueda'] != 0) {
-	$sentencia .= " AND r.tipo_reporte = '" . $funciones->limpia($_POST['servicio_busqueda']) . "'";
+	$sentencia .= $entity->statement('fragment.reportes_listado.48.9') . $funciones->limpia($_POST['servicio_busqueda']) . "'";
 	$peticion_enlace .= "&servicio_busqueda=" . $_POST['servicio_busqueda'];
 }
 
 if (isset($_POST['tipo_busqueda']) && $_POST['tipo_busqueda'] != 0) {
-	$sentencia .= " AND r.tipo_registro = '" . $funciones->limpia($_POST['tipo_busqueda']) . "'";
+	$sentencia .= $entity->statement('fragment.reportes_listado.53.10') . $funciones->limpia($_POST['tipo_busqueda']) . "'";
 	$peticion_enlace .= "&tipo_busqueda=" . $_POST['tipo_busqueda'];
 }
 
 if (isset($_POST['etiqueta']) && $_POST['etiqueta'] != 0) {
-	$sentencia .= " AND re.id_etiqueta = '" . $funciones->limpia($_POST['etiqueta']) . "'";
+	$sentencia .= $entity->statement('fragment.reportes_listado.58.11') . $funciones->limpia($_POST['etiqueta']) . "'";
 	$peticion_enlace .= "&etiqueta=" . $_POST['etiqueta'];
-	$inner = " INNER JOIN tbl_reporte_etiqueta AS re ON r.id_reporte = re.id_reporte";
+	$inner = $entity->statement('fragment.reportes_listado.60.12');
 }
 
-$cadena = "SELECT r.*, m.nombre as municipio, e.nombre as estado, date_format(r.fecha_registro, '%H:%i') as hora, date_format(r.fecha_registro, '%Y-%m-%d') as fecha2 
-FROM tbl_reporte AS r 
-INNER JOIN tblc_municipio AS m ON r.id_municipio = m.id_municipio 
-INNER JOIN tblc_estado AS e ON m.id_estado = e.id_estado 
-" . $inner . "
-WHERE r.id_reporte != 0" . $sentencia . " ORDER BY r.fecha_registro DESC LIMIT " . $inicio . "," . $limite . "";
+$cadena = $entity->statement('reportes_listado.63.1') . $inner . $entity->statement('fragment.reportes_listado.63.13') . $sentencia . $entity->statement('fragment.reportes_listado.64.14') . $inicio . "," . $limite . "";
 //echo $cadena;
-$cadena2 = "SELECT COUNT(r.id_reporte) FROM tbl_reporte AS r 
-INNER JOIN tblc_municipio AS m ON r.id_municipio = m.id_municipio 
-INNER JOIN tblc_estado AS e ON m.id_estado = e.id_estado 
-" . $inner . " WHERE r.id_reporte != 0" . $sentencia;
+$cadena2 = $entity->statement('reportes_listado.70.2') . $inner . $entity->statement('fragment.reportes_listado.66.15') . $sentencia;
 
 $totalCirculares = $entity->scalar($cadena2);
 $resul_lista = $entity->objects($cadena);
@@ -122,7 +114,7 @@ $resul_lista = $entity->objects($cadena);
 					<td><textarea rows="3"><?php echo $resultado_fila->descripcion ?></textarea></td>
 					<td>
 						<ul style="margin-left: 0px; padding-left: 5px; font-size: 10px;"><?php
-						$etiquetas = $entity->objects("SELECT e.etiqueta FROM tbl_reporte_etiqueta AS er INNER JOIN tblc_etiqueta AS e ON er.id_etiqueta = e.id_etiqueta WHERE er.id_reporte = " . $resultado_fila->id_reporte);
+						$etiquetas = $entity->objects($entity->statement('reportes_listado.125.3') . $resultado_fila->id_reporte);
 						foreach ($etiquetas as $value) {
 							echo '<li>' . $value->etiqueta . '</li>';
 						}
